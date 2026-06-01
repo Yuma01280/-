@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>선함의 기준</title>
+
+  <!-- ============================== -->
+  <!-- CSS (style.css 내용 전부 붙여넣기) -->
+  <!-- ============================== -->
+  <style>
+
+/* ============================= */
+/* 전체 화면 중앙 정렬 */
+/* ============================= */
+body {
+  margin: 0;
+  background: black;
+  color: white;
+  font-family: sans-serif;
+
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+/* ============================= */
+/* 게임 화면 */
+/* ============================= */
+#game {
+  width: 90vw;
+  height: calc(90vw * 0.5625);
+  max-width: 1280px;
+  max-height: 720px;
+
+  position: relative;
+  overflow: hidden;
+
+  background: black;
+  border: 2px solid red;
+}
+
+
+/* ============================= */
+/* 배경 이미지 */
+/* ============================= */
+#background {
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  background-image: url("images/Scene1_BG.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  z-index: 0;
+}
+
+
+/* ============================= */
+/* 상단 정보 바 */
+/* ============================= */
+#top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 44px;
+
+  background: rgba(20, 20, 20, 0.9);
+  border-bottom: 1px solid #555;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 28px;
+  box-sizing: border-box;
+
+  z-index: 50;
+}
+
+
+/* ============================= */
+/* 작품 제목 */
+/* ============================= */
+#game-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}
+
+
+/* ============================= */
+/* 상태 값 */
+/* ============================= */
+#status-values {
+  font-size: 14px;
+  color: #ddd;
+  letter-spacing: 0.5px;
+}
+
+
+/* ============================= */
+/* 대사 UI 전체 영역 */
+/* ============================= */
+#dialogue-ui {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: 180px;
+
+  z-index: 20;
+  pointer-events: none;
+}
+
+
+/* ============================= */
+/* 대사 박스 (하단 텍스트 바) */
+/* ============================= */
+#dialogue-box {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: 140px;
+
+  background: rgba(0, 0, 0, 0.55);
+  border-top: 2px solid rgba(255, 255, 255, 0.25);
+
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+
+/* ============================= */
+/* 대사 텍스트 (수정됨: 가독성 향상) */
+/* ============================= */
+#dialogue {
+  position: absolute;
+  left: 5%;
+  top: 30px; 
+
+  width: 55%;
+  margin: 0;
+
+  color: white;
+  font-size: 18px;
+  line-height: 1.7;
+  font-weight: 600;
+
+  word-break: keep-all;
+  z-index: 999;
+
+  /* 투명 배경에서 가독성을 높이기 위해 텍스트 쉐도우 추가 */
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+
+/* ============================= */
+/* 화자 이름 박스 */
+/* ============================= */
+#speaker-name {
+  position: absolute;
+
+  left: 5%;
+  top: 0;
+
+  min-width: 110px;
+  padding: 10px 24px;
+
+  background: rgba(0, 0, 0, 0.96);
+  border: 3px solid rgba(255, 255, 255, 0.9);
+
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+
+  box-sizing: border-box;
+  z-index: 30;
+}
+
+
+/* ============================= */
+/* 선택지 영역 */
+/* ============================= */
+#choices {
+  position: absolute;
+  right: 5%;
+  bottom: 25px; 
+
+  width: 30%;
+
+  z-index: 40;
+  pointer-events: auto;
+}
+
+
+/* ============================= */
+/* 선택지 버튼 */
+/* ============================= */
+#choices button {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+
+  padding: 14px 18px;
+
+  background-color: rgba(20, 20, 20, 0.96);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.45);
+
+  text-align: left;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+
+/* ============================= */
+/* 선택지 버튼 호버 효과 */
+/* ============================= */
+#choices button:hover {
+  background-color: #444;
+  transform: translateX(6px);
+  border-color: #fff;
+}
+
+/* ============================= */
+/* 긴급 초기화: 빈 화자 박스 제거 */
+/* ============================= */
+#speaker-name {
+  display: none !important;
+}
+
+#speaker-name.show {
+  display: block !important;
+
+  position: absolute !important;
+  left: 5% !important;
+  top: 0 !important;
+
+  min-width: 110px !important;
+  padding: 10px 24px !important;
+
+  background: rgba(0, 0, 0, 0.96) !important;
+  border: 3px solid white !important;
+
+  color: white !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  text-align: center !important;
+
+  box-sizing: border-box !important;
+  z-index: 30 !important;
+}
+
+
+/* ============================= */
+/* 추적 상태 표시 */
+/* ============================= */
+#route-status {
+  font-weight: 800;
+}
+
+/* 감시됨 상태 */
+#route-status.watched {
+  color: #ff4b4b;
+  animation: warningBlink 0.8s infinite;
+}
+
+/* 미기록 상태 */
+#route-status.hidden {
+  color: #7cffc4;
+}
+
+/* 아직 결정 안 됨 */
+#route-status.unknown {
+  color: #cccccc;
+}
+
+@keyframes warningBlink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.25;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ============================= */
+/* 상태 숫자 변화 효과 */
+/* ============================= */
+.stat-change {
+  color: #ff4b4b !important;
+  animation: statNumberFlash 0.45s ease;
+}
+
+@keyframes statNumberFlash {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.35);
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+#trust-value,
+#doubt-value,
+#info-value {
+  display: inline-block;
+  color: white;
+  font-weight: 800;
+}
+
+
+/* ============================= */
+/* 🧺 바구니 버튼 */
+/* ============================= */
+#inventory-button {
+  position: absolute;
+  top: 58px;
+  right: 28px;
+
+  width: 52px;
+  height: 52px;
+
+  padding: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+
+  cursor: pointer;
+  z-index: 100;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#inventory-button img {
+  width: 70%;
+  height: 70%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+#inventory-button:hover {
+  transform: scale(1.1);
+  border-color: white;
+}
+
+/* ============================= */
+/* 🧺 바구니 패널 */
+/* ============================= */
+#inventory-panel {
+  display: none;
+  position: absolute;
+
+  top: 120px;
+  right: 28px;
+
+  width: 220px;
+  padding: 16px;
+
+  background: rgba(0, 0, 0, 0.9);
+  border: 2px solid white;
+
+  color: white;
+  z-index: 100;
+}
+
+
+
+
+#inventory-panel.show {
+  display: block;
+}
+
+/* ============================= */
+/* 🧺 바구니 내부 설명 패널 */
+/* ============================= */
+
+#inventory-list li {
+  cursor: pointer;
+  margin-bottom: 6px;
+}
+
+#inventory-list li:hover {
+  color: #ffcc66;
+}
+
+#item-description {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #aaa;
+  font-size: 14px;
+  color: #ddd;
+}
+
+  </style>
+
+</head>
+<body>
+
+  <div id="game">
+
+    <!-- ============================== -->
+    <!-- 상단 정보 바 -->
+    <!-- ============================== -->
+    <div id="top-bar">
+      <div id="game-title">선함의 기준</div>
+
+      <div id="status-values">
+        신뢰 <span id="trust-value">0</span> |
+        의심 <span id="doubt-value">0</span> |
+        정보 <span id="info-value">0</span> |
+        <span id="route-status">상태: 불명</span>
+      </div>
+    </div>
+
+    <!-- 배경 -->
+    <div id="background"></div>
+
+    <!-- ============================== -->
+    <!-- 대사 UI -->
+    <!-- ============================== -->
+    <div id="dialogue-ui">
+      <div id="speaker-name"></div>
+
+      <div id="dialogue-box">
+        <p id="dialogue"></p>
+      </div>
+    </div>
+
+    <!-- 선택지 -->
+    <div id="choices"></div>
+
+    <!-- ============================== -->
+    <!-- 🧺 바구니 (인벤토리 UI) -->
+    <!-- ============================== -->
+    <button id="inventory-button">
+      <img src="images/Basket.svg" alt="Basket">
+    </button>
+
+    <div id="inventory-panel">
+      <h3>바구니</h3>
+      <ul id="inventory-list"></ul>
+      <div id="item-description">아이템을 선택하세요.</div>
+    </div>
+
+  </div>
+
+  <!-- ============================== -->
+  <!-- 🔥 scenes.js (반드시 먼저) -->
+  <!-- ============================== -->
+  <script>
+
+ const scenes = {
+  S1: {
+    background: "images/Scene1_BG.png",
+    steps: [
+      {
+        type: "narration",
+        text: `빨간 망토의 어머니는 참 다정한 여인입니다. 그 다정함에, 빨간 망토의 아버지의 불같은
+성격도 꽤 녹아들었습니다. 
+어머니는 향긋한 치즈와 와인이 담긴 바구니를 빨간 망토에게 건네줍니다.
+아버지가 할머니를 잘 챙기지 않으니, 어머니가 할머니를 잘 챙겨주죠.`
+      },
+      {
+        type: "narration",
+        text: `향긋한 치즈향기와, 붉은 와인이 바구니에 예쁘게 담겨있습니다. 어머니가 손수 만든 와인과 치즈에요.
+어머니의 달콤하고 부드러운 다정한 향기와 함께, 바구니가 빨간망토의 눈에 보입니다.`
+      },
+
+       {
+        type: "narration",
+        background: "images/Scene1-2_BG.png",
+        text: `그리고, 못보던 편지도 보이네요. 어머니가 할머니에게 편지를 쓴다는 사실은 빨간망토도 처음 아는 사실입니다.`
+      },
+
+      {
+        type: "dialogue",
+        speaker: "어머니",
+        text: `사랑스러운 내 딸아, 할머니께 이걸 전해주렴. 할머니는 혼자 지내니 음식을 잘 챙겨드려야 해. 그리고 숲에 들어갈 때는 조심해야 해. 숲에는 위험한 것들이 많으니까.`
+      }
+    ],
+
+    choices: [
+      {
+        text: "아무것도 묻지 않고 출발한다",
+        effect: { Trust: 10, Info: -5 },
+        next: "S1_A"
+      },
+      {
+        text: "편지 내용에 대해 묻는다",
+        effect: { Doubt: 10, Info: 10 },
+        next: "S1_B"
+      }
+    ]
+  },
+
+  S1_A: {
+    steps: [ 
+      {
+        type: "dialogue",
+        speaker: "빨간 망토",
+        text: `네, 그럴게요.`
+      },
+      {
+        type: "narration",
+        text: `당신은 어머니를 의심하지 않았습니다. 어머니가 할머니를 챙기는 마음을 빨간 망토는 잘 알고있으니까요. 현명합니다.`
+      },
+       {
+        type: "narration",
+        text: `어머니는 요즘 할머니께 편지도 쓰나 봅니다. 어쩄든 어린 아이들이 신경쓸 일은 아니죠.`
+      },
+
+      {
+        type: "dialogue",
+        speaker: "어머니",
+        text: `숲에 늑대들이 돌아다니니까 조심해야 해. 보안 관문은 꼭 신원 밝히고 통과하렴 알겠지?`
+      },
+      {
+        type: "dialogue",
+        speaker: "빨간 망토",
+        text: `네. 다녀올게요 어머니.`
+      }
+    ],
+
+    choices: [
+      {
+        text: "숲으로 향한다",
+        effect: {},
+        next: "S2"
+      }
+    ]
+  },
+
+  S1_B: {
+    steps: [
+      {
+        type: "dialogue",
+        speaker: "빨간 망토",
+        text: `어머니, 편지 내용이 뭐예요? 원래 이런거 보낸적 없으시잖아요.`
+      },
+      {
+        type: "dialogue",
+        speaker: "어머니",
+        text: `...할머니께 보내는 편지야. 할머니는 요즘 건강이 좋지 않으니까, 내가 챙겨드려야 할 것들이 많아.`
+      },
+
+        {
+        type: "dialogue",
+        speaker: "어머니",
+        text: `...장례를 치르게 된다던가... 그러면 할 일이 많아지잖니. 적어도 고독사는 면하셔야 할테니까...`
+      },
+
+      {
+        type: "narration",
+        text: `건강이라니, 어머니가 할머니의 건강을 신경쓴다면 약이나 다른 약제를 주는게 나을텐데. 
+        심지어 어머니가 준비한 음식은 치즈와 와인. 병자에게 주는 식단은 절대로 아니었죠.`
+      }
+      ,
+
+      {
+        type: "narration",
+        text: `당신은 어머니를 한번도 의심한적 없지만, 오늘 행동은 유독 수상합니다.  어머니는 정말 할머니를 챙겨주는걸까요?`
+      }
+      ,
+
+      {
+        type: "narration",
+        text: `어머니에게 더 많은 질문은 더이상 할 수 없을거 같습니다. 일단 할머니를 직접 만나서 상황을 파악해보는게 좋겠네요.`
+      }
+
+
+
+
+      
+    ],
+
+    choices: [
+      {
+        text: "숲으로 향한다",
+        effect: {},
+        next: "S2"
+      }
+    ]
+  },
+
+
+
+
+
+S2: {
+  background: "images/Scene2_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `숲 입구에 도착했습니다. 이곳은 언제 와도 익숙해지지는 않네요. 빨간 망토의 눈에는 드론 하나와, 게이트가 보입니다.`
+    },
+    {
+      type: "narration",
+      text: `이곳은 아마 자주 점검하는 구역이 아닌거같아요. 게이트는 낡았고, 드론도 약간 고장난거같네요.`
+    },
+    {
+      type: "narration",
+      text: `아마 이곳을 지나가면, 빨간 망토의 통행 기록이 기계에 남게 될것입니다.
+하지만 몰래 돌아간다면 그럴일은 없겠죠. 어떻게 할건가요?`
+    }
+  ],
+
+  choices: [
+    {
+      text: "톨게이트를 지나간다",
+      effect: {
+        Trust: 1,
+        Info: 1,
+        Route: 1
+      },
+      next: "S3_GATE"
+    },
+    {
+      text: "몰래 오솔길로 빠진다",
+      effect: {
+        Doubt: 1,
+        Route: -1
+      },
+      next: "S3_SECRET"
+    }
+  ]
+},
+
+
+
+
+S3_GATE: {
+  background: "images/Scene2-1_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `빨간 망토는 게이트 앞으로 다가갔습니다. 낡은 기계가 낮게 울리며 통행 기록을 남기기 시작합니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "숲 안쪽으로 이동한다",
+      effect: {},
+      next: "S4"
+    }
+  ]
+},
+
+
+
+
+S3_SECRET: {
+  background: "images/Scene2-2_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `빨간 망토는 게이트를 피해 오솔길 쪽으로 발걸음을 돌렸습니다. 아무 기록도 남지 않지만, 숲은 더 깊고 조용합니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "숲 안쪽으로 이동한다",
+      effect: {},
+      next: "S4"
+    }
+  ]
+},
+
+
+
+
+
+
+
+
+
+S4: {
+  background: "images/Scene4_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: function(state) {
+        if (state.Route === 1) {
+          return `게이트를 지나온 뒤, 낡은 기계의 소리가 아직도 귓가에 남아있는 듯합니다. 숲 안 쪽은 여전히 조용하네요. 하지만
+어딘가에서 누군가가 지켜보고 있는 기분이 듭니다.`;
+
+        } else {
+          return `기록을 남기지 않은 채 숲 속으로 들어왔습니다.
+주변은 조용하지만, 몰래 들어왔다는 사실에, 범죄를 저지른 느낌이 돌아 죄책감이 들기도 합니다. 누군가의 시선도 느껴지는거 같네요. `;
+        }
+      }
+    },
+    {
+      type: "narration",
+      text: `숲은 점점 더 깊어지고 있습니다. 나무 사이로 희미한 길이 이어져 있습니다.`
+    },
+
+     {
+        type: "dialogue",
+        speaker: "빨간 망토",
+        text: `오늘따라 숲이 어두워. 주변에 뭐가 있는지 잘 모르겠는걸...`
+      },
+  ],
+
+  choices: [
+    {
+      text: "조심스럽게 길을 따라간다",
+      effect: {
+        Info: 1
+      },
+      next: "S5"
+    },
+    {
+      text: "주변을 살피며 이동한다",
+      effect: {
+        Doubt: 1
+      },
+      next: "S5"
+    }
+  ]
+}
+};
+
+  </script>
+
+  <!-- ============================== -->
+  <!-- 🔥 script.js -->
+  <!-- ============================== -->
+  <script>
+// ==============================
+// 플레이어 상태값 (게임 변수)
+// ==============================
+let state = {
+  Trust: 0,
+  Doubt: 0,
+  Info: 0,
+  Route: 0,
+
+  // 🧺 인벤토리
+  Inventory: [
+    {
+      name: "편지",
+      desc: "어머니가 할머니에게 보낸 봉인된 편지. 내용은 알 수 없다."
+    },
+    {
+      name: "치즈",
+      desc: "향이 강한 수제 치즈. 신선하다."
+    },
+    {
+      name: "와인",
+      desc: "붉은빛이 도는 수제 와인. 달콤한 향이 난다. 이상하게 알코올이 강한 것 같은 느낌이 든다."
+    }
+  ]
+};
+
+// ==============================
+// 이전 상태값 저장 (숫자 변화 애니메이션용)
+// ==============================
+let prevState = {
+  Trust: 0,
+  Doubt: 0,
+  Info: 0
+};
+
+// ==============================
+// 상태값 표시 함수 (UI 업데이트)
+// ==============================
+function updateStatus() {
+  const trustValue = document.getElementById("trust-value");
+  const doubtValue = document.getElementById("doubt-value");
+  const infoValue = document.getElementById("info-value");
+  const routeStatus = document.getElementById("route-status");
+
+  trustValue.textContent = state.Trust;
+  doubtValue.textContent = state.Doubt;
+  infoValue.textContent = state.Info;
+
+  flashIfChanged(trustValue, state.Trust, prevState.Trust);
+  flashIfChanged(doubtValue, state.Doubt, prevState.Doubt);
+  flashIfChanged(infoValue, state.Info, prevState.Info);
+
+  prevState.Trust = state.Trust;
+  prevState.Doubt = state.Doubt;
+  prevState.Info = state.Info;
+
+  routeStatus.className = "";
+
+  if (state.Route === 1) {
+    routeStatus.textContent = "상태: 감시됨";
+    routeStatus.classList.add("watched");
+  } else if (state.Route === -1) {
+    routeStatus.textContent = "상태: 미기록";
+    routeStatus.classList.add("hidden");
+  } else {
+    routeStatus.textContent = "상태: 불명";
+    routeStatus.classList.add("unknown");
+  }
+}
+
+// ==============================
+// 인벤토리 UI 업데이트
+// ==============================
+function updateInventory() {
+  const inventoryList = document.getElementById("inventory-list");
+  const descBox = document.getElementById("item-description");
+
+  if (!inventoryList || !descBox) return;
+
+  inventoryList.innerHTML = "";
+  descBox.textContent = "아이템을 선택하세요.";
+
+  state.Inventory.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item.name;
+
+    li.onclick = () => {
+      showItemDescription(item);
+    };
+
+    inventoryList.appendChild(li);
+  });
+}
+
+
+// ==============================
+// 아이템 설명 출력 함수
+// ==============================
+function showItemDescription(item) {
+  const descBox = document.getElementById("item-description");
+
+  if (!descBox) return;
+
+  descBox.textContent = item.desc;
+}
+
+// ==============================
+// 상태 숫자 변화 애니메이션
+// ==============================
+function flashIfChanged(element, currentValue, previousValue) {
+  if (currentValue === previousValue) return;
+
+  element.classList.remove("stat-change");
+  void element.offsetWidth;
+  element.classList.add("stat-change");
+}
+
+
+// ==============================
+// 🔊 사운드 재생 함수
+// ==============================
+function playSound(fileName) {
+  const sound = new Audio(`media/${fileName}`);
+  sound.currentTime = 0;
+  sound.play();
+}
+
+
+// ==============================
+// 선택지 효과 적용 함수 (변수 증가/감소)
+// ==============================
+function applyEffect(effect) {
+  if (!effect) return;
+
+  for (let key in effect) {
+    if (state[key] === undefined) {
+      state[key] = 0;
+    }
+
+    state[key] += effect[key];
+  }
+
+  updateStatus();
+}
+
+
+// ==============================
+// 장면 출력 함수 (씬 렌더링 핵심 엔진)
+// ==============================
+function renderScene(sceneKey) {
+  const scene = scenes[sceneKey];
+
+  // 존재하지 않는 씬 방지
+  if (!scene) {
+    console.error(`씬 없음: ${sceneKey}`);
+    return;
+  }
+
+  const bg = document.getElementById("background");
+
+if (scene.background) {
+  bg.style.backgroundImage = `url("${scene.background}")`;
+}
+
+  const dialogue = document.getElementById("dialogue");
+  const choices = document.getElementById("choices");
+  const speakerName = document.getElementById("speaker-name");
+
+  let stepIndex = 0;
+
+
+  // ==============================
+  // 스텝 출력 함수 (다음 버튼 진행)
+  // ==============================
+  function showStep() {
+    if (!scene.steps || scene.steps.length === 0) {
+      console.error(`${sceneKey}에 steps 없음`);
+      return;
+    }
+
+    const step = scene.steps[stepIndex];
+
+     // ==============================
+     // 🎬 스텝별 배경 변경
+     // ==============================
+      if (step.background) {
+        const bg = document.getElementById("background");
+        bg.style.backgroundImage = `url("${step.background}")`;
+      }
+
+
+// ==============================
+// 대사 / 나레이션 출력 처리
+// ==============================
+
+// 🔥 텍스트 처리 (함수 + 문자열 둘 다 대응)
+let currentText = "";
+
+try {
+  if (typeof step.text === "function") {
+    currentText = step.text(state);
+  } else {
+    currentText = step.text || "";
+  }
+} catch (e) {
+  console.error("텍스트 처리 오류:", e);
+  currentText = "텍스트 오류 발생";
+}
+
+// 🔥 UI 출력
+if (step.type === "dialogue") {
+  speakerName.textContent = step.speaker || "";
+  speakerName.classList.add("show");
+} else {
+  speakerName.textContent = "";
+  speakerName.classList.remove("show");
+}
+
+dialogue.textContent = currentText;
+
+
+    // 버튼 초기화
+    choices.innerHTML = "";
+
+
+
+    // ==============================
+    // 다음 버튼 출력
+    // ==============================
+    if (stepIndex < scene.steps.length - 1) {
+      const nextButton = document.createElement("button");
+      nextButton.textContent = "다음";
+
+    nextButton.onclick = () => {
+
+      // 🔊 다음 버튼 클릭 사운드
+      playSound("click.mp3");
+
+      stepIndex++;
+      showStep();
+    };
+
+      choices.appendChild(nextButton);
+      return;
+    }
+
+
+    // ==============================
+    // 선택지 출력
+    // ==============================
+    if (scene.choices && scene.choices.length > 0) {
+      scene.choices.forEach(choice => {
+        const button = document.createElement("button");
+        button.textContent = choice.text;
+
+       button.onclick = () => {
+
+        // 🔊 선택지 클릭 사운드
+        playSound("click.mp3");
+
+        applyEffect(choice.effect);
+        renderScene(choice.next);
+      };
+
+        choices.appendChild(button);
+      });
+
+      return;
+    }
+
+
+    // ==============================
+    // 선택지가 없는 경우
+    // ==============================
+    const endText = document.createElement("div");
+    endText.textContent = "(다음 내용 없음)";
+    choices.appendChild(endText);
+  }
+
+
+  // 첫 스텝 실행
+  showStep();
+}
+
+
+// ==============================
+// 게임 시작
+// ==============================
+window.onload = () => {
+  updateStatus();
+  updateInventory();
+
+  const inventoryButton = document.getElementById("inventory-button");
+  const inventoryPanel = document.getElementById("inventory-panel");
+
+  if (inventoryButton && inventoryPanel) {
+    inventoryButton.onclick = () => {
+      inventoryPanel.classList.toggle("show");
+    };
+  }
+
+  renderScene("S1");
+};
+
+  </script>
+
+</body>
+</html>
