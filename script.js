@@ -283,14 +283,12 @@ function getMentalDamageRange() {
 // ==============================
 // 🎲 정신력 피해 주사위 연출 함수
 // ==============================
-function rollMentalDamage(nextSceneKey, damageType = "default") {
-
+function rollMentalDamage(nextSceneKey, damageType = "default", afterRoll = null) {
   const overlay = document.getElementById("mental-roll-overlay");
   const numberBox = document.getElementById("mental-roll-number");
   const textBox = document.getElementById("mental-roll-text");
   const confirmButton = document.getElementById("mental-roll-confirm");
 
-  // 🔥 이전 토스트 제거
   const toast = document.getElementById("toast");
 
   if (toast) {
@@ -298,48 +296,33 @@ function rollMentalDamage(nextSceneKey, damageType = "default") {
     toast.classList.remove("error");
   }
 
-  // ==============================
-  // 🎲 피해 범위 설정
-  // ==============================
   let minDamage = 1;
   let maxDamage = 6;
 
-  // 🟢 친밀
   if (damageType === "friendly") {
     minDamage = 1;
     maxDamage = 2;
-  }
-
-  // ⚪ 중립
-  else if (damageType === "neutral") {
+  } else if (damageType === "neutral") {
     minDamage = 2;
     maxDamage = 3;
-  }
-
-  // 🔴 적대
-  else if (damageType === "hostile") {
-    minDamage = 4;
+  } else if (damageType === "hostile") {
+    minDamage = 6;
     maxDamage = 10;
-  }
-
-  // 🌲 기존 숲 루트 시스템
-  else {
-
+  } else if (damageType === "black_hostile") {
+    minDamage = 10;
+    maxDamage = 20;
+  } else {
     if (state.Path === "search") {
       minDamage = 1;
       maxDamage = 8;
-    }
-
-    else if (state.Path === "road") {
+    } else if (state.Path === "road") {
       minDamage = 1;
       maxDamage = 4;
     }
   }
 
-  // 🎲 최종 피해 계산
   const finalDamage =
-    Math.floor(Math.random() * (maxDamage - minDamage + 1))
-    + minDamage;
+    Math.floor(Math.random() * (maxDamage - minDamage + 1)) + minDamage;
 
   let autoCloseTimer = null;
 
@@ -351,76 +334,31 @@ function rollMentalDamage(nextSceneKey, damageType = "default") {
     confirmButton.disabled = true;
   }
 
-  textBox.textContent =
-    `${minDamage}부터 ${maxDamage}까지 굴리는 중입니다.`;
+  textBox.textContent = `${minDamage}부터 ${maxDamage}까지 굴리는 중입니다.`;
 
   let count = 0;
 
   const rollAnimation = setInterval(() => {
-
     numberBox.textContent =
-      Math.floor(Math.random() * (maxDamage - minDamage + 1))
-      + minDamage;
+      Math.floor(Math.random() * (maxDamage - minDamage + 1)) + minDamage;
 
     count++;
 
     if (count >= 18) {
-
       clearInterval(rollAnimation);
 
       numberBox.textContent = finalDamage;
       numberBox.classList.add("final");
 
-      textBox.textContent =
-        `정신력이 ${finalDamage} 감소했습니다.`;
+      textBox.textContent = `정신력이 ${finalDamage} 감소했습니다.`;
 
       state.Mental -= finalDamage;
-
-      // ==============================
-      // 💀 정신력 0 사망 처리
-      // ==============================
-      if (state.Mental <= 0) {
-
-        state.Mental = 0;
-
-        updateStatus();
-
-        playSound("doomo.mp3");
-        triggerShake();
-
-        setTimeout(() => {
-
-          overlay.classList.remove("show");
-
-          if (confirmButton) {
-            confirmButton.style.display = "none";
-            confirmButton.disabled = true;
-          }
-
-          renderScene("S_DEAD_MENTAL");
-
-        }, 1200);
-
-        return;
-      }
-
       updateStatus();
 
-      // 🔊 정신력 감소 효과음
       playSound("doomo.mp3");
-
-      // 💥 정신력 감소 화면 흔들림
       triggerShake();
 
-      // 결과가 나온 뒤 확인 버튼 표시
-      if (confirmButton) {
-        confirmButton.style.display = "block";
-        confirmButton.disabled = false;
-      }
-
-      // 닫기 함수
       function closeMentalRoll() {
-
         clearTimeout(autoCloseTimer);
 
         overlay.classList.remove("show");
@@ -430,24 +368,34 @@ function rollMentalDamage(nextSceneKey, damageType = "default") {
           confirmButton.disabled = true;
         }
 
-        renderScene(nextSceneKey);
+        if (checkMentalDeath()) {
+          return;
+        }
+
+        if (typeof afterRoll === "function") {
+          afterRoll();
+          return;
+        }
+
+        if (nextSceneKey) {
+          renderScene(nextSceneKey);
+        }
       }
 
-      // 확인 버튼으로 닫기
       if (confirmButton) {
-        confirmButton.onclick = () => {
+        confirmButton.style.display = "block";
+        confirmButton.disabled = false;
 
+        confirmButton.onclick = () => {
           playSound("click.mp3");
           closeMentalRoll();
         };
       }
 
-      // 10초 후 자동 닫기
       autoCloseTimer = setTimeout(() => {
         closeMentalRoll();
       }, 10000);
     }
-
   }, 55);
 }
 
@@ -462,6 +410,25 @@ function triggerShake() {
   setTimeout(() => {
     game.classList.remove("shake");
   }, 300);
+}
+
+// ==============================
+// 💀 정신력 0 사망 처리
+// ==============================
+function checkMentalDeath() {
+  if (state.Mental > 0) {
+    return false;
+  }
+
+  state.Mental = 0;
+  updateStatus();
+
+  playSound("doomo.mp3");
+  triggerShake();
+
+  renderScene("S_DEAD_MENTAL");
+
+  return true;
 }
 
 // ==============================
@@ -553,6 +520,7 @@ function applyEffect(effect) {
   }
 
   updateStatus();
+  checkMentalDeath();
 }
 
 
@@ -589,6 +557,65 @@ if (scene.background) {
       console.error(`${sceneKey}에 steps 없음`);
       return;
     }
+
+if (stepIndex >= scene.steps.length) {
+  choices.innerHTML = "";
+
+  if (scene.choices && scene.choices.length > 0) {
+    scene.choices.forEach(choice => {
+      if (choice.condition && !choice.condition(state)) {
+        return;
+      }
+
+      const button = document.createElement("button");
+      button.textContent = choice.text;
+
+      button.onclick = () => {
+        stopTypingSound();
+        playSound("click.mp3");
+
+        applyEffect(choice.effect);
+
+        const recordText = choice.record || choice.text;
+
+        if (recordText) {
+          state.Records.push(recordText);
+          updateRecords();
+        }
+
+        if (choice.mentalRoll) {
+          const damageType =
+            typeof choice.mentalType === "function"
+              ? choice.mentalType(state)
+              : choice.mentalType || "default";
+
+          rollMentalDamage(choice.next, damageType);
+          return;
+        }
+
+        if (choice.roll) {
+          handleRollCheck(choice.roll);
+          return;
+        }
+
+        if (choice.fade) {
+          fadeTransition(choice.next);
+        } else {
+          renderScene(choice.next);
+        }
+      };
+
+      choices.appendChild(button);
+    });
+
+    return;
+  }
+
+  const endText = document.createElement("div");
+  endText.textContent = "(다음 내용 없음)";
+  choices.appendChild(endText);
+  return;
+}
 
     const step = scene.steps[stepIndex];
 
@@ -640,20 +667,6 @@ if (scene.background) {
       }
 
       // ==============================
-      // 💥 화면 흔들림 함수
-      // ==============================
-      function triggerShake() {
-        const game = document.getElementById("game");
-
-        game.classList.add("shake");
-
-        setTimeout(() => {
-          game.classList.remove("shake");
-        }, 300);
-      }
-
-
-      // ==============================
       // ⚡ 화면 깜빡임 함수
       // ==============================
       function triggerFlash() {
@@ -672,6 +685,23 @@ if (scene.background) {
 if (step.condition && !step.condition(state)) {
   stepIndex++;
   showStep();
+  return;
+}
+
+// ==============================
+// 🧠 스텝 정신력 피해 처리
+// ==============================
+if (step.type === "mentalDamage") {
+  const damageType =
+    typeof step.mentalType === "function"
+      ? step.mentalType(state)
+      : step.mentalType || "default";
+
+  rollMentalDamage(null, damageType, () => {
+    stepIndex++;
+    showStep();
+  });
+
   return;
 }
 
@@ -703,6 +733,15 @@ if (step.type === "dialogue") {
 } else {
   speakerName.textContent = "";
   speakerName.classList.remove("show");
+}
+
+// ==============================
+// 🔴 빨간색 경고문 처리
+// ==============================
+if (step.type === "warning") {
+  dialogue.classList.add("warning-text");
+} else {
+  dialogue.classList.remove("warning-text");
 }
 
 typeText(dialogue, currentText, 28);

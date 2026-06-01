@@ -742,14 +742,18 @@ S7_TIME_WASTE: {
   choices: [
     {
       text: "할머니의 집을 찾아간다",
-      next: "S8_WRONG"
+      effect: {
+        BlackWolfFirst: true
+      },
+      next: "S8_BLACK_WOLF"
     }
   ]
-
-
-
-
 },
+
+
+
+
+
 S8_RIGHT: {
   background: "images/Scene8_BG.png",
 
@@ -770,40 +774,43 @@ S8_RIGHT: {
     }
   ],
 
-  choices: [
-    {
-      text: "하얀 늑대에게 말을 건다",
-      mentalRoll: true,
-      mentalType: function(state) {
-        return state.Path === "road" ? "friendly" : "neutral";
-      },
-      next: "S8_WHITE_WOLF"
+choices: [
+  {
+    text: "하얀 늑대에게 말을 건다",
+    mentalRoll: true,
+    mentalType: function(state) {
+      return state.Path === "road" ? "friendly" : "neutral";
     },
-{
-  text: "회색 늑대에게 말을 건다",
-  effect: {
-    TalkedOtherWolf: true
+    next: "S8_WHITE_WOLF"
   },
-  mentalRoll: true,
-  mentalType: function(state) {
-    return state.Path === "road" ? "friendly" : "neutral";
+
+  {
+    text: "회색 늑대에게 말을 건다",
+    condition: function(state) {
+      return !state.SeenGrayWolf;
+    },
+    mentalRoll: true,
+    mentalType: function(state) {
+      return state.Path === "road" ? "friendly" : "neutral";
+    },
+    next: "S8_GRAY_WOLF"
   },
-  next: "S8_GRAY_WOLF"
-},
+
 {
   text: "검은 늑대에게 말을 건다",
+
+  condition: function(state) {
+    return !state.SeenBlackWolf;
+  },
+
   effect: {
     TalkedOtherWolf: true
   },
-  mentalRoll: true,
-  mentalType: function(state) {
-    return state.Path === "road" ? "neutral" : "hostile";
-  },
+
   next: "S8_BLACK_WOLF"
 }
-  ]
+]
 },
-
 
 
 
@@ -1058,6 +1065,349 @@ S8_WHITE_WOLF: {
     }
   ]
 },
+
+
+S8_GRAY_WOLF: {
+  background: "images/Scene8_GrayWolf_BG.png",
+
+  steps: [
+
+    {
+      type: "narration",
+      text: `빨간 망토는 어딘가 익숙해 보이는 여성에게 다가가 말을 걸기로 했습니다.`
+    },
+        {
+      type: "narration",
+      text: `그녀는 빨간망토를 중립적인 눈으로 바라봅니다. 빨간망토가 오솔길로 왔든, 톨게이트를 지나서 왔든 말이죠.`
+    },
+
+    {
+      type: "dialogue",
+      speaker: "빨간 망토",
+      text: `저기... 혹시 전에 어디선가 뵌 적 있나요?`
+    },
+
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `글쎄. 네가 기억하지 못하는 것뿐일 수도 있지. 그나저나 여기는 무슨일이야?`
+    },
+
+    {
+      type: "dialogue",
+      speaker: "빨간 망토",
+      text: `할머니한테... 선물을 주려고 들렀어요...`
+    },
+
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `그래? 어떡하지. 여긴 보안 검색이 적용이 잘 안되는 곳이라 자유롭게 다니지 못할텐데.`
+    },
+
+    {
+      type: "narration",
+      text: `회색 늑대는 잠시 빨간망토를 바라보고는 하얀색에 건장한 체격을 가진 남성을 가리킵니다.`
+    },
+
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `저쪽에 하얀 강아지 같은 남자 있지? 저 사람한테 가면 널 도와줄거야.`
+    },
+
+    {
+      type: "narration",
+      text: `그녀의 손에는 낡은 검은색 노트가 들려 있습니다. 표지는 오래 닳아 있었지만, 이상하게도 페이지 끝은 새것처럼 깨끗했습니다.`
+    }
+
+  ],
+
+  choices: [
+    {
+      text: "검은색 노트에 대해 물어본다",
+      effect: {
+        SeenGrayWolf: true,
+        TalkedOtherWolf: true,
+        Info: 10
+      },
+      next: "S8_GRAY_WOLF_NOTE"
+    },
+    {
+      text: "묻지 않고 하얀 늑대에게 향한다",
+      effect: {
+        SeenGrayWolf: true,
+        TalkedOtherWolf: true
+      },
+      next: "S8_GRAY_WOLF_SKIP"
+    }
+  ]
+},
+
+S8_GRAY_WOLF_NOTE: {
+  background: "images/Scene8_GrayWolf_BG.png",
+
+  steps: [
+    {
+      type: "dialogue",
+      speaker: "빨간 망토",
+      text: `그 손에 들고 있는 노트는 뭐예요?`
+    },
+
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `이건 기록장이야. 내가 본 것, 들은 것, 그리고 누군가가 잊어버린 것들을 적어두는 물건이지.`
+    },
+
+        {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `궁금하니? 지금 꽤나 흥미로운 사건을 조사 중이거든.`
+    },
+
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `너희가 사용하는 저 반짝이는 불빛의 출처가 궁금하지 않아?`
+    },
+
+    {
+      type: "narration",
+      text: `회색 늑대의 말은 이상할 정도로 차분했습니다. 검은색 장미같이 날서있으면서도, 어딘가 끌어당기는 묘한 매력이 있는 회색 늑대는 빨간망토의 마음을 사로잡았죠.`
+    },
+
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `뇌가 생각을하고, 감정을 느낄때 전기가 생성된다는 말 들어본적 있어? 예전부터 소설과 영화에서 자주 나오던 주제야.`
+    }
+    ,
+        {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `그리고 더 똑똑하고 예민한 사람의 뇌 일수록 고통, 절망, 쾌락을 선명하게 느끼며 더 많은 전기를 생성해내.`
+    },
+        {
+      type: "warning",
+      text: `빨간망토의 눈이 크게 커지며 숨이 턱 막히는 기분입니다. 여태 빨간망토가, 마을사람이, 전세계 사람들이 당연하게 써오는전기가 다른 사람의 머리에서 적출한 뇌에서 나오는 전기라는거니까요.`
+    },
+        {
+      type: "narration",
+      text: `그렇다면... 할머니가 전기를 만들어 내기 위해 뇌를 훔쳤다는걸까요...?`
+    }
+    ,
+
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `너무 자극적이였으려나? 하지만 진실이란다. 그리고 우린 그 중에서 어떤 뇌를 도둑 맞았거든. 아마... 우린 곧 다시 만날거야 꼬마야.`
+    }
+        ,
+
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `일단 저쪽에 있는 하얀 늑대에게 가봐. 그 친구는 친절하니까.`
+    }
+
+  ],
+
+  choices: [
+    {
+      text: "하얀 늑대에게 향한다",
+      next: "S8_WHITE_WOLF"
+    }
+  ]
+},
+
+S8_GRAY_WOLF_SKIP: {
+  background: "images/Scene8_GrayWolf_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `빨간 망토는 더 묻지 않고, 회색 늑대가 가리킨 하얀 늑대에게 향했습니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "하얀 늑대에게 향한다",
+      next: "S8_WHITE_WOLF"
+    }
+  ]
+},
+
+
+S8_BLACK_WOLF: {
+  background: "images/Scene8_BlackWolf_BG.png",
+
+  steps: [
+    // ==============================
+    // 🔴 오솔길로 들어온 경우
+    // ==============================
+
+    {
+  type: "narration",
+  condition: function(state) {
+    return state.Path === "search";
+  },
+  text: `그곳에서 빨간망토가 먼저 마주한건... 검은 늑대라고 불리는 보안 경비팀의 리더였습니다. 그의 표정이 잔뜩 일그러져있네요.`
+},
+
+    {
+  type: "narration",
+  condition: function(state) {
+    return state.Path === "search";
+  },
+  text: `당신이 오솔길로 왔기 때문에 검은 늑대는 당신을 증오하며, 혐오하는 눈빛으로 바라봅니다.`
+},
+    {
+      type: "dialogue",
+      condition: function(state) {
+        return state.Path === "search";
+      },
+      speaker: "검은 늑대",
+      text: `네놈같이 보안 검색대를 병풍 취급하는 놈들 때문에 내가 이 개고생을 하는 건데. 알기나 해?`
+    },
+
+{
+  type: "warning",
+  condition: function(state) {
+    return state.Path === "search";
+  },
+  text: `검은 늑대가 위협적으로 가까이 다가옵니다. 거대한 덩치에 그나마 남아있던 햇빛도 차단해버리고, 그의 목에서 낮게 깔린 으르렁거림이 긁히듯 새어나옵니다.`
+},
+{
+  type: "mentalDamage",
+  condition: function(state) {
+    return state.Path === "search";
+  },
+  mentalType: "black_hostile"
+},
+
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.Path === "search";
+      },
+      text: `빨간 망토가 뒷걸음질치려는 순간, 회색 늑대가 조용히 시선을 돌립니다. 직접 막아선 것은 아니지만, 그 눈빛만으로도 검은 늑대의 움직임이 잠시 멈춥니다.`
+    },
+
+    {
+      type: "dialogue",
+      condition: function(state) {
+        return state.Path === "search";
+      },
+      speaker: "검은 늑대",
+      text: `... 기록자 앞이라 이 정도로 끝내는 줄 알아. 쯧, 성가신 것들.`
+    },
+
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.Path === "search";
+      },
+      text: `아마 저 기록자는 늑대들의 행동들도 기록하나봅니다. 어쩌면 다른 정보들도 가지고 있을까요?`
+    },
+
+    // ==============================
+    // 🟢 톨게이트로 들어온 경우
+    // ==============================
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.Path === "road";
+      },
+      text: `검은 늑대는 빨간 망토를 향해 다가오더니, 별다른 말 없이 손목에 달린 기록 패널을 확인합니다. 어쩌면 그의 큰 키 때문에 빨간망토를 발견조차 못한걸지도 모릅니다.`
+    },
+
+    {
+      type: "dialogue",
+      condition: function(state) {
+        return state.Path === "road";
+      },
+      speaker: "검은 늑대",
+      text: `뭐야 너 살아있었냐? 그나저나 보안 기록은 되네. 배터리 나갔나.`
+    },
+
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.Path === "road";
+      },
+      text: `검은 늑대는 빨간 망토에게 더 이상 관심을 두지 않습니다. 마치 확인할 것만 확인했다는 듯, 곧장 회색 늑대 쪽으로 걸어갑니다.`
+    },
+
+    {
+      type: "dialogue",
+      condition: function(state) {
+        return state.Path === "road";
+      },
+      speaker: "검은 늑대",
+      text: `야, 기록자. 이쪽 기록 확인 좀 해봐. 기계가 완전히 병신이 된건 아닌가본데. 저 꼬맹이 들어왔잖아. 기록 있어?`
+    },
+
+    {
+      type: "dialogue",
+      condition: function(state) {
+        return state.Path === "road";
+      },
+      speaker: "회색 늑대",
+      text: `그래?잠시만... 그러면 누가 보안 검색대 전기라도 빼서 사용하는건가?`
+    },
+
+      {
+      type: "dialogue",
+      condition: function(state) {
+        return state.Path === "road";
+      },
+      speaker: "회색 늑대",
+      text: `기록은 있네, 안녕~ 작은 꼬마~`
+    },
+
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.Path === "road";
+      },
+      text: `아무래도 검은 늑대는 빨간 망토에게 관심이 없는거 같습니다....`
+    }
+  ],
+
+  choices: [
+    {
+      text: "공포를 견디고 물러선다",
+      condition: function(state) {
+        return state.Path === "search";
+      },
+      effect: {
+        SeenBlackWolf: true,
+        TalkedOtherWolf: true
+      },
+      mentalRoll: true,
+      mentalType: "black_hostile",
+      next: "S8_RIGHT"
+    },
+
+    {
+      text: "다른 늑대들에게 말을 걸어본다",
+      condition: function(state) {
+        return state.Path === "road";
+      },
+      effect: {
+        SeenBlackWolf: true,
+        TalkedOtherWolf: true
+      },
+      next: "S8_RIGHT"
+    }
+  ]
+},
+
+
+
+
 
 
 
