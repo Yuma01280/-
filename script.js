@@ -80,6 +80,24 @@ function resetGameState() {
   state.DestroyedGrandfatherCore = false;
   state.EndingRoute = null;
 
+  state.TookLetter = false;
+  state.MoveStyle = null;
+
+  state.SeenDepressed = false;
+  state.SeenCrazy = false;
+  state.SeenFight = false;
+  state.LetterDelivered = false;
+
+  state.SeenGrayWolf = false;
+  state.SeenBlackWolf = false;
+  state.TalkedOtherWolf = false;
+  state.BlackWolfFirst = false;
+
+  state.ReadCoreDocument = false;
+  state.FoundGrandfatherCore = false;
+
+  state.GoodnessStandard = "";
+
   state.Records = [];
 
   state.Inventory = [
@@ -262,6 +280,11 @@ function unlockAchievement(routeName) {
   );
 
   updateAchievements();
+
+  if (typeof updatePurgeButtonState === "function") {
+    updatePurgeButtonState();
+  }
+
   showToast(`${achievementData[routeName].title} 업적 해금`);
 }
 
@@ -320,10 +343,180 @@ function playSound(fileName, volumeType = "click") {
 // ==============================
 // 🎵 배경 음악
 // ==============================
-const bgm = new Audio("media/bgm.mp3");
+const DEFAULT_BGM_VOLUME = 0.25;
+let currentBgmFile = "bgm.mp3";
+
+const bgm = new Audio(`media/${currentBgmFile}`);
 
 bgm.loop = true;
-bgm.volume = 0.25;
+bgm.volume = DEFAULT_BGM_VOLUME * masterVolume;
+
+// ==============================
+// 🎵 현재 목표 BGM 볼륨 계산
+// ==============================
+function getBgmTargetVolume() {
+  return DEFAULT_BGM_VOLUME * masterVolume;
+}
+
+// ==============================
+// 🎵 BGM 즉시 변경 함수
+// 같은 음악이면 다시 시작하지 않음
+// ==============================
+function changeBgm(fileName) {
+  if (!fileName) return;
+
+  const targetVolume = getBgmTargetVolume();
+
+  // 이미 같은 BGM이면 처음부터 다시 재생하지 않음
+  if (currentBgmFile === fileName) {
+    bgm.volume = targetVolume;
+
+    if (bgm.paused) {
+      bgm.play().catch(error => {
+        console.error("BGM 재생 실패:", fileName, error);
+      });
+    }
+
+    return;
+  }
+
+  bgm.pause();
+  bgm.currentTime = 0;
+
+  currentBgmFile = fileName;
+  bgm.src = `media/${fileName}`;
+  bgm.loop = true;
+  bgm.volume = targetVolume;
+
+  bgm.play().catch(error => {
+    console.error("BGM 변경 실패:", fileName, error);
+  });
+}
+
+// ==============================
+// 🎵 현재 BGM을 잠깐 낮췄다가 다시 키우는 함수
+// 음악 교체 없이 긴 검은 화면 연출에 사용
+// ==============================
+function duckBgm(duration = 4500) {
+  const targetVolume = getBgmTargetVolume();
+  const lowVolume = targetVolume * 0.18;
+
+  const fadeOutDuration = duration * 0.35;
+  const fadeInDuration = duration * 0.45;
+
+  const steps = 30;
+  const fadeOutInterval = fadeOutDuration / steps;
+  const fadeInInterval = fadeInDuration / steps;
+
+  let outCount = 0;
+  const startVolume = bgm.volume || targetVolume;
+
+  if (bgm.paused) {
+    bgm.play().catch(error => {
+      console.error("BGM 재생 실패:", currentBgmFile, error);
+    });
+  }
+
+  const fadeOutTimer = setInterval(() => {
+    outCount++;
+
+    const progress = outCount / steps;
+    bgm.volume = Math.max(
+      startVolume - (startVolume - lowVolume) * progress,
+      lowVolume
+    );
+
+    if (outCount >= steps) {
+      clearInterval(fadeOutTimer);
+
+      setTimeout(() => {
+        let inCount = 0;
+
+        const fadeInTimer = setInterval(() => {
+          inCount++;
+
+          const progress = inCount / steps;
+          bgm.volume = Math.min(
+            lowVolume + (targetVolume - lowVolume) * progress,
+            targetVolume
+          );
+
+          if (inCount >= steps) {
+            clearInterval(fadeInTimer);
+            bgm.volume = targetVolume;
+          }
+        }, fadeInInterval);
+      }, duration * 0.2);
+    }
+  }, fadeOutInterval);
+}
+
+// ==============================
+// 🎵 BGM 페이드 전환 함수
+// 기존 BGM을 줄인 뒤 새 BGM을 천천히 키움
+// 같은 음악이면 교체하지 않고 duck 처리
+// ==============================
+function fadeChangeBgm(fileName, duration = 6500) {
+  if (!fileName) {
+    duckBgm(duration);
+    return;
+  }
+
+  // 이미 같은 음악이면 처음부터 재생하지 말고 볼륨만 연출
+  if (currentBgmFile === fileName) {
+    duckBgm(duration);
+    return;
+  }
+
+  const targetVolume = getBgmTargetVolume();
+  const oldVolume = bgm.volume || targetVolume;
+
+  const fadeOutDuration = duration * 0.45;
+  const fadeInDuration = duration * 0.55;
+
+  const steps = 45;
+  const fadeOutInterval = fadeOutDuration / steps;
+  const fadeInInterval = fadeInDuration / steps;
+
+  let outCount = 0;
+
+  const fadeOutTimer = setInterval(() => {
+    outCount++;
+
+    const progress = outCount / steps;
+    bgm.volume = Math.max(oldVolume * (1 - progress), 0);
+
+    if (outCount >= steps) {
+      clearInterval(fadeOutTimer);
+
+      bgm.pause();
+      bgm.currentTime = 0;
+
+      currentBgmFile = fileName;
+      bgm.src = `media/${fileName}`;
+      bgm.loop = true;
+      bgm.volume = 0;
+
+      bgm.play().catch(error => {
+        console.error("BGM 페이드 전환 실패:", fileName, error);
+      });
+
+      let inCount = 0;
+
+      const fadeInTimer = setInterval(() => {
+        inCount++;
+
+        const progress = inCount / steps;
+        bgm.volume = Math.min(targetVolume * progress, targetVolume);
+
+        if (inCount >= steps) {
+          clearInterval(fadeInTimer);
+          bgm.volume = targetVolume;
+        }
+      }, fadeInInterval);
+    }
+  }, fadeOutInterval);
+}
 
 // ==============================
 // ⌨️ 타자 효과 함수
@@ -387,6 +580,31 @@ function fadeTransition(nextSceneKey) {
       fadeScreen.classList.remove("show");
     }, 300);
   }, 800);
+}
+
+// ==============================
+// 🎬 긴 검은 화면 + BGM 연출 함수
+// bgmFileName이 있으면 음악 교체
+// bgmFileName이 없으면 현재 음악을 잠깐 낮췄다가 복구
+// ==============================
+function longBlackTransition(nextSceneKey, bgmFileName, duration = 6000) {
+  const fadeScreen = document.getElementById("fade-screen");
+
+  fadeScreen.classList.add("show");
+
+  if (bgmFileName) {
+    fadeChangeBgm(bgmFileName, duration);
+  } else {
+    duckBgm(duration);
+  }
+
+  setTimeout(() => {
+    renderScene(nextSceneKey);
+
+    setTimeout(() => {
+      fadeScreen.classList.remove("show");
+    }, 700);
+  }, duration);
 }
 
 // ==============================
@@ -1160,10 +1378,12 @@ applyEffect(choice.effect);
         // ==============================
         if (choice.mentalRoll) {
 
-          rollMentalDamage(
-          choice.next,
-          choice.mentalType || "default"
-        );
+          const damageType =
+            typeof choice.mentalType === "function"
+              ? choice.mentalType(state)
+              : choice.mentalType || "default";
+
+          rollMentalDamage(choice.next, damageType);
 
           return;
         }
@@ -1181,7 +1401,23 @@ applyEffect(choice.effect);
           resetGameState();
         }
 
-        // 🎬 페이드 연출 여부
+        // 🎬 긴 검은 화면 + BGM 페이드 전환
+        if (choice.longTransition) {
+          longBlackTransition(
+            choice.next,
+            choice.bgm,
+            choice.transitionDuration || 6500
+          );
+          return;
+        }
+
+        // 🎵 선택지에서 즉시 BGM 변경
+        // 긴 전환이 필요 없는 일반 장면에서만 사용
+        if (choice.bgm) {
+          changeBgm(choice.bgm);
+        }
+
+        // 🎬 기존 페이드 연출 여부
         if (choice.fade) {
 
           fadeTransition(choice.next);
@@ -1396,6 +1632,54 @@ if (achievementButton && achievementPanel) {
     playSound("click.mp3");
     updateAchievements();
     achievementPanel.classList.toggle("show");
+  };
+}
+
+// ==============================
+// 🗑️ 업적 기록 말소 버튼
+// 업적 4개가 모두 해금되었을 때만 버튼이 깜빡임
+// localStorage에 저장된 엔딩 업적만 삭제함
+// ==============================
+const purgeAchievementButton = document.getElementById("purge-achievement-button");
+
+function hasAllAchievementsUnlocked() {
+  const savedAchievements =
+    JSON.parse(localStorage.getItem("sogAchievements")) || {};
+
+  return Object.keys(achievementData).every(key => {
+    return savedAchievements[key] === true;
+  });
+}
+
+function updatePurgeButtonState() {
+  if (!purgeAchievementButton) return;
+
+  if (hasAllAchievementsUnlocked()) {
+    purgeAchievementButton.classList.add("needs-purge");
+  } else {
+    purgeAchievementButton.classList.remove("needs-purge");
+  }
+}
+
+if (purgeAchievementButton) {
+  updatePurgeButtonState();
+
+  purgeAchievementButton.onclick = () => {
+    playSound("click.mp3");
+
+    const confirmDelete = confirm(
+  "게임을 처음 시작하신다면 기록을 말소하는걸 강력히 권장합니다.\n\n정말 업적 기록을 말소하시겠습니까?\n해금된 엔딩 업적이 모두 삭제됩니다."
+      );
+
+    if (!confirmDelete) return;
+
+    localStorage.removeItem("sogAchievements");
+    unlockedAchievements = {};
+
+    updateAchievements();
+    updatePurgeButtonState();
+
+    showToast("업적 기록이 말소되었습니다.");
   };
 }
 

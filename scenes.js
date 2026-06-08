@@ -670,16 +670,17 @@ S7_OLDMAN_DEPRESSED: {
   ],
 
 choices: [
-  {
-    text: "편지를 건네주며 말을 건다",
-    condition: (state) => !state.Inventory.some(item => item.name === "우체부의 편지"),
-    failMessage: "당신은 편지를 챙기지 않았다.",
-    mentalRoll: true,
-    effect: {
-      SeenDepressed: true
-    },
-    next: "S7"
+{
+  text: "편지를 건네주며 말을 건다",
+  condition: (state) => !state.Inventory.some(item => item.name === "우체부의 편지"),
+  requiredItem: "우체부의 편지",
+  failMessage: "당신은 편지를 챙기지 않았다.",
+  mentalRoll: true,
+  effect: {
+    SeenDepressed: true
   },
+  next: "S7"
+},
   {
     text: "편지를 건네주며 말을 건다",
     condition: (state) => state.Inventory.some(item => item.name === "우체부의 편지"),
@@ -1166,6 +1167,10 @@ S8_WHITE_WOLF: {
         Mental: -1
       },
 
+      bgm: "scene9.mp3",
+      longTransition: true,
+      transitionDuration: 6500,
+
       next: "S9"
     }
   ]
@@ -1573,10 +1578,14 @@ S9: {
   choices: [
     {
       text: "하얀 늑대를 따라 할머니의 집으로 들어간다",
+      bgm: "scene9.mp3",
+      longTransition: true,
+      transitionDuration: 4500,
       next: "S10"
     },
     {
       text: "주변을 살펴본다",
+      bgm: "scene9.mp3",
       mentalRoll: true,
       mentalType: "friendly",
       next: "S9_BASEMENT"
@@ -1647,11 +1656,17 @@ S9_BASEMENT: {
 
   choices: [
     {
-      text: "하얀 늑대와 함께 할머니의 집으로 들어간다",
+      text: "할머니의 집으로 들어간다",
+      bgm: "scene9.mp3",
+      longTransition: true,
+      transitionDuration: 4500,
       next: "S10"
     },
     {
       text: "열려 있는 지하실로 들어간다",
+      bgm: "scene9.mp3",
+      longTransition: true,
+      transitionDuration: 4500,
       next: "S9_BASEMENT_CORE"
     }
   ]
