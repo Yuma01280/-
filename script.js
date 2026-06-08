@@ -826,19 +826,51 @@ function handleRollCheck(rollData) {
 
 // ==============================
 // 알림 토스트 출력 함수
+// 이전 토스트 / 이전 타이머 / 박스 잔상까지 정리
 // ==============================
+let toastTimer = null;
+
+function clearToast() {
+  const toast = document.getElementById("toast");
+
+  if (!toast) return;
+
+  if (toastTimer) {
+    clearTimeout(toastTimer);
+    toastTimer = null;
+  }
+
+  toast.classList.remove("show");
+  toast.classList.remove("error");
+
+  toast.textContent = "";
+
+  // ✅ 박스 잔상 즉시 제거
+  toast.style.display = "none";
+}
+
 function showToast(message) {
   const toast = document.getElementById("toast");
 
   if (!toast) return;
 
-  toast.classList.remove("error");
+  clearToast();
 
+  // ✅ display none 상태에서 다시 표시 준비
+  toast.style.display = "block";
   toast.textContent = message;
-  toast.classList.add("show");
 
-  setTimeout(() => {
+  // ✅ 브라우저가 display 변경을 인식한 다음 show 적용
+  requestAnimationFrame(() => {
+    toast.classList.add("show");
+  });
+
+  toastTimer = setTimeout(() => {
     toast.classList.remove("show");
+    toast.classList.remove("error");
+    toast.textContent = "";
+    toast.style.display = "none";
+    toastTimer = null;
   }, 1500);
 }
 
@@ -940,6 +972,8 @@ button.textContent = choice.text;
 button.onclick = () => {
   if (isTransitioning) return;
   isTransitioning = true;
+
+  clearToast();
 
   choices.querySelectorAll("button").forEach(btn => {
     btn.disabled = true;
@@ -1358,6 +1392,8 @@ if (scene.choices && scene.choices.length > 0) {
         // ==============================
         button.onclick = () => {
           if (isTransitioning) return;
+
+          clearToast();
 
           stopTypingSound();
 

@@ -335,6 +335,8 @@ body {
 /* 아이템 획득 같은 일반 알림 */
 /* ============================= */
 #toast {
+  display: none;
+
   position: absolute;
   top: 110px;
   right: 32px;
@@ -380,10 +382,10 @@ body {
 /* 🔔 기본 토스트 표시 상태 */
 /* ============================= */
 #toast.show {
+  display: block;
   opacity: 1;
   transform: translateY(0);
 }
-
 
 /* ============================= */
 /* 🚨 경고 토스트 */
