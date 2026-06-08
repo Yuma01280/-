@@ -5,6 +5,13 @@
   <title>선의 기준</title>
 
   <!-- ============================== -->
+  <!-- ✨ 구글 폰트 -->
+  <!-- ============================== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <!-- ============================== -->
   <!-- 스타일 연결 -->
   <!-- ============================== -->
   <link rel="stylesheet" href="style.css">
@@ -16,7 +23,6 @@
   <!-- 🎮 게임 전체 프레임 -->
   <!-- ============================== -->
   <div id="game">
-
 
     <!-- ============================== -->
     <!-- 📚 왼쪽 사이드 패널 -->
@@ -31,207 +37,191 @@
 
       <!-- 메뉴 버튼 -->
       <div class="side-menu">
+        <button class="side-btn" id="archive-button">
+          기록 보관소
+        </button>
 
-      <button class="side-btn" id="archive-button">
-      기록 보관소
-       </button>
-
-       <!-- 인물 관계도 버튼 -->
-      <button class="side-btn" id="relation-button">
-        인물 관계도
-      </button>
+        <button class="side-btn" id="relation-button">
+          인물 관계도
+        </button>
 
         <button class="side-btn" id="achievement-button">
-        업적
-      </button>
+          업적
+        </button>
 
         <button class="side-btn">
           설정
         </button>
-
       </div>
 
       <!-- 안내 문구 -->
       <div class="notice-box">
         <h3>안내 사항</h3>
 
-      <p id="notice-text">
-      당신의 모든 선택은 기록되며,
-      누군가를 살릴 수도,
-      의심받게 될 수도 있습니다.
-    </p>
+        <p id="notice-text">
+          당신의 모든 선택은 기록되며,
+          누군가를 살릴 수도,
+          의심받게 될 수도 있습니다.
+        </p>
       </div>
 
     </aside>
-
-    <!-- ============================== -->
-    <!-- ✨ 구글 폰트 -->
-    <!-- ============================== -->
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&display=swap" rel="stylesheet">
-
-
 
     <!-- ============================== -->
     <!-- 🖥️ 중앙 메인 게임 화면 -->
     <!-- ============================== -->
     <main id="main-screen">
 
+      <!-- ============================== -->
+      <!-- 🌘 게임 시작 전 오프닝 -->
+      <!-- ============================== -->
+      <div id="start-overlay">
 
-      
-<!-- ============================== -->
-<!-- 🌘 게임 시작 전 오프닝 -->
-<!-- ============================== -->
-<div id="start-overlay">
+        <!-- 타이틀 화면 -->
+        <div id="title-screen">
+          <div class="start-student">
+            25730077 박태은
+          </div>
 
-  <!-- 타이틀 화면 -->
-  <div id="title-screen">
-    <div class="start-student">
-      25730077 박태은
-    </div>
+          <p class="start-subtitle">
+            STANDARD OF GOODNESS
+          </p>
 
-    <p class="start-subtitle">
-      STANDARD OF GOODNESS
-    </p>
+          <h1 class="start-title">
+            선의 기준
+          </h1>
 
-    <h1 class="start-title">
-      선의 기준
-    </h1>
+          <button id="real-start-button">
+            게임 시작
+          </button>
+        </div>
 
-    <button id="real-start-button">
-      게임 시작
-    </button>
-  </div>
+        <!-- 제작자 메시지 화면 -->
+        <div id="before-message-screen">
+          <div class="before-message-box">
 
-  <!-- 제작자 메시지 화면 -->
-  <div id="before-message-screen">
-    <div class="before-message-box">
+            <p>
+              해당 게임은 스토리가 매우 중요하며,<br>
+              스토리를 똑바로 읽지 않으시면 플레이와 몰입에 큰 지장이 있을 수 있습니다.<br>
+              <br>
+              게임을 시작하기 전에, 혹시나 남아있는 기억이 존재할 수 있으니<br>
+              기록 말소 버튼을 꼭 누르고 플레이 해주세요.<br>
+              <br>
+              당신의 선택은, 한 사람과 한 아이의 가치관, 기준, 윤리를 뒤흔들 거라는 걸 인지해 주시기 바랍니다.
+            </p>
 
-      <p>
-      해당 게임은 스토리가 매우 중요하며,<br>
-      스토리를 똑바로 읽지 않으시면 플레이와 몰입에 큰 지장이 있을 수 있습니다.<br>
-<br>
-      게임을 시작하기 전에, 혹시나 남아있는 기억이 존재할 수 있으니<br>
-      기록 말소 버튼을 꼭 누르고 플레이 해주세요.<br>
-<br>
-      당신의 선택은, 한 사람과 한 아이의 가치관, 기준, 윤리를 뒤흔들 거라는 걸 인지해 주시기 바랍니다.
-      </p>
+            <button id="before-message-next-button">
+              다음
+            </button>
 
-    </div>
-  </div>
+          </div>
+        </div>
 
-</div>
-
-
-
-<!-- ============================== -->
-<!-- 📊 상단 상태 정보 바 -->
-<!-- ============================== -->
-<div id="top-bar">
-
-  <!-- 신뢰 수치 -->
-  <div class="top-stat">
-    <div class="stat-icon">
-      <img src="images/icon1.png" alt="Trust Icon">
-    </div>
-
-    <div>
-      <div class="stat-main">
-        신뢰 <span id="trust-value">0</span>
       </div>
 
-      <div class="stat-sub">
-        TRUST
+      <!-- ============================== -->
+      <!-- 📊 상단 상태 정보 바 -->
+      <!-- ============================== -->
+      <div id="top-bar">
+
+        <!-- 신뢰 수치 -->
+        <div class="top-stat">
+          <div class="stat-icon">
+            <img src="images/icon1.png" alt="Trust Icon">
+          </div>
+
+          <div>
+            <div class="stat-main">
+              신뢰 <span id="trust-value">0</span>
+            </div>
+
+            <div class="stat-sub">
+              TRUST
+            </div>
+          </div>
+        </div>
+
+        <div class="top-divider"></div>
+
+        <!-- 의심 수치 -->
+        <div class="top-stat">
+          <div class="stat-icon">
+            <img src="images/icon2.png" alt="Doubt Icon">
+          </div>
+
+          <div>
+            <div class="stat-main">
+              의심 <span id="doubt-value">0</span>
+            </div>
+
+            <div class="stat-sub">
+              DOUBT
+            </div>
+          </div>
+        </div>
+
+        <div class="top-divider"></div>
+
+        <!-- 정보 수치 -->
+        <div class="top-stat">
+          <div class="stat-icon">
+            <img src="images/icon3.png" alt="Info Icon">
+          </div>
+
+          <div>
+            <div class="stat-main">
+              정보 <span id="info-value">0</span>
+            </div>
+
+            <div class="stat-sub">
+              INFO
+            </div>
+          </div>
+        </div>
+
+        <div class="top-divider"></div>
+
+        <!-- 정신력 수치 -->
+        <div class="top-stat">
+          <div class="stat-icon">
+            <img src="images/icon4.png" alt="Mental Icon">
+          </div>
+
+          <div>
+            <div class="stat-main">
+              정신력 <span id="mental-value">50</span>
+            </div>
+
+            <div class="stat-sub">
+              MENTAL
+            </div>
+          </div>
+        </div>
+
+        <!-- 현재 상태 -->
+        <div class="top-stat status-stat">
+          <div>
+            <div class="stat-main">
+              <span id="route-status">상태: 불명</span>
+            </div>
+
+            <div class="stat-sub">
+              STATUS : UNKNOWN
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
-  </div>
-
-  <div class="top-divider"></div>
-
-  <!-- 의심 수치 -->
-  <div class="top-stat">
-    <div class="stat-icon">
-      <img src="images/icon2.png" alt="Doubt Icon">
-    </div>
-
-    <div>
-      <div class="stat-main">
-        의심 <span id="doubt-value">0</span>
-      </div>
-
-      <div class="stat-sub">
-        DOUBT
-      </div>
-    </div>
-  </div>
-
-  <div class="top-divider"></div>
-
-  <!-- 정보 수치 -->
-  <div class="top-stat">
-    <div class="stat-icon">
-      <img src="images/icon3.png" alt="Info Icon">
-    </div>
-
-    <div>
-      <div class="stat-main">
-        정보 <span id="info-value">0</span>
-      </div>
-
-      <div class="stat-sub">
-        INFO
-      </div>
-    </div>
-  </div>
-
-  <div class="top-divider"></div>
-
-<!-- 정신력 수치 -->
-<div class="top-stat">
-  <div class="stat-icon">
-    <img src="images/icon4.png" alt="Mental Icon">
-  </div>
-
-  <div>
-    <div class="stat-main">
-      정신력 <span id="mental-value">10</span>
-    </div>
-
-    <div class="stat-sub">
-      MENTAL
-    </div>
-  </div>
-</div>
-
-<!-- 현재 상태 -->
-<div class="top-stat status-stat">
-  <div>
-    <div class="stat-main">
-      <span id="route-status">상태: 불명</span>
-    </div>
-
-    <div class="stat-sub">
-      STATUS : UNKNOWN
-    </div>
-  </div>
-</div>
-
-</div>
 
       <!-- ============================== -->
       <!-- 🖼️ 배경 화면 -->
       <!-- ============================== -->
       <div id="background"></div>
 
-
       <!-- ============================== -->
       <!-- 🌑 화면 페이드 효과 -->
       <!-- ============================== -->
       <div id="fade-screen"></div>
-
 
       <!-- ============================== -->
       <!-- 💬 대사 UI -->
@@ -248,7 +238,6 @@
 
       </div>
 
-
       <!-- ============================== -->
       <!-- ⚔️ 선택지 영역 -->
       <!-- ============================== -->
@@ -259,24 +248,30 @@
       <!-- ============================== -->
       <div id="mental-roll-overlay">
         <div id="mental-roll-box">
-          <div class="mental-roll-title">MENTAL DAMAGE</div>
-          <div id="mental-roll-number">0</div>
-          <div id="mental-roll-text">정신력 피해를 계산 중입니다.</div>
-          <div id="mental-roll-text">정신력 피해를 계산 중입니다.</div>
 
-        <button id="mental-roll-confirm">
-          확인
-        </button>
+          <div class="mental-roll-title">
+            MENTAL DAMAGE
+          </div>
+
+          <div id="mental-roll-number">
+            0
+          </div>
+
+          <div id="mental-roll-text">
+            정신력 피해를 계산 중입니다.
+          </div>
+
+          <button id="mental-roll-confirm">
+            확인
+          </button>
+
         </div>
       </div>
-
 
       <!-- ============================== -->
       <!-- 🔔 아이템 획득 토스트 -->
       <!-- ============================== -->
       <div id="toast"></div>
-
-
 
       <!-- ============================== -->
       <!-- 🧺 인벤토리 버튼 -->
@@ -284,7 +279,6 @@
       <button id="inventory-button">
         <img src="images/Basket.svg" alt="Basket">
       </button>
-
 
       <!-- ============================== -->
       <!-- 🧺 인벤토리 패널 -->
@@ -304,6 +298,42 @@
     </main>
 
     <!-- ============================== -->
+    <!-- 📡 오른쪽 사이드 패널 -->
+    <!-- ============================== -->
+    <aside id="right-panel">
+
+      <!-- ============================== -->
+      <!-- 🕒 현재 시간 / 감시 기록 시간 -->
+      <!-- ============================== -->
+      <div class="info-card time-card">
+
+        <div class="clock-label">
+          DAY 01
+        </div>
+
+        <div class="clock-display">
+          <div class="clock-time" id="clock-time">
+            14:03
+          </div>
+        </div>
+
+        <div class="clock-date" id="clock-date">
+          2066.05.08 MON
+        </div>
+
+        <div class="clock-status">
+          RECORDING ACTIVE
+        </div>
+
+        <button id="purge-achievement-button" class="purge-record-button">
+          기록 말소하기
+        </button>
+
+      </div>
+
+    </aside>
+
+    <!-- ============================== -->
     <!-- 📁 기록 보관소 패널 -->
     <!-- ============================== -->
     <div id="record-panel">
@@ -313,6 +343,7 @@
       <ul id="record-list"></ul>
 
     </div>
+
     <!-- ============================== -->
     <!-- 🏆 업적 패널 -->
     <!-- ============================== -->
@@ -332,17 +363,17 @@
       <h3>설정</h3>
 
       <div class="setting-item">
-        <label>배경 음악</label>
+        <label for="master-volume">배경 음악</label>
         <input type="range" id="master-volume" min="0" max="1" step="0.1" value="0.5">
       </div>
 
       <div class="setting-item">
-        <label>타자 소리</label>
+        <label for="typing-volume">타자 소리</label>
         <input type="range" id="typing-volume" min="0" max="1" step="0.1" value="0.35">
       </div>
 
       <div class="setting-item">
-        <label>클릭 소리</label>
+        <label for="click-volume">클릭 소리</label>
         <input type="range" id="click-volume" min="0" max="1" step="0.1" value="1">
       </div>
 
@@ -352,6 +383,7 @@
     <!-- 👥 인물 관계도 패널 -->
     <!-- ============================== -->
     <div id="relation-panel">
+
       <h3>인물 관계도</h3>
 
       <ul id="relation-list">
@@ -364,55 +396,15 @@
       <div id="relation-description">
         인물을 선택하세요.
       </div>
-    </div>
-
-
-
-    <!-- ============================== -->
-    <!-- 🕒 현재 시간 / 감시 기록 시간 -->
-    <!-- ============================== -->
-    <div class="info-card time-card">
-
-     <div class="clock-label">
-      DAY 01
-    </div>
-
-      <!-- ============================== -->
-      <!-- 🕒 시간 표시 박스 -->
-      <!-- ============================== -->
-      <div class="clock-display">
-
-        <div class="clock-time" id="clock-time">
-          14:03
-        </div>
-
-      </div>
-
-      <div class="clock-date" id="clock-date">
-        2066.05.08 MON
-      </div>
-
-      <div class="clock-status">
-        RECORDING ACTIVE
-      </div>
-
-      <button id="purge-achievement-button" class="purge-record-button">
-        기록 말소하기
-      </button>
 
     </div>
-
-    </aside>
 
   </div>
-
-
 
   <!-- ============================== -->
   <!-- 📜 씬 데이터 -->
   <!-- ============================== -->
   <script src="scenes.js"></script>
-
 
   <!-- ============================== -->
   <!-- ⚙️ 메인 게임 로직 -->

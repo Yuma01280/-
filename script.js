@@ -741,6 +741,10 @@ function rollMentalDamage(nextSceneKey, damageType = "default", afterRoll = null
         confirmButton.disabled = false;
 
         confirmButton.onclick = () => {
+          if (confirmButton.disabled) return;
+
+          confirmButton.disabled = true;
+
           playSound("click.mp3");
           closeMentalRoll();
         };
@@ -909,6 +913,7 @@ if (scene.background) {
   const speakerName = document.getElementById("speaker-name");
 
   let stepIndex = 0;
+  let isTransitioning = false;
 
 
   // ==============================
@@ -929,14 +934,23 @@ if (stepIndex >= scene.steps.length) {
         return;
       }
 
-      const button = document.createElement("button");
-      button.textContent = choice.text;
+const button = document.createElement("button");
+button.textContent = choice.text;
 
-      button.onclick = () => {
-        stopTypingSound();
-        playSound("click.mp3");
+button.onclick = () => {
+  if (isTransitioning) return;
+  isTransitioning = true;
 
-        applyEffect(choice.effect);
+  choices.querySelectorAll("button").forEach(btn => {
+    btn.disabled = true;
+  });
+
+  choices.innerHTML = "";
+
+  stopTypingSound();
+  playSound("click.mp3");
+
+  applyEffect(choice.effect);
 
         const recordText = choice.record || choice.text;
 
@@ -1104,6 +1118,10 @@ if (step.type === "documentPage") {
   closeButton.textContent = step.buttonText || "문서를 덮는다";
 
   closeButton.onclick = () => {
+    if (closeButton.disabled) return;
+
+    closeButton.disabled = true;
+
     playSound("click.mp3");
 
     documentOverlay.remove();
@@ -1116,7 +1134,6 @@ if (step.type === "documentPage") {
     stepIndex++;
     showStep();
   };
-
   documentBox.appendChild(documentTitle);
   documentBox.appendChild(documentBody);
   documentBox.appendChild(closeButton);
@@ -1156,6 +1173,11 @@ if (step.type === "textInput") {
   submitButton.textContent = step.buttonText || "입력한다";
 
   submitButton.onclick = () => {
+    if (submitButton.disabled) return;
+
+    submitButton.disabled = true;
+    inputBox.disabled = true;
+
     stopTypingSound();
     playSound("click.mp3");
 
@@ -1201,18 +1223,22 @@ if (step.type === "endingCredit") {
   creditButton.style.display = "none";
 
   creditButton.onclick = () => {
+    if (creditButton.disabled) return;
+
+    creditButton.disabled = true;
+
     stopTypingSound();
     playSound("click.mp3");
 
     creditOverlay.remove();
 
     if (step.next === "S1") {
-  resetGameState();
-}
+      resetGameState();
+    }
 
-if (step.next) {
-  renderScene(step.next);
-}
+    if (step.next) {
+      renderScene(step.next);
+    }
   };
 
   creditOverlay.appendChild(creditText);
@@ -1285,28 +1311,31 @@ typeText(dialogue, currentText, 28);
 
 
 
-    // ==============================
-    // 다음 버튼 출력
-    // ==============================
-    if (stepIndex < scene.steps.length - 1) {
-      const nextButton = document.createElement("button");
-      nextButton.textContent = "다음";
+// ==============================
+// 다음 버튼 출력
+// ==============================
+if (stepIndex < scene.steps.length - 1) {
+  const nextButton = document.createElement("button");
+  nextButton.textContent = "다음";
 
-      nextButton.onclick = () => {
+  nextButton.onclick = () => {
+    if (nextButton.disabled) return;
 
-        stopTypingSound();
+    nextButton.disabled = true;
+    choices.innerHTML = "";
 
-        // 🔊 다음 버튼 클릭 사운드
-        playSound("click.mp3");
+    stopTypingSound();
 
-        stepIndex++;
-        showStep();
-      };
+    // 🔊 다음 버튼 클릭 사운드
+    playSound("click.mp3");
 
-      choices.appendChild(nextButton);
-      return;
-    }
+    stepIndex++;
+    showStep();
+  };
 
+  choices.appendChild(nextButton);
+  return;
+}
 
 // ==============================
 // 선택지 출력
@@ -1328,39 +1357,48 @@ if (scene.choices && scene.choices.length > 0) {
         // 버튼 클릭 처리
         // ==============================
         button.onclick = () => {
+          if (isTransitioning) return;
 
           stopTypingSound();
 
           // 🔊 클릭 사운드
           playSound("click.mp3");
 
-        
+          // ==============================
+          // ❗ 선택지 실패 조건
+          // 실패 선택지는 화면을 넘기지 않고 토스트만 띄움
+          // ==============================
+          if (choice.failMessage) {
+            const hasItem = state.Inventory.some(
+              item => item.name === choice.requiredItem
+            );
 
-        // ==============================
-// ❗ 선택지 실패 조건
-// ==============================
-if (choice.failMessage) {
+            if (!hasItem) {
+              showToast(choice.failMessage);
+              playSound("media2.mp3");
 
-  const hasItem =
-    state.Inventory.some(
-      item => item.name === choice.requiredItem
-    );
+              const toast = document.getElementById("toast");
 
-  if (!hasItem) {
+              if (toast) {
+                toast.classList.add("error");
 
-    showToast(choice.failMessage);
-    playSound("media2.mp3");
-    const toast = document.getElementById("toast");
+                setTimeout(() => {
+                  toast.classList.remove("error");
+                }, 1500);
+              }
 
-    toast.classList.add("error");
+              return;
+            }
+          }
 
-    setTimeout(() => {
-      toast.classList.remove("error");
-    }, 1500);
+          // 여기까지 왔다는 건 실제로 장면 이동이 가능한 선택지라는 뜻
+          isTransitioning = true;
 
-    return;
-  }
-}
+          choices.querySelectorAll("button").forEach(btn => {
+            btn.disabled = true;
+          });
+
+          choices.innerHTML = "";
 
 // 🎯 선택지 효과 적용
 applyEffect(choice.effect);
@@ -1689,12 +1727,16 @@ if (purgeAchievementButton) {
 const startOverlay = document.getElementById("start-overlay");
 const titleScreen = document.getElementById("title-screen");
 const beforeMessageScreen = document.getElementById("before-message-screen");
+const beforeMessageNextButton = document.getElementById("before-message-next-button");
 const realStartButton = document.getElementById("real-start-button");
 
 if (startOverlay && titleScreen && beforeMessageScreen && realStartButton) {
   realStartButton.onclick = () => {
     playSound("click.mp3");
-    bgm.play();
+
+    bgm.play().catch(error => {
+      console.error("BGM 재생 실패:", error);
+    });
 
     titleScreen.style.opacity = "0";
 
@@ -1702,13 +1744,48 @@ if (startOverlay && titleScreen && beforeMessageScreen && realStartButton) {
       titleScreen.style.display = "none";
       beforeMessageScreen.classList.add("show");
 
-      setTimeout(() => {
+      let openingAutoTimer = null;
+      let openingButtonTimer = null;
+      let openingFinished = false;
+
+      if (beforeMessageNextButton) {
+        beforeMessageNextButton.style.display = "none";
+        beforeMessageNextButton.disabled = true;
+      }
+
+      function finishOpening() {
+        if (openingFinished) return;
+
+        openingFinished = true;
+
+        clearTimeout(openingButtonTimer);
+        clearTimeout(openingAutoTimer);
+
+        playSound("click.mp3");
+
         startOverlay.classList.add("hide");
 
         setTimeout(() => {
           startOverlay.remove();
           renderScene("S1");
         }, 1200);
+      }
+
+      // 안내문이 먼저 뜨고, 5초 동안은 버튼 없이 읽는 시간
+      openingButtonTimer = setTimeout(() => {
+        if (beforeMessageNextButton) {
+          beforeMessageNextButton.style.display = "block";
+          beforeMessageNextButton.disabled = false;
+
+          beforeMessageNextButton.onclick = () => {
+            finishOpening();
+          };
+        }
+
+        // 버튼이 뜬 뒤 15초 동안 안 누르면 자동으로 S1 이동
+        openingAutoTimer = setTimeout(() => {
+          finishOpening();
+        }, 15000);
 
       }, 5000);
 

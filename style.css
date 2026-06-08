@@ -14,22 +14,6 @@ body {
 }
 
 
-/* ============================= */
-/* 게임 화면 */
-/* ============================= */
-#game {
-  width: 96vw;
-  height: calc(90vw * 0.5625);
-  max-width: 1750px;
-  max-height: 720px;
-
-  position: relative;
-  overflow: hidden;
-
-  background: black;
-  border: 2px solid red;
-}
-
 
 /* ============================= */
 /* 배경 이미지 */
@@ -48,51 +32,6 @@ body {
   background-repeat: no-repeat;
 
   z-index: 0;
-}
-
-
-/* ============================= */
-/* 상단 정보 바 */
-/* ============================= */
-#top-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 44px;
-
-  background: rgba(20, 20, 20, 0.9);
-  border-bottom: 1px solid #555;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 0 28px;
-  box-sizing: border-box;
-
-  z-index: 50;
-}
-
-
-/* ============================= */
-/* 작품 제목 */
-/* ============================= */
-#game-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: white;
-}
-
-
-/* ============================= */
-/* 상태 값 */
-/* ============================= */
-#status-values {
-  font-size: 14px;
-  color: #ddd;
-  letter-spacing: 0.5px;
 }
 
 
@@ -164,31 +103,6 @@ body {
 
   /* 투명 배경에서 가독성을 높이기 위해 텍스트 쉐도우 추가 */
   text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
-}
-
-
-/* ============================= */
-/* 화자 이름 박스 */
-/* ============================= */
-#speaker-name {
-  position: absolute;
-
-  left: 5%;
-  top: 0;
-
-  min-width: 110px;
-  padding: 10px 24px;
-
-  background: rgba(0, 0, 0, 0.96);
-  border: 3px solid rgba(255, 255, 255, 0.9);
-
-  color: white;
-  font-size: 20px;
-  font-weight: 800;
-  text-align: center;
-
-  box-sizing: border-box;
-  z-index: 30;
 }
 
 
@@ -293,77 +207,6 @@ body {
   z-index: 30 !important;
 }
 
-
-/* ============================= */
-/* 추적 상태 표시 */
-/* ============================= */
-#route-status {
-  font-weight: 800;
-}
-
-/* 감시됨 상태 */
-#route-status.watched {
-  color: #ff4b4b;
-  animation: warningBlink 0.8s infinite;
-}
-
-/* 미기록 상태 */
-#route-status.hidden {
-  color: #7cffc4;
-}
-
-/* 아직 결정 안 됨 */
-#route-status.unknown {
-  color: #cccccc;
-}
-
-@keyframes warningBlink {
-  0% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.25;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-/* ============================= */
-/* 상태 숫자 변화 효과 */
-/* ============================= */
-.stat-change {
-  color: #ff4b4b !important;
-  animation: statNumberFlash 0.45s ease;
-}
-
-@keyframes statNumberFlash {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-
-  50% {
-    transform: scale(1.35);
-    opacity: 0.4;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-#trust-value,
-#doubt-value,
-#info-value,
-#mental-value {
-  display: inline-block;
-  color: white;
-  font-weight: 800;
-}
 
 
 /* ====================================================== */
@@ -643,6 +486,8 @@ body {
   max-width: 1700px;
   max-height: 950px;
 
+  position: relative;
+
   display: grid;
   grid-template-columns: 320px 1fr 240px;
   gap: 18px;
@@ -852,47 +697,6 @@ body {
     inset 0 0 16px rgba(0,0,0,0.8);
 }
 
-
-
-/* ====================================================== */
-/* 🕒 시계 */
-/* ====================================================== */
-
-.clock-time {
-  color: #d7b27a;
-
-  font-size: 42px;
-  font-weight: 800;
-}
-
-.clock-date {
-  margin-top: 8px;
-
-  color: #a78659;
-}
-
-/* ====================================================== */
-/* 🕒 시간 카드 디테일 */
-/* ====================================================== */
-
-.clock-label {
-  margin-bottom: 8px;
-
-  color: #8f6b3d;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 2px;
-}
-
-.clock-status {
-  margin-top: 14px;
-
-  color: rgba(255, 190, 110, 0.65);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-}
-
 /* ====================================================== */
 /* 🕒 시간 카드 - 오래된 디지털 표시창 스타일 */
 /* ====================================================== */
@@ -1037,28 +841,6 @@ body {
 
 
 /* ====================================================== */
-/* ⚠️ 위험 상태 텍스트 */
-/* ====================================================== */
-
-.danger-text {
-  color: #ff4d4d;
-  font-weight: 800;
-}
-
-
-
-/* ====================================================== */
-/* 📅 캘린더 */
-/* ====================================================== */
-
-.calendar-box {
-  margin-top: 12px;
-
-  color: #d8c2a1;
-  line-height: 2;
-}
-
-/* ====================================================== */
 /* 🎥 중앙 화면 확대 효과 */
 /* ====================================================== */
 
@@ -1070,303 +852,6 @@ body {
   transform: scale(1.03);
 }
 
-/* ====================================================== */
-/* ⚠️ 감시 상태 경고 애니메이션 */
-/* ====================================================== */
-
-.danger-text {
-  animation: dangerPulse 1.5s infinite;
-}
-
-@keyframes dangerPulse {
-
-  0% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.45;
-  }
-
-  100% {
-    opacity: 1;
-  }
-
-}
-
-/* ====================================================== */
-/* 📊 상단 상태 정보 바 디자인 */
-/* ====================================================== */
-
-#top-bar {
-  height: 82px;
-
-  display: grid;
-  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1.15fr 1px 1.35fr;
-  align-items: center;
-
-  padding: 0 28px;
-  box-sizing: border-box;
-
-  background:
-    linear-gradient(180deg, rgba(20, 13, 8, 0.96), rgba(6, 5, 4, 0.96));
-
-  border: 1px solid rgba(190, 140, 75, 0.42);
-  border-radius: 12px;
-
-  color: #d8b57c;
-
-  z-index: 80;
-}
-
-#route-status {
-  white-space: nowrap;
-}
-
-.top-stat {
-  min-width: 0;
-}
-
-.stat-main {
-  white-space: nowrap;
-  font-size: 20px;
-}
-
-.stat-sub {
-  white-space: nowrap;
-}
-
-/* ====================================================== */
-/* 🖼️ 상단 상태 아이콘 이미지 */
-/* ====================================================== */
-
-.stat-icon img {
-  width: 38px;
-  height: 38px;
-
-  object-fit: contain;
-
-  filter: drop-shadow(0 0 6px rgba(255,180,100,0.18));
-}
-
-/* ====================================================== */
-/* 📊 상단 상태 항목 */
-/* ====================================================== */
-
-.top-stat {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-}
-
-/* ====================================================== */
-/* 🖼️ 상단 상태 아이콘 영역 */
-/* ====================================================== */
-
-.stat-icon {
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  overflow: hidden;
-
-  font-size: 0;
-  line-height: 0;
-}
-
-/* ====================================================== */
-/* 📊 상단 상태 메인 텍스트 */
-/* ====================================================== */
-
-.stat-main {
-  font-size: 22px;
-  font-weight: 800;
-  color: #d8b57c;
-}
-
-/* ====================================================== */
-/* 📊 현재 상태 칸 위치 조정 */
-/* ====================================================== */
-
-.status-stat {
-  padding-left: 110px;
-}
-
-/* ====================================================== */
-/* 📊 상단 상태 영어 보조 텍스트 */
-/* ====================================================== */
-
-.stat-sub {
-  margin-top: 4px;
-
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  color: #a77a43;
-}
-
-/* ====================================================== */
-/* 📊 상단 상태 구분선 */
-/* ====================================================== */
-
-.top-divider {
-  position: relative;
-
-  width: 1px;
-  height: 52px;
-
-  background:
-    linear-gradient(
-      180deg,
-      transparent,
-      rgba(255, 190, 106, 0.55),
-      transparent
-    );
-
-  opacity: 0.9;
-}
-
-/* 가운데 짧은 장식선 추가 */
-
-.top-divider::before {
-  content: "";
-
-  position: absolute;
-  left: -6px;
-  top: 50%;
-
-  width: 12px;
-  height: 1px;
-
-  background: rgba(200, 150, 85, 0.45);
-
-  transform: translateY(-50%);
-}
-
-/* ====================================================== */
-/* 🖼️ 상단 상태 아이콘 이미지 */
-/* ====================================================== */
-
-.stat-icon img {
-  width: 42px;
-  height: 42px;
-
-  object-fit: contain;
-
-  filter: drop-shadow(0 0 6px rgba(255,180,100,0.18));
-}
-
-/* ====================================================== */
-/* 📊 상단 상태바 장식 프레임 강화 */
-/* ====================================================== */
-
-#top-bar {
-  position: absolute;
-
-  border: 1px solid rgba(194, 139, 70, 0.55);
-  border-radius: 10px;
-
-  background:
-    linear-gradient(180deg, rgba(22, 15, 10, 0.98), rgba(5, 4, 3, 0.98));
-
-  box-shadow:
-    inset 0 0 18px rgba(0, 0, 0, 0.9),
-    inset 0 0 0 2px rgba(80, 50, 25, 0.45),
-    0 0 10px rgba(0, 0, 0, 0.8);
-}
-
-/* ====================================================== */
-/* 📊 상단 상태바 안쪽 얇은 장식선 */
-/* ====================================================== */
-
-#top-bar::before {
-  content: "";
-  position: absolute;
-  inset: 7px;
-
-  border: 1px solid rgba(177, 120, 58, 0.38);
-  border-radius: 7px;
-
-  pointer-events: none;
-}
-
-/* ====================================================== */
-/* 📊 상단 상태바 모서리 장식 */
-/* ====================================================== */
-
-#top-bar::after {
-  content: "";
-  position: absolute;
-  inset: 10px;
-
-  background:
-    linear-gradient(#b88a4a, #b88a4a) left top / 22px 1px no-repeat,
-    linear-gradient(#b88a4a, #b88a4a) left top / 1px 22px no-repeat,
-
-    linear-gradient(#b88a4a, #b88a4a) right top / 22px 1px no-repeat,
-    linear-gradient(#b88a4a, #b88a4a) right top / 1px 22px no-repeat,
-
-    linear-gradient(#b88a4a, #b88a4a) left bottom / 22px 1px no-repeat,
-    linear-gradient(#b88a4a, #b88a4a) left bottom / 1px 22px no-repeat,
-
-    linear-gradient(#b88a4a, #b88a4a) right bottom / 22px 1px no-repeat,
-    linear-gradient(#b88a4a, #b88a4a) right bottom / 1px 22px no-repeat;
-
-  opacity: 0.65;
-  pointer-events: none;
-}
-
-/* ====================================================== */
-/* 📊 상단 상태 항목을 장식선 위로 올림 */
-/* ====================================================== */
-
-.top-stat,
-.top-divider {
-  position: relative;
-  z-index: 2;
-}
-
-/* ====================================================== */
-/* 📊 상단 상태 구분선 디테일 */
-/* ====================================================== */
-
-.top-divider {
-  width: 1px;
-  height: 46px;
-
-  background:
-    linear-gradient(
-      180deg,
-      transparent,
-      rgba(190, 140, 75, 0.45),
-      transparent
-    );
-}
-
-/* ====================================================== */
-/* 📊 상단 상태 아이콘 금빛 보정 */
-/* ====================================================== */
-
-.stat-icon img {
-  filter:
-    sepia(1)
-    saturate(1.4)
-    brightness(1.15)
-    drop-shadow(0 0 5px rgba(220, 160, 80, 0.28));
-}
-
-/* ====================================================== */
-/* 📊 상단 상태 텍스트 그림자 */
-/* ====================================================== */
-
-.stat-main,
-.stat-sub {
-  text-shadow: 0 0 6px rgba(215, 178, 122, 0.18);
-}
 
 /* ====================================================== */
 /* ✨ 고급 폰트 적용 */
@@ -1586,6 +1071,7 @@ body {
 
 #before-message-screen.show {
   opacity: 1;
+  pointer-events: auto;
 }
 
 .before-message-box {
@@ -2376,6 +1862,13 @@ body {
 /* ====================================================== */
 
 #top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 82px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2386,6 +1879,68 @@ body {
   overflow: hidden;
 
   padding: 0 22px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(22, 15, 10, 0.98),
+      rgba(5, 4, 3, 0.98)
+    );
+
+  border: 1px solid rgba(194, 139, 70, 0.55);
+  border-radius: 10px;
+
+  color: #d8b57c;
+
+  box-shadow:
+    inset 0 0 18px rgba(0, 0, 0, 0.9),
+    inset 0 0 0 2px rgba(80, 50, 25, 0.45),
+    0 0 10px rgba(0, 0, 0, 0.8);
+
+  z-index: 80;
+}
+
+/* ====================================================== */
+/* 📊 상단 상태바 안쪽 얇은 장식선 */
+/* ====================================================== */
+
+#top-bar::before {
+  content: "";
+
+  position: absolute;
+  inset: 7px;
+
+  border: 1px solid rgba(177, 120, 58, 0.38);
+  border-radius: 7px;
+
+  pointer-events: none;
+}
+
+/* ====================================================== */
+/* 📊 상단 상태바 모서리 장식 */
+/* ====================================================== */
+
+#top-bar::after {
+  content: "";
+
+  position: absolute;
+  inset: 10px;
+
+  background:
+    linear-gradient(#b88a4a, #b88a4a) left top / 22px 1px no-repeat,
+    linear-gradient(#b88a4a, #b88a4a) left top / 1px 22px no-repeat,
+
+    linear-gradient(#b88a4a, #b88a4a) right top / 22px 1px no-repeat,
+    linear-gradient(#b88a4a, #b88a4a) right top / 1px 22px no-repeat,
+
+    linear-gradient(#b88a4a, #b88a4a) left bottom / 22px 1px no-repeat,
+    linear-gradient(#b88a4a, #b88a4a) left bottom / 1px 22px no-repeat,
+
+    linear-gradient(#b88a4a, #b88a4a) right bottom / 22px 1px no-repeat,
+    linear-gradient(#b88a4a, #b88a4a) right bottom / 1px 22px no-repeat;
+
+  opacity: 0.65;
+  pointer-events: none;
 }
 
 /* ====================================================== */
@@ -2393,6 +1948,9 @@ body {
 /* ====================================================== */
 
 .top-stat {
+  position: relative;
+  z-index: 2;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2421,6 +1979,11 @@ body {
   height: 34px;
 
   margin-right: 0;
+
+  overflow: hidden;
+
+  font-size: 0;
+  line-height: 0;
 }
 
 .stat-icon img {
@@ -2428,6 +1991,12 @@ body {
   height: 30px;
 
   object-fit: contain;
+
+  filter:
+    sepia(1)
+    saturate(1.4)
+    brightness(1.15)
+    drop-shadow(0 0 5px rgba(220, 160, 80, 0.28));
 }
 
 /* ====================================================== */
@@ -2441,9 +2010,13 @@ body {
 
   white-space: nowrap;
 
+  color: #d8b57c;
+
   font-size: clamp(15px, 1.05vw, 18px);
   font-weight: 900;
   letter-spacing: -0.03em;
+
+  text-shadow: 0 0 6px rgba(215, 178, 122, 0.18);
 }
 
 /* 수치 숫자 */
@@ -2451,7 +2024,7 @@ body {
   display: inline-block;
   min-width: 18px;
 
-  color: #ff4b4b;
+  color: #d8b57c;
 
   text-align: left;
 }
@@ -2465,8 +2038,13 @@ body {
 
   white-space: nowrap;
 
+  color: #a77a43;
+
   font-size: clamp(7px, 0.6vw, 10px);
+  font-weight: 800;
   letter-spacing: 0.22em;
+
+  text-shadow: 0 0 6px rgba(215, 178, 122, 0.18);
 }
 
 /* ====================================================== */
@@ -2474,6 +2052,9 @@ body {
 /* ====================================================== */
 
 .top-divider {
+  position: relative;
+  z-index: 2;
+
   width: 1px;
   height: 34px;
 
@@ -2505,21 +2086,86 @@ body {
   letter-spacing: 0.18em;
 }
 
+/* ====================================================== */
+/* 📊 상태 표시 텍스트 */
+/* ====================================================== */
+
 #route-status {
   white-space: nowrap;
+  font-weight: 800;
+}
+
+/* 감시됨 상태 */
+#route-status.watched {
+  color: #ff4b4b;
+  animation: warningBlink 0.8s infinite;
+}
+
+/* 미기록 상태 */
+#route-status.hidden {
+  color: #7cffc4;
+}
+
+/* 아직 결정 안 됨 */
+#route-status.unknown {
+  color: #cccccc;
 }
 
 /* ====================================================== */
-/* 📊 상태 숫자 기본 색상 복귀 */
-/* stat-change가 끝난 뒤 숫자가 금빛으로 돌아오게 고정 */
+/* 📊 상태 숫자 변화 효과 */
 /* ====================================================== */
+
+.stat-change {
+  color: #ff4b4b !important;
+  animation: statNumberFlash 0.45s ease;
+}
 
 #trust-value,
 #doubt-value,
 #info-value,
 #mental-value {
+  display: inline-block;
+
   color: #d8b57c;
+  font-weight: 800;
 }
+
+/* ====================================================== */
+/* 📊 상태 애니메이션 */
+/* ====================================================== */
+
+@keyframes warningBlink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.25;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes statNumberFlash {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.35);
+    opacity: 0.4;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
 
 /* ==============================
    🗑️ 기록 말소 버튼
@@ -2563,35 +2209,43 @@ body {
 }
 
 /* ==============================
-   🚨 기록 말소 버튼 점멸 상태
-   업적 4개가 모두 해금되었을 때만 JS가 이 클래스를 붙임
+   🌘 시작 전 안내문 다음 버튼
 ============================== */
-.purge-record-button.needs-purge {
-  animation: purgeBlink 1.15s infinite;
-  border-color: rgba(255, 210, 120, 0.95);
-  color: #fff1c7;
-  background: rgba(92, 22, 18, 0.82);
+#before-message-next-button {
+  display: none;
+
+  margin: 28px auto 0;
+  padding: 12px 42px;
+
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(230, 194, 130, 0.65);
+  border-radius: 8px;
+
+  color: #f1d39a;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+
+  cursor: pointer;
+  pointer-events: auto;
+
+  transition: 0.2s ease;
 }
 
-@keyframes purgeBlink {
-  0% {
-    box-shadow:
-      inset 0 0 12px rgba(255, 220, 150, 0.12),
-      0 0 6px rgba(255, 190, 80, 0.18);
-    transform: scale(1);
-  }
+#before-message-next-button:hover {
+  color: #fff1c7;
+  border-color: rgba(255, 225, 160, 0.95);
+  background: rgba(60, 35, 15, 0.65);
+  box-shadow: 0 0 14px rgba(241, 211, 154, 0.22);
+  transform: translateY(-1px);
+}
 
-  50% {
-    box-shadow:
-      inset 0 0 18px rgba(255, 220, 150, 0.25),
-      0 0 18px rgba(255, 190, 80, 0.65);
-    transform: scale(1.025);
-  }
+#before-message-next-button:active {
+  transform: translateY(1px);
+}
 
-  100% {
-    box-shadow:
-      inset 0 0 12px rgba(255, 220, 150, 0.12),
-      0 0 6px rgba(255, 190, 80, 0.18);
-    transform: scale(1);
-  }
+#before-message-next-button:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
