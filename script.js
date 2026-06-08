@@ -31,6 +31,81 @@ let state = {
   Records: []
   
 };
+// ==============================
+// 🏆 업적 데이터
+// 엔딩을 보면 localStorage에 저장되어 다음 플레이에도 유지됨
+// ==============================
+const achievementData = {
+  ignorance: {
+    title: "무지 엔딩",
+    desc: "끝까지 아무것도 알지 못했다."
+  },
+
+  trust: {
+    title: "신뢰 엔딩",
+    desc: "누군가의 설명을 믿기로 했다."
+  },
+
+  truth: {
+    title: "진실 엔딩",
+    desc: "진실을 알았지만, 옳은 답을 고르지는 못했다."
+  },
+
+  destroy: {
+    title: "파괴 엔딩",
+    desc: "누구도 이해하지 않기로 했다."
+  }
+};
+
+// ==============================
+// 🏆 해금된 업적 목록 불러오기
+// ==============================
+let unlockedAchievements =
+  JSON.parse(localStorage.getItem("sogAchievements")) || {};
+
+
+// ==============================
+// 🔄 새 게임 상태 초기화 함수
+// 시간을 돌리거나 처음으로 돌아갈 때 게임 변수만 초기화
+// 업적 localStorage는 건드리지 않음
+// ==============================
+function resetGameState() {
+  state.Trust = 0;
+  state.Doubt = 0;
+  state.Info = 0;
+  state.Mental = 50;
+  state.Route = 0;
+  state.Path = null;
+
+  state.DestroyedGrandfatherCore = false;
+  state.EndingRoute = null;
+
+  state.Records = [];
+
+  state.Inventory = [
+    {
+      name: "어머니의 편지",
+      desc: "어머니가 할머니에게 보낸 봉인된 편지. 내용은 알 수 없다."
+    },
+    {
+      name: "치즈",
+      desc: "향이 강한 수제 치즈. 신선하다."
+    },
+    {
+      name: "와인",
+      desc: "붉은빛이 도는 수제 와인. 달콤한 향이 난다. 이상하게 알코올이 강한 것 같은 느낌이 든다."
+    }
+  ];
+
+  prevState.Trust = 0;
+  prevState.Doubt = 0;
+  prevState.Info = 0;
+  prevState.Mental = 50;
+
+  updateStatus();
+  updateInventory();
+  updateRecords();
+}
 
 // ==============================
 // 이전 상태값 저장 (숫자 변화 애니메이션용)
@@ -132,6 +207,63 @@ function updateRecords() {
   });
 }
 
+// ==============================
+// 🏆 업적 UI 업데이트
+// ==============================
+function updateAchievements() {
+  const achievementList = document.getElementById("achievement-list");
+
+  if (!achievementList) return;
+
+  achievementList.innerHTML = "";
+
+  Object.keys(achievementData).forEach(key => {
+    const achievement = achievementData[key];
+    const isUnlocked = unlockedAchievements[key] === true;
+
+    const li = document.createElement("li");
+
+    if (isUnlocked) {
+      li.innerHTML = `
+        <strong>${achievement.title}</strong><br>
+        <span>${achievement.desc}</span>
+      `;
+      li.classList.add("achievement-unlocked");
+    } else {
+      li.innerHTML = `
+        <strong>???</strong><br>
+        <span>아직 확인하지 못한 엔딩입니다.</span>
+      `;
+      li.classList.add("achievement-locked");
+    }
+
+    achievementList.appendChild(li);
+  });
+}
+
+// ==============================
+// 🏆 업적 해금 함수
+// EndingRoute 값으로 엔딩 업적을 저장함
+// ==============================
+function unlockAchievement(routeName) {
+  if (!routeName) return;
+  if (!achievementData[routeName]) return;
+
+  if (unlockedAchievements[routeName] === true) {
+    updateAchievements();
+    return;
+  }
+
+  unlockedAchievements[routeName] = true;
+
+  localStorage.setItem(
+    "sogAchievements",
+    JSON.stringify(unlockedAchievements)
+  );
+
+  updateAchievements();
+  showToast(`${achievementData[routeName].title} 업적 해금`);
+}
 
 // ==============================
 // 아이템 설명 출력 함수
@@ -146,6 +278,7 @@ function showItemDescription(item) {
 
 // ==============================
 // 상태 숫자 변화 애니메이션
+// 숫자가 변할 때만 빨갛게 번쩍이고, 끝나면 원래 색으로 복귀
 // ==============================
 function flashIfChanged(element, currentValue, previousValue) {
   if (currentValue === previousValue) return;
@@ -153,8 +286,11 @@ function flashIfChanged(element, currentValue, previousValue) {
   element.classList.remove("stat-change");
   void element.offsetWidth;
   element.classList.add("stat-change");
-}
 
+  setTimeout(() => {
+    element.classList.remove("stat-change");
+  }, 500);
+}
 
 // ==============================
 // 🔊 사운드 재생 함수
@@ -484,7 +620,6 @@ function showToast(message) {
   }, 1500);
 }
 
-
 // ==============================
 // 선택지 효과 적용 함수 (변수 증가/감소 + 문자열 저장)
 // ==============================
@@ -510,12 +645,21 @@ function applyEffect(effect) {
       if (state[key] === undefined) {
         state[key] = 0;
       }
+
       state[key] += effect[key];
     }
 
     // ✅ 문자열 / boolean
     else {
       state[key] = effect[key];
+
+      // ==============================
+      // 🏆 엔딩 업적 해금
+      // EndingRoute 값이 저장될 때 자동으로 업적에 기록
+      // ==============================
+      if (key === "EndingRoute") {
+        unlockAchievement(effect[key]);
+      }
     }
   }
 
@@ -596,6 +740,10 @@ if (stepIndex >= scene.steps.length) {
         if (choice.roll) {
           handleRollCheck(choice.roll);
           return;
+        }
+
+        if (choice.next === "S1") {
+          resetGameState();
         }
 
         if (choice.fade) {
@@ -705,6 +853,173 @@ if (step.type === "mentalDamage") {
   return;
 }
 
+// ==============================
+// 📄 문서 페이지 스텝 처리
+// 지하실 서류 / 연구 기록처럼 종이 페이지 창을 띄우는 전용 처리
+// ==============================
+if (step.type === "documentPage") {
+  stopTypingSound();
+
+  speakerName.textContent = "";
+  speakerName.classList.remove("show");
+  dialogue.classList.remove("warning-text");
+  dialogue.textContent = "";
+
+  choices.innerHTML = "";
+
+  const documentOverlay = document.createElement("div");
+  documentOverlay.className = "document-overlay";
+
+  const documentBox = document.createElement("div");
+  documentBox.className = "document-box";
+
+  const documentTitle = document.createElement("h2");
+  documentTitle.className = "document-title";
+  documentTitle.textContent = step.title || "문서";
+
+  const documentBody = document.createElement("div");
+  documentBody.className = "document-body";
+  documentBody.innerHTML = step.body || "";
+
+  const closeButton = document.createElement("button");
+  closeButton.className = "document-close";
+  closeButton.textContent = step.buttonText || "문서를 덮는다";
+
+  closeButton.onclick = () => {
+    playSound("click.mp3");
+
+    documentOverlay.remove();
+
+    if (step.next) {
+      renderScene(step.next);
+      return;
+    }
+
+    stepIndex++;
+    showStep();
+  };
+
+  documentBox.appendChild(documentTitle);
+  documentBox.appendChild(documentBody);
+  documentBox.appendChild(closeButton);
+  documentOverlay.appendChild(documentBox);
+
+  const mainScreen = document.getElementById("main-screen");
+  const game = document.getElementById("game");
+
+  if (mainScreen) {
+    mainScreen.appendChild(documentOverlay);
+  } else {
+    game.appendChild(documentOverlay);
+  }
+
+  return;
+}
+
+// ==============================
+// ⌨️ 텍스트 입력 스텝 처리
+// ==============================
+if (step.type === "textInput") {
+  speakerName.textContent = "";
+  speakerName.classList.remove("show");
+  dialogue.classList.remove("warning-text");
+
+  typeText(dialogue, step.text || "입력해 주세요.", 28);
+
+  choices.innerHTML = "";
+
+  const inputBox = document.createElement("textarea");
+  inputBox.className = "standard-input";
+  inputBox.placeholder = step.placeholder || "";
+  inputBox.rows = 4;
+
+  const submitButton = document.createElement("button");
+  submitButton.className = "standard-submit";
+  submitButton.textContent = step.buttonText || "입력한다";
+
+  submitButton.onclick = () => {
+    stopTypingSound();
+    playSound("click.mp3");
+
+    const value = inputBox.value.trim();
+
+    state[step.saveAs || "PlayerInput"] = value;
+
+    state.Records.push(`선의 기준: ${value || "말하지 않았다."}`);
+    updateRecords();
+
+    renderScene(step.next);
+  };
+
+  choices.appendChild(inputBox);
+  choices.appendChild(submitButton);
+
+  return;
+}
+
+// ==============================
+// 🖤 엔딩 크레딧 스텝 처리
+// 검은 배경 중앙에 엔딩 나레이션을 타자처럼 출력하고, 시간을 돌리기 버튼을 보여줌
+// ==============================
+if (step.type === "endingCredit") {
+  stopTypingSound();
+
+  speakerName.textContent = "";
+  speakerName.classList.remove("show");
+  dialogue.classList.remove("warning-text");
+  dialogue.textContent = "";
+
+  choices.innerHTML = "";
+
+  const creditOverlay = document.createElement("div");
+  creditOverlay.className = "ending-credit-overlay";
+
+  const creditText = document.createElement("div");
+  creditText.className = "ending-credit-text";
+
+  const creditButton = document.createElement("button");
+  creditButton.className = "ending-credit-button";
+  creditButton.textContent = step.buttonText || "시간을 돌리기";
+  creditButton.style.display = "none";
+
+  creditButton.onclick = () => {
+    stopTypingSound();
+    playSound("click.mp3");
+
+    creditOverlay.remove();
+
+    if (step.next === "S1") {
+  resetGameState();
+}
+
+if (step.next) {
+  renderScene(step.next);
+}
+  };
+
+  creditOverlay.appendChild(creditText);
+  creditOverlay.appendChild(creditButton);
+
+  const mainScreen = document.getElementById("main-screen");
+  const game = document.getElementById("game");
+
+  if (mainScreen) {
+    mainScreen.appendChild(creditOverlay);
+  } else {
+    game.appendChild(creditOverlay);
+  }
+
+  typeText(creditText, step.text || "", step.speed || 45);
+
+  const textLength = (step.text || "").length;
+  const waitTime = textLength * (step.speed || 45) + 500;
+
+  setTimeout(() => {
+    creditButton.style.display = "block";
+  }, waitTime);
+
+  return;
+}
 
       
 // ==============================
@@ -861,6 +1176,11 @@ applyEffect(choice.effect);
           return;
         }
 
+        // 🔄 처음으로 돌아갈 때 상태 초기화
+        if (choice.next === "S1") {
+          resetGameState();
+        }
+
         // 🎬 페이드 연출 여부
         if (choice.fade) {
 
@@ -959,6 +1279,7 @@ window.onload = () => {
   updateStatus();
   updateInventory();
   updateRecords();
+  updateAchievements();
 
 
   
@@ -1061,6 +1382,20 @@ if (archiveButton && recordPanel) {
   archiveButton.onclick = () => {
     playSound("click.mp3");
     recordPanel.classList.toggle("show");
+  };
+}
+
+// ==============================
+// 🏆 업적 버튼
+// ==============================
+const achievementButton = document.getElementById("achievement-button");
+const achievementPanel = document.getElementById("achievement-panel");
+
+if (achievementButton && achievementPanel) {
+  achievementButton.onclick = () => {
+    playSound("click.mp3");
+    updateAchievements();
+    achievementPanel.classList.toggle("show");
   };
 }
 

@@ -1962,3 +1962,561 @@ body {
 .warning-text {
   color: red !important;
 }
+
+
+/* ====================================================== */
+/* ⌨️ 선의 기준 입력창 */
+/* S10_SECRET에서 플레이어가 자신의 기준을 직접 입력하는 textarea */
+/* ====================================================== */
+
+.standard-input {
+  width: 100%;
+  min-height: 90px;
+  box-sizing: border-box;
+
+  padding: 14px 16px;
+  margin-bottom: 12px;
+
+  color: #f4e4b8;
+  background: rgba(0, 0, 0, 0.72);
+
+  border: 1px solid rgba(212, 171, 92, 0.65);
+  border-radius: 12px;
+
+  font-family: "Noto Serif KR", serif;
+  font-size: 15px;
+  line-height: 1.6;
+
+  resize: none;
+  outline: none;
+
+  box-shadow:
+    inset 0 0 12px rgba(0, 0, 0, 0.85),
+    0 0 10px rgba(0, 0, 0, 0.35);
+}
+
+/* ====================================================== */
+/* ⌨️ 선의 기준 입력창 Placeholder */
+/* 입력창 안에 흐리게 보이는 안내 문구 */
+/* ====================================================== */
+
+.standard-input::placeholder {
+  color: rgba(244, 228, 184, 0.45);
+}
+
+/* ====================================================== */
+/* ⌨️ 선의 기준 입력창 Focus */
+/* 플레이어가 입력창을 클릭했을 때 금빛 테두리 강조 */
+/* ====================================================== */
+
+.standard-input:focus {
+  border-color: rgba(255, 218, 135, 0.95);
+
+  box-shadow:
+    inset 0 0 12px rgba(0, 0, 0, 0.85),
+    0 0 14px rgba(255, 206, 104, 0.22);
+}
+
+/* ====================================================== */
+/* ✅ 선의 기준 제출 버튼 */
+/* 입력한 기준을 확정하고 다음 씬으로 넘기는 버튼 */
+/* ====================================================== */
+
+.standard-submit {
+  width: 100%;
+
+  padding: 16px 22px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(22,15,10,0.92),
+      rgba(8,6,5,0.96)
+    );
+
+  border: 1px solid rgba(180,140,80,0.35);
+  border-radius: 10px;
+
+  color: #f2e6d0;
+
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 0 10px rgba(0,0,0,0.8);
+
+  transition: all 0.2s ease;
+}
+
+/* ====================================================== */
+/* ✅ 선의 기준 제출 버튼 Hover */
+/* 버튼 위에 마우스를 올렸을 때 강조 효과 */
+/* ====================================================== */
+
+.standard-submit:hover {
+  transform: translateX(6px);
+
+  border-color: rgba(255,190,110,0.85);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(40,24,16,0.96),
+      rgba(12,8,6,0.96)
+    );
+
+  box-shadow:
+    0 0 14px rgba(255,180,90,0.15);
+}
+
+/* ====================================================== */
+/* 📄 지하실 서류 문서창 */
+/* S9_BASEMENT_CORE에서 연구 서류를 종이 페이지처럼 보여주는 오버레이 */
+/* ====================================================== */
+
+.document-overlay {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(0, 0, 0, 0.58);
+
+  z-index: 8800;
+}
+
+/* ====================================================== */
+/* 📄 지하실 서류 종이 본문 */
+/* 낡은 연구 보고서처럼 보이는 메인 종이 박스 */
+/* ====================================================== */
+
+.document-box {
+  width: min(760px, 82%);
+  max-height: 78%;
+
+  padding: 38px 46px;
+
+  overflow-y: auto;
+
+  background:
+    linear-gradient(
+      180deg,
+      #e8d3a3 0%,
+      #c9a96c 100%
+    );
+
+  border: 2px solid rgba(86, 48, 18, 0.85);
+  border-radius: 8px;
+
+  color: #2a1608;
+
+  font-family: "Noto Serif KR", serif;
+
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.85),
+    inset 0 0 30px rgba(72, 40, 13, 0.28);
+}
+
+/* ====================================================== */
+/* 📄 지하실 서류 제목 */
+/* 보고서 제목 / 기밀 문서 제목 */
+/* ====================================================== */
+
+.document-title {
+  margin: 0 0 24px;
+
+  color: #3b1d0b;
+
+  font-size: 26px;
+  font-weight: 900;
+  text-align: center;
+
+  border-bottom: 2px solid rgba(60, 30, 10, 0.45);
+  padding-bottom: 16px;
+}
+
+/* ====================================================== */
+/* 📄 지하실 서류 내용 */
+/* 연구 목적, 대상, 할머니의 행동 이유를 설명하는 본문 */
+/* ====================================================== */
+
+.document-body {
+  font-size: 17px;
+  line-height: 1.9;
+  font-weight: 700;
+
+  white-space: normal;
+}
+
+.document-body p {
+  margin: 0 0 18px;
+}
+
+.document-body strong {
+  color: #5a1b0b;
+}
+
+/* ====================================================== */
+/* 📄 지하실 서류 닫기 버튼 */
+/* 문서를 덮고 다음 씬으로 넘어가는 버튼 */
+/* ====================================================== */
+
+.document-close {
+  display: block;
+
+  width: 100%;
+  margin-top: 28px;
+  padding: 15px 20px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #3a2415,
+      #1b100a
+    );
+
+  color: #f5e6c8;
+
+  border: 1px solid rgba(80, 38, 12, 0.9);
+  border-radius: 8px;
+
+  font-family: "Noto Serif KR", serif;
+  font-size: 17px;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.document-close:hover {
+  background:
+    linear-gradient(
+      180deg,
+      #5a3218,
+      #241109
+    );
+}
+
+/* ====================================================== */
+/* 🖤 엔딩 크레딧 화면 */
+/* 엔딩 후 검은 배경 중앙에 나레이션을 출력하는 오버레이 */
+/* ====================================================== */
+
+.ending-credit-overlay {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  padding: 60px;
+  box-sizing: border-box;
+
+  background: black;
+
+  z-index: 9000;
+}
+
+/* ====================================================== */
+/* 🖤 엔딩 크레딧 텍스트 */
+/* 키보드로 입력되듯 천천히 출력되는 중앙 문장 */
+/* ====================================================== */
+
+.ending-credit-text {
+  width: min(780px, 86%);
+
+  color: #e8d7b0;
+
+  font-family: "Noto Serif KR", serif;
+  font-size: clamp(20px, 1.6vw, 30px);
+  font-weight: 700;
+  line-height: 2;
+
+  text-align: center;
+  white-space: pre-line;
+
+  text-shadow:
+    0 0 10px rgba(215, 178, 122, 0.25),
+    0 0 24px black;
+}
+
+/* ====================================================== */
+/* 🕰️ 시간을 돌리기 버튼 */
+/* 엔딩 크레딧을 본 뒤 처음 씬으로 돌아가는 버튼 */
+/* ====================================================== */
+
+.ending-credit-button {
+  margin-top: 46px;
+  padding: 15px 54px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(22,15,10,0.96),
+      rgba(8,6,5,0.98)
+    );
+
+  border: 1px solid rgba(220,170,90,0.78);
+  border-radius: 10px;
+
+  color: #f0d39b;
+
+  font-family: "Noto Serif KR", serif;
+  font-size: 18px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 0 12px rgba(0,0,0,0.85),
+    0 0 18px rgba(255,180,90,0.16);
+
+  transition: all 0.25s ease;
+}
+
+.ending-credit-button:hover {
+  transform: translateY(-3px);
+
+  border-color: rgba(255, 210, 130, 0.95);
+
+  box-shadow:
+    inset 0 0 12px rgba(0,0,0,0.85),
+    0 0 24px rgba(255,180,90,0.26);
+}
+
+/* ====================================================== */
+/* 🏆 업적 패널 */
+/* 본 엔딩을 저장하고 보여주는 패널 */
+/* ====================================================== */
+
+#achievement-panel {
+  position: absolute;
+  left: 290px;
+  top: 130px;
+
+  width: 310px;
+  max-height: 520px;
+
+  padding: 22px;
+
+  background: rgba(18, 12, 9, 0.94);
+  border: 1px solid rgba(220, 170, 90, 0.45);
+  border-radius: 14px;
+
+  color: #ead7b7;
+
+  z-index: 8500;
+
+  display: none;
+
+  box-shadow:
+    0 0 24px rgba(0, 0, 0, 0.55),
+    inset 0 0 18px rgba(255, 190, 110, 0.06);
+}
+
+#achievement-panel.show {
+  display: block;
+}
+
+#achievement-panel h3 {
+  margin: 0 0 16px;
+
+  font-family: "Noto Serif KR", serif;
+  font-size: 22px;
+  font-weight: 900;
+
+  color: #f1d49a;
+}
+
+#achievement-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#achievement-list li {
+  padding: 14px 12px;
+  margin-bottom: 10px;
+
+  border-radius: 10px;
+
+  font-family: "Noto Serif KR", serif;
+  line-height: 1.6;
+}
+
+#achievement-list li strong {
+  font-size: 16px;
+}
+
+#achievement-list li span {
+  font-size: 13px;
+}
+
+.achievement-unlocked {
+  border: 1px solid rgba(240, 195, 110, 0.55);
+  background: rgba(120, 78, 28, 0.28);
+  color: #f5dfb1;
+}
+
+.achievement-locked {
+  border: 1px solid rgba(120, 120, 120, 0.25);
+  background: rgba(30, 30, 30, 0.42);
+  color: rgba(220, 210, 190, 0.45);
+}
+
+/* ====================================================== */
+/* 📊 상단 상태 정보 바 리턴 / 정렬 보정 */
+/* 신뢰, 의심, 정보, 정신력, 상태 글자가 눌리지 않게 정리 */
+/* ====================================================== */
+
+#top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 0;
+
+  box-sizing: border-box;
+  overflow: hidden;
+
+  padding: 0 22px;
+}
+
+/* ====================================================== */
+/* 📊 상단 상태 개별 칸 */
+/* ====================================================== */
+
+.top-stat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  height: 100%;
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  flex: 1 1 0;
+}
+
+/* ====================================================== */
+/* 📊 상태 아이콘 */
+/* ====================================================== */
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  min-width: 34px;
+  height: 34px;
+
+  margin-right: 0;
+}
+
+.stat-icon img {
+  width: 30px;
+  height: 30px;
+
+  object-fit: contain;
+}
+
+/* ====================================================== */
+/* 📊 메인 수치 텍스트 */
+/* ====================================================== */
+
+.stat-main {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  white-space: nowrap;
+
+  font-size: clamp(15px, 1.05vw, 18px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+/* 수치 숫자 */
+.stat-main span {
+  display: inline-block;
+  min-width: 18px;
+
+  color: #ff4b4b;
+
+  text-align: left;
+}
+
+/* ====================================================== */
+/* 📊 영어 보조 텍스트 */
+/* ====================================================== */
+
+.stat-sub {
+  margin-top: 2px;
+
+  white-space: nowrap;
+
+  font-size: clamp(7px, 0.6vw, 10px);
+  letter-spacing: 0.22em;
+}
+
+/* ====================================================== */
+/* 📊 구분선 */
+/* ====================================================== */
+
+.top-divider {
+  width: 1px;
+  height: 34px;
+
+  flex: 0 0 1px;
+
+  background: rgba(220, 170, 90, 0.28);
+}
+
+/* ====================================================== */
+/* 📊 현재 상태 칸 */
+/* 상태: 불명 / 감시됨 / 미기록 표시 영역 */
+/* ====================================================== */
+
+.status-stat {
+  flex: 1.25 1 0;
+  min-width: 0;
+
+  justify-content: flex-start;
+
+  padding-left: 10px;
+}
+
+.status-stat .stat-main {
+  font-size: clamp(14px, 1vw, 17px);
+}
+
+.status-stat .stat-sub {
+  font-size: clamp(7px, 0.55vw, 9px);
+  letter-spacing: 0.18em;
+}
+
+#route-status {
+  white-space: nowrap;
+}
+
+/* ====================================================== */
+/* 📊 상태 숫자 기본 색상 복귀 */
+/* stat-change가 끝난 뒤 숫자가 금빛으로 돌아오게 고정 */
+/* ====================================================== */
+
+#trust-value,
+#doubt-value,
+#info-value,
+#mental-value {
+  color: #d8b57c;
+}

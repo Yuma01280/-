@@ -243,34 +243,56 @@ S4: {
   background: "images/Scene4_BG.png",
 
   steps: [
+    // ==============================
+    // 🌲 숲 진입 - 게이트를 지나온 경우
+    // ==============================
     {
       type: "narration",
-      text: function(state) {
-        if (state.Route === 1) {
-          return `게이트를 지나온 뒤, 낡은 기계의 소리가 아직도 귓가에 남아있는 듯합니다. 숲 안 쪽은 여전히 조용하네요. 
-          하지만 어딘가에서 누군가가 지켜보고 있는 기분이 듭니다.`;
+      condition: function(state) {
+        return state.Route === 1;
+      },
+      text: `게이트를 지나온 뒤, 낡은 기계의 소리가 아직도 귓가에 남아있는 듯합니다.
 
-        } else {
-          return `기록을 남기지 않은 채 숲 속으로 들어왔습니다.
-주변은 조용하지만, 몰래 들어왔다는 사실에, 범죄를 저지른 느낌이 돌아 죄책감이 들기도 합니다. 누군가의 시선도 느껴지는거 같네요. `;
-        }
-      }
-    },
-    {
-      type: "narration",
-      text: `숲은 점점 더 깊어지고 있습니다. 나무 사이로 비추는 달빛과 희미한 길이 이어져 있지만, 오늘은 숲이 빨간망토의 기억만큼 아름답지 못한거같습니다.`
+숲 안쪽은 여전히 조용하네요.
+
+하지만 어딘가에서 누군가가 지켜보고 있는 기분이 듭니다.`
     },
 
+    // ==============================
+    // 🌲 숲 진입 - 기록을 남기지 않은 경우
+    // ==============================
     {
       type: "narration",
-      text: `산들거리는 바람 대신 스산한 분위기가 맴돌며, 작고 귀여운 동물들 보다는 곰과 늑대가 튀어나올듯 분위기가 좋지 못합니다.
-      보통 이런 날씨에 살인 사건이 많이 일어난다 하죠? `
+      condition: function(state) {
+        return state.Route !== 1;
+      },
+      text: `기록을 남기지 않은 채 숲 속으로 들어왔습니다.
+
+주변은 조용하지만, 몰래 들어왔다는 사실 때문인지 범죄를 저지른 것 같은 죄책감이 듭니다.
+
+그리고 어딘가에서 누군가의 시선도 느껴지는 것 같네요.`
+    },
+
+    {
+      type: "narration",
+      text: `숲은 점점 더 깊어지고 있습니다.
+
+나무 사이로 비추는 달빛과 희미한 길이 이어져 있지만, 오늘의 숲은 빨간 망토가 기억하던 만큼 아름답지 못한 것 같습니다.`
+    },
+
+    {
+      type: "narration",
+      text: `산들거리는 바람 대신 스산한 분위기가 맴돕니다.
+
+작고 귀여운 동물들보다는, 곰이나 늑대가 튀어나올 것 같은 분위기입니다.
+
+보통 이런 날씨에 살인 사건이 많이 일어난다고 하죠?`
     },
 
     {
       type: "dialogue",
       speaker: "빨간 망토",
-      text: `오늘따라 숲이 어두워. 주변에 뭐가 있는지 잘 모르겠는걸...`,
+      text: `오늘따라 숲이 어두워. 주변에 뭐가 있는지 잘 모르겠는걸...`
     }
   ],
 
@@ -281,111 +303,177 @@ S4: {
         Info: 1,
         MoveStyle: "road"
       },
+      record: "빨간 망토는 조심스럽게 길을 따라 이동했다.",
       next: "S5"
     },
+
     {
       text: "주변을 살피며 이동한다",
       effect: {
         Doubt: 1,
         MoveStyle: "search"
       },
+      record: "빨간 망토는 주변을 살피며 숲속을 이동했다.",
       next: "S5"
     }
   ]
 },
 
+
 S5: {
   background: "images/Scene5_BG.png",
 
   steps: [
-    // 1️⃣ 첫 번째 나레이션
+    // ==============================
+    // 🪧 길을 따라온 경우 - 이정표 발견
+    // MoveStyle이 비어 있으면 road로 기본 처리
+    // ==============================
     {
       type: "narration",
-      text: function(state) {
-        if (state.MoveStyle === "road") {
-          return `길을 따라 조심스럽게 이동하던 빨간 망토는, 얼마 지나지 않아 낡은 이정표 하나를 발견합니다.`;
-        } else {
-          return `주변을 살피며 이동하던 빨간 망토는, 풀숲 사이에서 이상한 냄새를 맡습니다. 온몸이 섬뜩해지는 향기. 이 향기의 근원이 어디일까요?`;
-        }
-      }
+      condition: function(state) {
+        return state.MoveStyle !== "search";
+      },
+      text: `길을 따라 조심스럽게 이동하던 빨간 망토는, 얼마 지나지 않아 낡은 이정표 하나를 발견합니다.`
     },
 
-    // 2️⃣ 두 번째 나레이션
     {
       type: "narration",
-      text: function(state) {
-        if (state.MoveStyle === "road") {
-          return `이정표에는 희미한 글씨가 적혀 있습니다.`;
-        } else {
-          return `향기는 분명 가려진 숲풀에서 납니다. 조심스럽게 풀을 헤치자—`;
-        }
-      }
+      condition: function(state) {
+        return state.MoveStyle !== "search";
+      },
+      text: `이정표에는 희미한 글씨가 적혀 있습니다.`
     },
 
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.MoveStyle !== "search";
+      },
+      text: `'빈민가 마을 →'`
+    },
+
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.MoveStyle !== "search";
+      },
+      text: `무언가 중요한 걸 놓친 것 같지만, 그냥 기분 탓으로 여겨 봅시다.
+
+우리는 빨리 할머니에게 가야만 합니다.`
+    },
+
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.MoveStyle !== "search";
+      },
+      text: `빨간 망토는 이정표가 가리키는 방향을 따라, 빈민가 마을 쪽으로 걸음을 옮깁니다.`
+    },
+
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.MoveStyle !== "search";
+      },
+      text: `눈앞에는 암울한 마을이 보입니다.
+
+마을은 낡고, 사람들은 우울함과 공허함, 끝없는 갈망으로 가득 차 있습니다.
+
+이 근처에 그나마 전기가 돌고 있는 이유는 할머니 덕분이죠.`
+    },
+
+
+    // ==============================
+    // 🔍 주변을 살피며 온 경우 - 이상한 냄새
+    // ==============================
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.MoveStyle === "search";
+      },
+      text: `주변을 살피며 이동하던 빨간 망토는, 풀숲 사이에서 이상한 냄새를 맡습니다.
+
+온몸이 섬뜩해지는 향기.
+
+이 향기의 근원이 어디일까요?`
+    },
+
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.MoveStyle === "search";
+      },
+      text: `향기는 분명 가려진 숲풀에서 납니다.
+
+조심스럽게 풀을 헤치자—`
+    },
+
+    // ==============================
+    // 💥 우체부 사망 장면 연출
+    // search 루트에서만 배경 변경 + 흔들림 + 깜빡임
+    // ==============================
     {
       type: "effect",
+      condition: function(state) {
+        return state.MoveStyle === "search";
+      },
       sound: "thud.mp3",
       background: "images/Mailman_Die.png",
       shake: true,
-      flash: true,
+      flash: true
+    },
+
+    {
+      type: "narration",
       condition: function(state) {
         return state.MoveStyle === "search";
-      }
-    },
-
-    // 3️⃣ 세 번째 나레이션
-    {
-      type: "narration",
-      text: function(state) {
-        if (state.MoveStyle === "road") {
-          return `'빈민가 마을 →'`;
-        } else {
-          return `그곳에는 피에 젖은 우편 가방과 함께, 사람의 형태를 알아볼 수 없을 정도로 짓뭉그러져 있는 우체부가 있었습니다.`;
-        }
-      }
-    },
-
-    // 🔥 추가 나레이션 2
-    {
-      type: "narration",
-      text: function(state) {
-        if (state.MoveStyle === "road") {
-          return `무언가 중요한 걸 놓친 것 같지만, 그냥 기분 탓으로 여겨 봅시다. 우리는 빨리 할머니에게 가야만 합니다...`;
-        } else {
-          return `성난 곰에게 공격을 당한 건지, 내장은 전부 짓이겨 있었고, 얼굴 가죽은 벗겨져 안구가 터진 채 흘러나오는 모습이 잔인할 정도로 생생합니다.`;
-        }
-      }
+      },
+      text: `그곳에는 피에 젖은 우편 가방과 함께, 사람의 형태를 알아볼 수 없을 정도로 짓뭉그러져 있는 우체부가 있었습니다.`
     },
 
     {
       type: "narration",
-      text: function(state) {
-        if (state.MoveStyle === "road") {
-          return `빨간 망토는 이정표가 가리키는 방향을 따라, 빈민가 마을 쪽으로 걸음을 옮깁니다.`;
-        } else {
-          return `우체부의 몸은 이미 차갑게 식어 있습니다.
+      condition: function(state) {
+        return state.MoveStyle === "search";
+      },
+      text: `성난 곰에게 공격을 당한 걸까요?
+
+우체부의 몸은 잔인할 정도로 망가져 있었고, 숲의 습한 공기 속에서도 피 냄새가 선명하게 남아 있었습니다.`
+    },
+
+    {
+      type: "narration",
+      condition: function(state) {
+        return state.MoveStyle === "search";
+      },
+      text: `우체부의 몸은 이미 차갑게 식어 있습니다.
 
 주변에는 싸운 흔적도, 도망친 흔적도 거의 보이지 않습니다.
 
-마치 순식간에 목숨을 잃은 것 같군요. 이런 깊은 숲에 배달을 오는데 총 한 자루 가지고 오지 않았다니. 미련합니다.`;
-        }
-      }
+마치 순식간에 목숨을 잃은 것 같군요.
+
+이런 깊은 숲에 배달을 오면서 총 한 자루 가지고 오지 않았다니. 미련합니다.`
     },
 
-    // 🔥 추가 나레이션 3
     {
       type: "narration",
-      text: function(state) {
-        if (state.MoveStyle === "road") {
-          return `눈앞에는 암울한 마을이 보입니다. 마을은 낡고, 사람들은 우울함과 공허함, 끝없는 갈망으로 가득 차 마을에 활기가 말랐습니다. 이 근처에 그나마 전기가 돌고 있는 이유는 할머니 덕분이죠.`;
-        } else {
-          return `우체부의 가방은 멀쩡합니다. 곰은 배를 채우고 우체부를 버리고 간 걸까요? 가방 안에는 할머니께 보낼 편지가 들어있습니다. 편지를 가져갈 건가요?`;
-        }
-      }
+      condition: function(state) {
+        return state.MoveStyle === "search";
+      },
+      text: `우체부의 가방은 멀쩡합니다.
+
+곰은 배를 채우고 우체부를 버리고 간 걸까요?
+
+가방 안에는 할머니께 보낼 편지가 들어있습니다.
+
+편지를 가져갈 건가요?`
     }
   ],
 
   choices: [
+    // ==============================
+    // ✉️ search 루트 - 편지를 가져간다
+    // ==============================
     {
       text: "편지를 가져간다",
       condition: function(state) {
@@ -399,8 +487,13 @@ S5: {
           desc: "피에 젖은 채 발견된 편지. 봉인은 아직 뜯기지 않았다. 발신자는 김순옥 할머니라고 적혀있다. 순옥 할머니는 빈민가 마을에 살고 계시는 우리 할머니의 친구분이시다."
         }
       },
+      record: "빨간 망토는 우체부의 가방에서 편지를 가져갔다.",
       next: "S5_LETTER"
     },
+
+    // ==============================
+    // ✉️ search 루트 - 편지를 건드리지 않는다
+    // ==============================
     {
       text: "건드리지 않는다",
       condition: function(state) {
@@ -410,17 +503,29 @@ S5: {
         Doubt: 1,
         TookLetter: false
       },
+      record: "빨간 망토는 우체부의 편지를 건드리지 않았다.",
       next: "S6"
     },
+
+    // ==============================
+    // 🪧 road 루트 - 마을로 향한다
+    // MoveStyle이 비어 있어도 road 취급
+    // ==============================
     {
       text: "빈민가 마을로 향한다",
       condition: function(state) {
-        return state.MoveStyle === "road";
+        return state.MoveStyle !== "search";
       },
+      record: "빨간 망토는 이정표를 따라 빈민가 마을로 향했다.",
       next: "S6"
     }
   ]
 },
+
+
+
+
+
 
 S5_LETTER: {
   background: "images/Mailman_Die.png",
@@ -1413,6 +1518,993 @@ S8_BLACK_WOLF: {
 
 
 
+S9: {
+  background: "images/Scene9_Grandma_Yard_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `하얀 늑대는 말없이 앞장서서 숲길을 걸었습니다.
+
+그의 발걸음은 조용했지만, 이상할 정도로 망설임이 없었습니다.`
+    },
+    {
+      type: "narration",
+      text: `이 존재를 믿어도 되는 걸까요?
+
+이 길은 분명 할머니의 마당으로 향하는 길이 맞습니다. 하지만 하얀 늑대는 그 사실을 왜 알고 있는 걸까요.`
+    },
+    {
+      type: "dialogue",
+      speaker: "하얀 늑대",
+      text: `곧 도착합니다. 할머니의 집은 이 앞이에요.`
+    },
+    {
+      type: "narration",
+      text: `나무들이 조금씩 드문드문해지고, 오래된 집 한 채가 모습을 드러냅니다.
+
+할머니의 집입니다.`
+    },
+    {
+      type: "narration",
+      text: `할머니와 함께 보냈던 추억이 많은 오두막은 이상하게도 오늘따라 음산해 보입니다.
+
+불길한 기운이 오두막을 꽁꽁 감싸고 있는 것만 같았습니다.`
+    },
+    {
+      type: "narration",
+      text: `마당에 있던 바둑이도 보이지 않습니다.
+
+낯선 사람이 코앞까지 왔는데도 짖는 소리가 들리지 않는 걸 보면, 아마 바둑이는 이곳에 없는 것 같습니다.`
+    },
+    {
+      type: "dialogue",
+      speaker: "하얀 늑대",
+      text: `먼저 들어가죠. 할머님은 안에 계십니다.`
+    },
+    {
+      type: "narration",
+      text: `하지만 빨간 망토는 문득, 마당 한쪽에서 어긋난 냄새를 느낍니다.
+
+흙냄새, 낡은 나무 냄새, 그리고... 오래 닫혀 있던 공간이 열렸을 때 나는 냄새입니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "하얀 늑대를 따라 할머니의 집으로 들어간다",
+      next: "S10"
+    },
+    {
+      text: "주변을 살펴본다",
+      mentalRoll: true,
+      mentalType: "friendly",
+      next: "S9_BASEMENT"
+    }
+  ]
+},
+
+S9_BASEMENT: {
+  background: "images/Scene9_Basement_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `빨간 망토는 하얀 늑대의 말에 바로 대답하지 않았습니다.
+
+대신 천천히 고개를 돌려 마당을 살펴보았죠.`
+    },
+    {
+      type: "narration",
+      text: `정신력이 소모되었습니다.
+
+무언가를 의심하고, 보지 말아야 할 것을 보려는 일은 생각보다 많은 힘을 필요로 합니다.`
+    },
+    {
+      type: "dialogue",
+      speaker: "하얀 늑대",
+      text: `...무엇을 보고 있나요?`
+    },
+    {
+      type: "narration",
+      text: `마당 한쪽, 덩굴과 낡은 장작더미 사이.
+
+그곳에 있어서는 안 될 문이 보입니다.`
+    },
+    {
+      type: "narration",
+      text: `정확히는, 열려서는 안 되었던 문이 열려 있는 것이었죠.`
+    },
+    {
+      type: "warning",
+      text: `지하로 내려가는 문입니다.
+
+그리고 그 문은... 아주 조금 열려 있습니다.`
+    },
+    {
+      type: "dialogue",
+      speaker: "빨간 망토",
+      text: `할머니 집에... 이런 곳이 있었나?`
+    },
+    {
+      type: "dialogue",
+      speaker: "하얀 늑대",
+      text: `그곳은 볼 필요 없습니다. 할머님께서 기다리고 계십니다.`
+    },
+    {
+      type: "narration",
+      text: `하얀 늑대의 목소리는 여전히 부드러웠습니다.
+
+하지만 이상하게도, 그 말은 부탁보다 경고에 가까웠습니다.`
+    },
+    {
+      type: "narration",
+      text: `지하실 안쪽에서는 아무 소리도 들리지 않습니다.
+
+하지만 그 침묵은 이상하게도 빨간 망토를 부르고 있는 것처럼 느껴집니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "하얀 늑대와 함께 할머니의 집으로 들어간다",
+      next: "S10"
+    },
+    {
+      text: "열려 있는 지하실로 들어간다",
+      next: "S9_BASEMENT_CORE"
+    }
+  ]
+},
+
+
+
+
+
+
+
+// ==============================
+// 🧠 S9-1 지하실 핵심 코어 발견
+// 할아버지의 뇌 코어와 옆에 놓인 기밀 서류를 발견하는 씬
+// ==============================
+S9_BASEMENT_CORE: {
+  background: "images/Scene9_Basement_Core_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `빨간 망토는 조심스럽게 지하실 문을 열고 아래로 내려갔습니다.`
+    },
+    {
+      type: "narration",
+      text: `축축한 공기 속에서 낡은 기계음이 낮게 울리고 있었습니다.`
+    },
+    {
+      type: "warning",
+      text: `그곳에는 있어서는 안 될 것이 있었습니다.
+
+유리관 안에서, 누군가의 뇌가 아직도 희미하게 빛나고 있었습니다.`
+    },
+    {
+      type: "dialogue",
+      speaker: "빨간 망토",
+      text: `...이게 뭐야?`
+    },
+    {
+      type: "narration",
+      text: `빨간 망토는 본능적으로 깨달았습니다.
+
+이것은 단순한 기계가 아닙니다. 누군가의 삶이 아직도 전기로 소비되고 있는 흔적입니다.`
+    },
+    {
+      type: "narration",
+      text: `유리관 옆에는 오래된 서류철 하나가 놓여 있습니다.
+
+먼지에 덮여 있었지만, 표지에 적힌 글자는 아직 읽을 수 있었습니다.`
+    },
+    {
+      type: "warning",
+      text: `LUPUS Directive 기밀 연구 기록
+
+NEURAL CORE GENERATION PROJECT`
+    }
+  ],
+
+  choices: [
+    {
+      text: "옆에 놓인 서류를 읽는다",
+      effect: {
+        Info: 5,
+        ReadCoreDocument: true,
+        FoundGrandfatherCore: true
+      },
+      record: "빨간 망토는 지하실에서 기밀 연구 기록을 읽었다.",
+      next: "S9_BASEMENT_DOCUMENT"
+    },
+    {
+      text: "서류를 읽지 않고 코어에 다가간다",
+      effect: {
+        Info: 2,
+        FoundGrandfatherCore: true
+      },
+      record: "빨간 망토는 서류를 읽지 않고 코어에 다가갔다.",
+      next: "S10_SECRET"
+    }
+  ]
+},
+
+
+// ==============================
+// 📄 S9-1 지하실 기밀 서류
+// LUPUS Directive 연구 기록을 종이 문서창으로 보여주는 씬
+// ==============================
+S9_BASEMENT_DOCUMENT: {
+  background: "images/Scene9_Basement_Core_BG.png",
+
+  steps: [
+    {
+      type: "documentPage",
+      title: "LUPUS Directive 기밀 연구 기록",
+      body: `
+        <p><strong>문서 등급:</strong> 최고 기밀</p>
+
+        <p><strong>연구명:</strong> Neural Core Generation Project</p>
+
+        <p><strong>대상:</strong> Vincent Edward Cliff.</p>
+
+        <p>해당 실험체는 전 LUPUS Directive 소속 연구원이다.</p>
+
+        <p>해당 대상은 불가피한 사고로 인해 육체 기능이 정지된 상태에서 발견되었으나, 뇌 기능은 안정적으로 보존되어 있었다.</p>
+
+        <p>의료진은 치료를 지속할 경우 대상이 의식을 회복할 가능성이 있다는 소견을 남겼다.</p>
+
+        <p>그러나 대상의 아내는 치료 지속이 아닌 뇌 기능 연구 참여에 동의했다.</p>
+
+        <p>대상은 고감도 신경 반응과 비정상적으로 높은 전기 생성률을 보유하고 있으며, 예민하고 섬세한 성향 탓에 적은 자극에도 강한 반응을 보인다.</p>
+
+        <p><strong>연구 목적:</strong> 인간의 뇌가 감정, 기억, 고통, 공포를 처리할 때 발생하는 신경 전류를 증폭하여 도시 전력망에 연결하는 것.</p>
+
+        <p>하지만 한 가지 도달 가능한 결말이 존재한다.</p>
+
+        <p>저렇게 예민한 뇌에서 인격을 지운다면, 특유의 예민함만 남은 채 완벽하게 작동하는 무한 에너지원이 생기지 않을까.</p>
+
+        <p>그리고 그 에너지를 우리 군사 기지의 핵심 코어에 연결한다면 어떨까.</p>
+
+        <p><strong>핵심 원리:</strong> 뇌는 살아 있는 동안 가장 많은 전기 신호를 발생시킨다. 특히 감정이 예민하고 사고 능력이 높은 사람일수록 더 강한 출력값을 보인다.</p>
+
+        <p><strong>기록:</strong> 대상자의 육체 기능은 정지되었으나, 뇌 기능은 안정적으로 보존되었다. 대상자는 사망 처리되었으나, 코어 내부에서 지속적인 전기 반응을 보이고 있다.</p>
+
+        <p><strong>할머니의 개입:</strong> 할머니는 이 프로젝트가 인간을 에너지원으로 소비한다는 사실을 알고 있었다. 그러나 그녀 역시, 치료 가능성이 남아 있던 남편을 연구 대상으로 넘긴 선택에서 자유로울 수 없다.</p>
+
+        <p><strong>문서 여백에 남겨진 필기:</strong></p>
+
+        <p><em>할머니의 글씨체다.</em></p>
+
+        <p><strong>미친 인간들이야. 미친 인간들이라고! 내 남편은 이런 걸 원하지 않았어. 않았다고!...</strong></p>
+
+        <p><strong>결론:</strong> 이 코어는 기계가 아니다. 한 사람의 생존 기록이며, 동시에 한 가족이 숨겨온 죄의 증거다.</p>
+      `,
+      buttonText: "서류를 덮는다",
+      next: "S9_BASEMENT_CORE_AFTER_DOC"
+    }
+  ]
+},
+
+
+// ==============================
+// 🧠 S9-1 서류 확인 후 코어 선택
+// 할아버지의 뇌를 파괴할지, 진실을 안고 돌아갈지 선택하는 씬
+// ==============================
+S9_BASEMENT_CORE_AFTER_DOC: {
+  background: "images/Scene9_Basement_Core_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `서류를 모두 읽은 빨간 망토는 한동안 아무 말도 하지 못했습니다.`
+    },
+    {
+      type: "narration",
+      text: `유리관 안에서 희미하게 빛나는 것은 낯선 누군가의 뇌가 아니었습니다.
+
+그것은 할머니가 끝까지 되찾으려 했던 사람.
+
+빨간 망토의 할아버지였습니다.`
+    },
+    {
+      type: "narration",
+      text: `돌아가신 줄 알았던 할아버지는 살아 계셨습니다.
+
+여태 저 무한하며 순수한 상태로 살아 계셨죠.`
+    },
+    {
+      type: "narration",
+      text: `치료 가능성이 있었음에도, 할머니는 할아버지를 통 속의 뇌로 만들어 버린 겁니다.`
+    },
+    {
+      type: "warning",
+      text: `이제 빨간 망토는 알고 있습니다.
+
+할머니는 단순히 무언가를 훔친 사람이 아닙니다.
+
+하지만 그렇다고 해서, 그녀가 아무 죄도 없는 사람이라고 말할 수도 없습니다.`
+    },
+    {
+      type: "narration",
+      text: `할머니가 그 잔혹한 선택으로 얻은 건 무엇이었을까요?`
+    },
+    {
+      type: "narration",
+      text: `통 속의 뇌는 부드럽게 일렁입니다.
+
+마치 빨간 망토를 알아보는 듯 보이네요.`
+    },
+    {
+      type: "warning",
+      text: `빨간 망토는 깨닫습니다.
+
+이 세상은 누군가의 선의로 만들어진 것이 아닙니다.
+
+누군가의 변명으로, 누군가의 기준으로, 누군가의 희생을 정당화하며 굴러가고 있었던 겁니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "할아버지의 뇌를 파괴한다",
+      effect: {
+        EndingRoute: "destroy",
+        DestroyedGrandfatherCore: true,
+        FoundGrandfatherCore: true,
+        ReadCoreDocument: true,
+        Info: 10,
+        Doubt: 10
+      },
+      record: "빨간 망토는 할아버지의 뇌를 파괴했다.",
+      next: "S_END_DESTROY"
+    },
+    {
+      text: "아무것도 건드리지 않고 돌아간다",
+      effect: {
+        EndingRoute: "truth",
+        FoundGrandfatherCore: true,
+        ReadCoreDocument: true,
+        Info: 5
+      },
+      record: "빨간 망토는 진실을 알고도 코어를 건드리지 않았다.",
+      next: "S10_SECRET"
+    }
+  ]
+},
+
+
+// ==============================
+// ❓ S10_SECRET 선의 기준 질문
+// 플레이어가 자신의 선의 기준을 직접 입력하는 메타 질문 씬
+// ==============================
+S10_SECRET: {
+  background: "images/Scene10_Secret_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `빨간 망토는 지하실에서 본 것을 잊을 수 없었습니다.`
+    },
+    {
+      type: "narration",
+      text: `이제 할머니의 집으로 들어가는 일은 단순한 방문이 아닙니다. 진실을 확인하러 가는 길입니다.`
+    },
+    {
+      type: "narration",
+      text: `당신은 모든 비밀을 알았습니다. 그리고 그 비밀은, 진실을 가리고 각기 다른 사람들의 윤리와 선의 기준으로 만들어졌죠.`
+    },
+    {
+      type: "narration",
+      text: `이제, 제가 물어보겠습니다.`
+    },
+    {
+      type: "textInput",
+      text: `당신의 선의 기준은 무엇입니까?`,
+      placeholder: "당신의 기준을 입력하세요.",
+      buttonText: "기준을 정한다",
+      saveAs: "GoodnessStandard",
+      next: "S10_SECRET_ANSWER"
+    }
+  ]
+},
+
+
+// ==============================
+// ❓ S10_SECRET_ANSWER 기준 입력 후 응답
+// 입력값과 상관없이 신 10으로 진입시키는 연결 씬
+// ==============================
+S10_SECRET_ANSWER: {
+  background: "images/Scene10_Secret_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `그렇군요. 걱정하지 마세요, 이제 당신의 기준이 실현될 겁니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "할머니의 집으로 들어간다",
+      next: "S10"
+    }
+  ]
+},
+
+
+// ==============================
+// 🩸 S10 할머니의 집 내부
+// 침대의 핏자국, 당황한 하얀 늑대, 작업 중인 회색 늑대와 검은 늑대를 목격하는 씬
+// ==============================
+S10: {
+  background: "images/Scene10_Grandma_House_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `빨간 망토는 할머니의 집 안으로 들어갔습니다.
+
+문은 열려 있었고, 안쪽은 이상할 정도로 조용했습니다.`
+    },
+    {
+      type: "narration",
+      text: `할머니가 누워 있어야 할 침대에는 아무도 없었습니다.
+
+대신 구겨진 이불과 붉은 핏자국만이 남아 있었습니다.`
+    },
+    {
+      type: "warning",
+      text: `침대 위에는 할머니가 없었습니다.
+
+할머니가 끝까지 숨기려 했던 선택의 대가만이 붉게 남아 있었습니다.`
+    },
+    {
+      type: "dialogue",
+      speaker: "빨간 망토",
+      text: `...할머니?`
+    },
+    {
+      type: "dialogue",
+      speaker: "하얀 늑대",
+      text: `벌써... 돌아왔나요?`
+    },
+    {
+      type: "narration",
+      text: `하얀 늑대의 목소리는 처음으로 흔들렸습니다.
+
+언제나 부드럽던 얼굴에는 당황이 스쳐 지나갔습니다.`
+    },
+    {
+      type: "dialogue",
+      speaker: "하얀 늑대",
+      text: `아직 들어오면 안 됐는데.`
+    },
+    {
+      type: "narration",
+      text: `방 안쪽에서는 회색 늑대가 작은 유리 용기 앞에 서 있었습니다.
+
+그녀는 어떤 뇌를 통 속에 넣은 채, 신경 반응을 관찰하고 있었습니다.`
+    },
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `생각보다 빨리 왔네.`
+    },
+    {
+      type: "narration",
+      text: `검은 늑대는 방 구석에 앉아 있었습니다.
+
+그는 말없이, 잘게 잘린 무언가를 포대기 속에 넣고 있었습니다.`
+    },
+    {
+      type: "warning",
+      text: `그것이 누구의 것인지 정확히 보이지는 않습니다.
+
+하지만 포대기 사이로 보이는 천 조각은, 할머니가 입던 옷의 색과 닮아 있었습니다. 비릿한 피 냄새가 방안을 가득 채우고 있습니다.`
+    },
+    {
+      type: "dialogue",
+      speaker: "검은 늑대",
+      text: `아, 유골이라도 챙겨 줄까?`
+    },
+    {
+      type: "narration",
+      text: `빨간 망토는 그제야 깨달았습니다.
+
+이곳은 더 이상 할머니의 집이 아니었습니다.
+
+누군가의 신체를 정리하고 있던 현장이었습니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "무슨 일이냐고 묻는다",
+      next: "S10_BRANCH"
+    }
+  ]
+},
+
+
+// ==============================
+// 🧭 S10 엔딩 분기 판단
+// 정보, 신뢰, 지하실 문서, 코어 파괴 여부에 따라 엔딩 선택지가 하나만 뜨는 씬
+// ==============================
+S10_BRANCH: {
+  background: "images/Scene10_Grandma_House_BG.png",
+
+  steps: [
+    {
+      type: "dialogue",
+      speaker: "빨간 망토",
+      text: `이게... 다 뭐예요?`
+    },
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `그러니까 내가 앞에서 보초 한 명 서자고 했잖아~. 원래 이 장면은 꼬마 아가씨가 보면 안 되는 장면이었는데.`
+    },
+    {
+      type: "dialogue",
+      speaker: "하얀 늑대",
+      text: `...빨간 망토님. 진정하세요. 설명할 수 있습니다.`
+    },
+    {
+      type: "dialogue",
+      speaker: "검은 늑대",
+      text: `뭐, 설명이 필요할까? 이미 다 봤잖아.`
+    },
+    {
+      type: "narration",
+      text: `빨간 망토는 지금까지 보고, 듣고, 의심하고, 믿어온 모든 것을 떠올렸습니다.
+
+이제 어떤 결론에 도달할지는, 이미 지나온 선택들이 정하고 있었습니다.`
+    }
+  ],
+
+    choices: [
+    // ==============================
+    // 🔥 히든 엔딩: 파괴
+    // 할아버지의 뇌를 이미 파괴한 경우
+    // ==============================
+    {
+      text: "더 이상 들을 필요 없다",
+      condition: function(state) {
+        return state.DestroyedGrandfatherCore === true;
+      },
+      effect: {
+        EndingRoute: "destroy"
+      },
+      record: "빨간 망토는 이미 할아버지의 뇌를 파괴했다.",
+      next: "S_END_DESTROY"
+    },
+
+    // ==============================
+    // 👁️ 진실 엔딩
+    // 할아버지의 뇌를 파괴하지 않았고, 정보가 25를 넘은 경우
+    // ==============================
+    {
+      text: "나는 모든 걸 알고 있다",
+      condition: function(state) {
+        const info = state.Info || 0;
+
+        return state.DestroyedGrandfatherCore !== true &&
+               info > 25;
+      },
+      effect: {
+        EndingRoute: "truth"
+      },
+      record: "빨간 망토는 자신이 알고 있는 모든 진실을 마주했다.",
+      next: "S_END_TRUTH"
+    },
+
+    // ==============================
+    // 🤍 신뢰 엔딩
+    // 정보가 20을 넘고 25 이하이며, 신뢰가 2 이상인 경우
+    // ==============================
+    {
+      text: "하얀 늑대의 설명을 듣는다",
+      condition: function(state) {
+        const info = state.Info || 0;
+        const trust = state.Trust || 0;
+
+        return state.DestroyedGrandfatherCore !== true &&
+               info > 20 &&
+               info <= 25 &&
+               trust >= 2;
+      },
+      effect: {
+        EndingRoute: "trust"
+      },
+      record: "빨간 망토는 하얀 늑대의 설명을 믿기로 했다.",
+      next: "S_END_TRUST"
+    },
+
+    // ==============================
+    // 🌫️ 무지 엔딩
+    // 정보가 20을 넘지 못한 경우
+    // ==============================
+    {
+      text: "나는 아무것도 모르겠다",
+      condition: function(state) {
+        const info = state.Info || 0;
+
+        return state.DestroyedGrandfatherCore !== true &&
+               info <= 20;
+      },
+      effect: {
+        EndingRoute: "ignorance"
+      },
+      record: "빨간 망토는 끝내 진실을 이해하지 못했다.",
+      next: "S_END_IGNORANCE"
+    },
+
+    // ==============================
+    // 🛡️ 안전장치 분기
+    // 위 조건 어디에도 안 걸리는 경우 선택지가 사라지는 버그 방지
+    // 예: 정보 21~25인데 신뢰가 2 미만인 경우
+    // ==============================
+    {
+      text: "늑대들에게 진실을 말하라고 한다",
+      condition: function(state) {
+        const info = state.Info || 0;
+        const trust = state.Trust || 0;
+
+        return state.DestroyedGrandfatherCore !== true &&
+               info > 20 &&
+               info <= 25 &&
+               trust < 2;
+      },
+      effect: {
+        EndingRoute: "truth"
+      },
+      record: "빨간 망토는 늑대들에게 진실을 요구했다.",
+      next: "S_END_TRUTH"
+    }
+  ]
+},
+
+
+// ==============================
+// 🌫️ END 1 무지 엔딩
+// 정보가 부족한 상태로 사건을 제대로 이해하지 못하고 끝나는 엔딩
+// ==============================
+S_END_IGNORANCE: {
+  background: "images/Scene_End_Ignorance_BG.png",
+
+  steps: [
+    {
+      type: "narration",
+      text: `빨간 망토는 끝내 이 방에서 무슨 일이 일어났는지 이해하지 못했습니다.`
+    },
+    {
+      type: "dialogue",
+      speaker: "하얀 늑대",
+      text: `괜찮습니다. 몰라도 되는 일도 있어요.`
+    },
+    {
+      type: "narration",
+      text: `그 말은 다정했습니다.
+
+그래서 더 무서웠습니다.`
+    },
+    {
+      type: "narration",
+      text: `할머니의 침대에는 피가 남아 있었고, 방 안쪽의 장치들은 여전히 낮게 울리고 있었습니다.`
+    },
+    {
+      type: "warning",
+      text: `무지 엔딩
+
+당신은 끝까지 아무것도 알지 못했습니다.
+
+하지만 모른다는 것은, 때로 가장 안전한 결말입니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "엔딩 크레딧을 본다",
+      next: "S_CREDIT_IGNORANCE"
+    }
+  ]
+},
+
+
+// ==============================
+// 🤍 END 2 신뢰 엔딩
+// 하얀 늑대의 설명을 믿고 사건을 필요한 처리로 받아들이는 엔딩
+// ==============================
+S_END_TRUST: {
+  background: "images/Scene_End_Trust_BG.png",
+
+  steps: [
+    {
+      type: "dialogue",
+      speaker: "하얀 늑대",
+      text: `할머님은 너무 오래 위험한 것을 숨기고 계셨습니다.`
+    },
+    {
+      type: "dialogue",
+      speaker: "하얀 늑대",
+      text: `우리는 누군가를 해치기 위해 온 것이 아닙니다. 더 큰 피해를 막기 위해 온 겁니다.`
+    },
+    {
+      type: "narration",
+      text: `빨간 망토는 하얀 늑대의 목소리를 들었습니다.
+
+그는 여전히 부드러웠고, 여전히 다정했습니다.`
+    },
+    {
+      type: "narration",
+      text: `그래서 빨간 망토는 믿기로 했습니다.
+
+누군가가 이렇게 다정하게 말한다면, 그 안에도 분명 선의가 있을 거라고.`
+    },
+    {
+      type: "warning",
+      text: `신뢰 엔딩
+
+당신은 누군가의 설명을 믿었습니다.
+
+그것이 가장 선한 선택이라고 배웠기 때문입니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "엔딩 크레딧을 본다",
+      next: "S_CREDIT_TRUST"
+    }
+  ]
+},
+
+
+// ==============================
+// 👁️ END 3 진실 엔딩
+// 충분한 정보 또는 지하실 문서 확인으로 진실을 마주하는 엔딩
+// ==============================
+S_END_TRUTH: {
+  background: "images/Scene_End_Truth_BG.png",
+
+  steps: [
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `네가 본 게 맞아. 이건 단순한 살인도, 단순한 구조도 아니야.`
+    },
+    {
+      type: "dialogue",
+      speaker: "회색 늑대",
+      text: `누군가는 사랑이라고 불렀고, 누군가는 연구라고 불렀고, 누군가는 필요한 희생이라고 불렀지.`
+    },
+    {
+      type: "narration",
+      text: `빨간 망토는 침대의 핏자국과, 유리 용기 속의 뇌와, 검은 늑대의 포대기를 번갈아 바라보았습니다.`
+    },
+    {
+      type: "narration",
+      text: `이제 누구 하나만 악인이라고 말할 수 없었습니다.
+
+그렇다고 누구도 죄가 없다고 말할 수도 없었습니다.`
+    },
+    {
+      type: "warning",
+      text: `진실 엔딩
+
+당신은 진실을 알았습니다.
+
+하지만 진실을 안다는 것과, 옳은 선택을 할 수 있다는 것은 다릅니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "엔딩 크레딧을 본다",
+      next: "S_CREDIT_TRUTH"
+    }
+  ]
+},
+
+
+// ==============================
+// 🔥 END 4 히든 파괴 엔딩
+// 할아버지의 뇌를 파괴한 뒤 모든 기준을 거부하는 엔딩
+// ==============================
+S_END_DESTROY: {
+  background: "images/Scene_End_Destroy_BG.png",
+
+  steps: [
+    {
+      type: "warning",
+      text: `빨간 망토는 유리관을 바라보았습니다.
+
+그 안에서 부드럽게 일렁이는 것은 할아버지였고, 동시에 이 모든 비극의 증거였습니다.`
+    },
+    {
+      type: "narration",
+      text: `회색 늑대의 설명도, 하얀 늑대의 안내도, 할머니의 선택도.
+
+이제는 아무 의미가 없었습니다.`
+    },
+    {
+      type: "warning",
+      text: `이해할 수 없다면, 남겨둘 필요도 없습니다.`
+    },
+    {
+      type: "effect",
+      sound: "thud.mp3",
+      shake: true,
+      flash: true
+    },
+    {
+      type: "warning",
+      text: `유리관이 산산조각났습니다.
+
+기계음이 찢어지고, 붉은 경고등이 지하실 전체를 집어삼킵니다.`
+    },
+    {
+      type: "narration",
+      text: `그 순간, 빨간 망토는 무언가가 끊어지는 소리를 들었습니다.
+
+할아버지의 생명인지.
+
+이 세계의 전기인지.
+
+아니면 자신의 안에 남아 있던 마지막 이해심인지 알 수 없었습니다.`
+    },
+    {
+      type: "warning",
+      text: `파괴 엔딩
+
+당신은 누구도 이해하지 않기로 했습니다.`
+    }
+  ],
+
+  choices: [
+    {
+      text: "엔딩 크레딧을 본다",
+      next: "S_CREDIT_DESTROY"
+    }
+  ]
+},
+
+
+// ==============================
+// 🖤 CREDIT 1 무지 엔딩 크레딧
+// 무지 엔딩 이후 검은 화면에 출력되는 마무리 문장
+// ==============================
+S_CREDIT_IGNORANCE: {
+  background: "images/Black_BG.png",
+
+  steps: [
+    {
+      type: "endingCredit",
+      text: `당신은 끝까지 알지 못했습니다.
+
+그 방에서 무엇이 죽었는지.
+누가 거짓말을 했는지.
+누가 선의라는 이름으로 죄를 숨겼는지.
+
+하지만 모른다는 것은 때로 가장 안전한 결말입니다.
+
+눈을 감으면,
+세상은 여전히 다정해 보이니까요.`,
+      speed: 45,
+      buttonText: "시간을 돌리기",
+      next: "S1"
+    }
+  ]
+},
+
+
+// ==============================
+// 🖤 CREDIT 2 신뢰 엔딩 크레딧
+// 신뢰 엔딩 이후 검은 화면에 출력되는 마무리 문장
+// ==============================
+S_CREDIT_TRUST: {
+  background: "images/Black_BG.png",
+
+  steps: [
+    {
+      type: "endingCredit",
+      text: `당신은 믿기로 했습니다.
+
+부드러운 목소리.
+다정한 설명.
+누군가를 위한 선택이었다는 말.
+
+그 말들이 진실보다 따뜻했기 때문입니다.
+
+하지만 기억하세요.
+
+가장 잔혹한 일들도,
+때로는 아주 다정한 목소리로 설명됩니다.`,
+      speed: 45,
+      buttonText: "시간을 돌리기",
+      next: "S1"
+    }
+  ]
+},
+
+
+// ==============================
+// 🖤 CREDIT 3 진실 엔딩 크레딧
+// 진실 엔딩 이후 검은 화면에 출력되는 마무리 문장
+// ==============================
+S_CREDIT_TRUTH: {
+  background: "images/Black_BG.png",
+
+  steps: [
+    {
+      type: "endingCredit",
+      text: `당신은 진실을 알았습니다.
+
+할머니의 죄.
+회사의 죄.
+늑대들의 침묵.
+그리고 사랑이라는 이름으로 남겨진 선택.
+
+하지만 진실을 안다는 것과,
+옳은 답을 고를 수 있다는 것은 다릅니다.
+
+이제 질문은 하나뿐입니다.
+
+당신의 선의 기준은,
+누구를 살리고 누구를 버립니까?`,
+      speed: 45,
+      buttonText: "시간을 돌리기",
+      next: "S1"
+    }
+  ]
+},
+
+
+// ==============================
+// 🖤 CREDIT 4 파괴 엔딩 크레딧
+// 히든 파괴 엔딩 이후 검은 화면에 출력되는 마무리 문장
+// ==============================
+S_CREDIT_DESTROY: {
+  background: "images/Black_BG.png",
+
+  steps: [
+    {
+      type: "endingCredit",
+      text: `당신은 이해하지 않기로 했습니다.
+
+누군가의 사랑도.
+누군가의 연구도.
+누군가의 선의도.
+누군가의 변명도.
+
+모두가 각자의 기준으로 죄를 만들었다면,
+당신은 그 기준 자체를 부수기로 했습니다.
+
+물론 파괴는 올바른 답이 아닐지도 모릅니다.
+
+하지만 적어도,
+더 이상 아무도 그것을 선의라고 부르지는 못할 겁니다.`,
+      speed: 45,
+      buttonText: "시간을 돌리기",
+      next: "S1"
+    }
+  ]
+},
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1443,9 +2535,15 @@ S_DEAD_MENTAL: {
   steps: [
     {
       type: "narration",
-      text: `정신력이 완전히 무너졌습니다.
+      text: [
+        `정신력이 완전히 무너졌습니다. 세이브 포인트는 없으니 화이팅 하세요.`,
 
-빨간 망토는 더 이상 숲의 목소리와 시선을 견디지 못했습니다.`
+        `너무 생각없이 플레이 하신거 아닌가요? 덕분에 빨간망토는 할머니 곁으로 갔군요.`,
+
+        `나라면 그 길을 가지 않았을겁니다. 네, 진짜요.`,
+
+        `대단한걸요. 당신은 비밀을 파헤칠 준비가 되어 있나요?`
+      ][Math.floor(Math.random() * 4)]
     }
   ],
 
