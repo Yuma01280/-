@@ -123,6 +123,8 @@ function resetGameState() {
   updateStatus();
   updateInventory();
   updateRecords();
+
+  resetBgmToDefault();
 }
 
 // ==============================
@@ -390,6 +392,24 @@ function changeBgm(fileName) {
 
   bgm.play().catch(error => {
     console.error("BGM 변경 실패:", fileName, error);
+  });
+}
+
+// ==============================
+// 🎵 BGM 기본값으로 초기화 함수
+// 새 게임 / 시간을 돌리기 때 bgm.mp3로 되돌림
+// ==============================
+function resetBgmToDefault() {
+  bgm.pause();
+  bgm.currentTime = 0;
+
+  currentBgmFile = "bgm.mp3";
+  bgm.src = "media/bgm.mp3";
+  bgm.loop = true;
+  bgm.volume = getBgmTargetVolume();
+
+  bgm.play().catch(error => {
+    console.error("기본 BGM 재생 실패:", error);
   });
 }
 
@@ -1128,7 +1148,12 @@ if (step.type === "documentPage") {
 
   speakerName.textContent = "";
   speakerName.classList.remove("show");
-  dialogue.classList.remove("warning-text");
+  dialogue.classList.remove(
+  "warning-text",
+  "big-text-1",
+  "big-text-2",
+  "big-text-3"
+);
   dialogue.textContent = "";
 
   choices.innerHTML = "";
@@ -1191,7 +1216,12 @@ if (step.type === "documentPage") {
 if (step.type === "textInput") {
   speakerName.textContent = "";
   speakerName.classList.remove("show");
-  dialogue.classList.remove("warning-text");
+ dialogue.classList.remove(
+  "warning-text",
+  "big-text-1",
+  "big-text-2",
+  "big-text-3"
+);
 
   typeText(dialogue, step.text || "입력해 주세요.", 28);
 
@@ -1240,7 +1270,12 @@ if (step.type === "endingCredit") {
 
   speakerName.textContent = "";
   speakerName.classList.remove("show");
-  dialogue.classList.remove("warning-text");
+dialogue.classList.remove(
+  "warning-text",
+  "big-text-1",
+  "big-text-2",
+  "big-text-3"
+);
   dialogue.textContent = "";
 
   choices.innerHTML = "";
@@ -1329,12 +1364,30 @@ if (step.type === "dialogue") {
 }
 
 // ==============================
-// 🔴 빨간색 경고문 처리
+// 🔴 특수 텍스트 연출 처리
+// warning / big1 / big2 / big3
 // ==============================
+dialogue.classList.remove(
+  "warning-text",
+  "big-text-1",
+  "big-text-2",
+  "big-text-3"
+);
+
 if (step.type === "warning") {
   dialogue.classList.add("warning-text");
-} else {
-  dialogue.classList.remove("warning-text");
+}
+
+if (step.type === "big1") {
+  dialogue.classList.add("big-text-1");
+}
+
+if (step.type === "big2") {
+  dialogue.classList.add("big-text-2");
+}
+
+if (step.type === "big3") {
+  dialogue.classList.add("big-text-3");
 }
 
 typeText(dialogue, currentText, 28);

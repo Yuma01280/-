@@ -1451,6 +1451,61 @@ body {
   color: red !important;
 }
 
+/* ============================= */
+/* 🔴 BIG TEXT 연출 */
+/* big1 → big2 → big3 순서로 글자가 점점 커지는 효과 */
+/* ============================= */
+
+.big-text-1 {
+  color: #ff4b4b !important;
+  font-size: clamp(18px, 1.7vw, 28px) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.03em;
+
+  text-shadow:
+    0 0 8px rgba(255, 40, 40, 0.55),
+    1px 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.big-text-2 {
+  color: #ff2b2b !important;
+  font-size: clamp(24px, 2.4vw, 42px) !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.05em;
+
+  text-shadow:
+    0 0 12px rgba(255, 40, 40, 0.75),
+    0 0 26px rgba(255, 0, 0, 0.25),
+    1px 1px 2px rgba(0, 0, 0, 0.95);
+}
+
+.big-text-3 {
+  color: #ff0000 !important;
+  font-size: clamp(24px, 2.2vw, 38px) !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.04em;
+  line-height: 1.35 !important;
+
+  text-shadow:
+    0 0 12px rgba(255, 30, 30, 0.85),
+    0 0 26px rgba(255, 0, 0, 0.35),
+    2px 2px 4px rgba(0, 0, 0, 1);
+
+  animation: bigTextPulse 0.75s ease-in-out infinite alternate;
+}
+
+@keyframes bigTextPulse {
+  from {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+
+  to {
+    transform: scale(1.04);
+    filter: brightness(1.28);
+  }
+}
+
 
 /* ====================================================== */
 /* ⌨️ 선의 기준 입력창 */
@@ -1700,10 +1755,10 @@ body {
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 
-  padding: 60px;
+  padding: 70px 60px 46px;
   box-sizing: border-box;
 
   background: black;
@@ -1718,13 +1773,14 @@ body {
 
 .ending-credit-text {
   width: min(780px, 86%);
+  min-height: 620px;
 
   color: #e8d7b0;
 
   font-family: "Noto Serif KR", serif;
-  font-size: clamp(20px, 1.6vw, 30px);
+  font-size: clamp(19px, 1.45vw, 26px);
   font-weight: 700;
-  line-height: 2;
+  line-height: 1.9;
 
   text-align: center;
   white-space: pre-line;
