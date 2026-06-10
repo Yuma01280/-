@@ -317,6 +317,58 @@ body {
   100% { transform: translate(0, 0); }
 }
 
+/* ============================= */
+/* 🔍 배경 천천히 확대 효과 */
+/* ============================= */
+
+#background.background-slow-zoom {
+  animation: backgroundSlowZoom 2.2s ease-out forwards;
+}
+
+@keyframes backgroundSlowZoom {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+
+  100% {
+    transform: scale(1.08);
+    filter: brightness(0.82);
+  }
+}
+
+
+/* ============================= */
+/* ⚫⚪ 흰색 → 검은색 점멸 효과 */
+/* ============================= */
+
+.black-white-flash-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+
+  animation: blackWhiteFlash 0.42s ease-out forwards;
+}
+
+@keyframes blackWhiteFlash {
+  0% {
+    background: rgba(255, 255, 255, 0);
+  }
+
+  18% {
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  42% {
+    background: rgba(0, 0, 0, 0.88);
+  }
+
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
+}
+
 
 /* ============================= */
 /* ⚡ 화면 깜빡임 효과 */
@@ -328,6 +380,107 @@ body {
 @keyframes flash {
   0% { background-color: white; }
   100% { background-color: transparent; }
+}
+
+/* ============================= */
+/* 🔭 배경 천천히 멀어지는 효과 */
+/* 감정씬 클로즈업 → 서서히 뒤로 빠짐 */
+/* ============================= */
+
+#background.background-slow-zoom-out {
+  animation: backgroundSlowZoomOut 7s ease-out forwards;
+}
+
+@keyframes backgroundSlowZoomOut {
+  0% {
+    transform: scale(1.14);
+    filter: brightness(0.88);
+  }
+
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+/* ============================= */
+/* ⚡ 기본 흰색 플래시 */
+/* ============================= */
+
+#game.flash::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.8);
+  pointer-events: none;
+  z-index: 9998;
+  animation: basicFlash 0.2s ease-out forwards;
+}
+
+@keyframes basicFlash {
+  0% {
+    opacity: 0;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+
+/* ============================= */
+/* 🔍 배경 천천히 확대 효과 */
+/* ============================= */
+
+#background.background-slow-zoom {
+  animation: backgroundSlowZoom 2.2s ease-out forwards;
+}
+
+@keyframes backgroundSlowZoom {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+
+  100% {
+    transform: scale(1.08);
+    filter: brightness(0.82);
+  }
+}
+
+
+/* ============================= */
+/* ⚫⚪ 흰색 → 검은색 점멸 효과 */
+/* ============================= */
+
+.black-white-flash-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 99999;
+  animation: blackWhiteFlash 0.45s ease-out forwards;
+}
+
+@keyframes blackWhiteFlash {
+  0% {
+    background: rgba(255, 255, 255, 0);
+  }
+
+  15% {
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  38% {
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  100% {
+    background: rgba(0, 0, 0, 0);
+  }
 }
 
 /* ============================= */
@@ -852,6 +1005,27 @@ body {
 
 #main-screen:hover #background {
   transform: scale(1.03);
+}
+
+/* ============================= */
+/* 🎬 S7 와이드 배경 보정 */
+/* ============================= */
+
+#main-screen.wide-scene #background {
+  background-size: contain;
+  background-position: center top;
+  background-color: black;
+}
+
+/* ============================= */
+/* 🎭 인물 대화 CG 보정 */
+/* 큰 인물이 나오는 장면에서 얼굴이 UI에 가려지지 않게 조정 */
+/* ============================= */
+
+#main-screen.character-scene #background {
+  background-size: contain;
+  background-position: center 62px;
+  background-color: black;
 }
 
 

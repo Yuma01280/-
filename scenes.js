@@ -391,12 +391,20 @@ S5: {
     // 🪧 길을 따라온 경우 - 이정표 발견
     // MoveStyle이 비어 있으면 road로 기본 처리
     // ==============================
+        {
+      type: "narration",
+      condition: function(state) {
+        return state.MoveStyle !== "search";
+      },
+      text: `방금 까지만 해도 날이 엄청 밝았는데, 지금은 앞만 간신히 보이고 있습니다.`
+    },
+    
     {
       type: "narration",
       condition: function(state) {
         return state.MoveStyle !== "search";
       },
-      text: `길을 따라 조심스럽게 이동하던 당신은, 얼마 지나지 않아 낡은 이정표 하나를 발견합니다.`
+      text: `당신이 조심스럽게 이동하던 중, 얼마 지나지 않아 낡은 이정표 하나를 발견합니다.`
     },
 
     {
@@ -425,25 +433,28 @@ S5: {
 우리는 빨리 할머니에게 가야 하니까요. 그렇죠?`
     },
 
-    {
-      type: "narration",
-      condition: function(state) {
-        return state.MoveStyle !== "search";
-      },
-      text: `당신은 이정표가 가리키는 방향을 따라, 빈민가 마을 쪽으로 걸음을 옮깁니다.`
-    },
 
-    {
-      type: "narration",
-      condition: function(state) {
-        return state.MoveStyle !== "search";
-      },
-      text: `당신의 눈앞에는 암울한 마을이 보입니다.
+
+{
+  type: "narration",
+  condition: function(state) {
+    return state.MoveStyle !== "search";
+  },
+  text: `당신은 이정표가 가리키는 방향을 따라, 빈민가 마을 쪽으로 걸음을 옮깁니다.`
+},
+
+{
+  type: "narration",
+  background: "images/Scene5_1_BG.png",
+  condition: function(state) {
+    return state.MoveStyle !== "search";
+  },
+  text: `당신의 눈앞에는 암울한 마을이 보입니다.
 
 마을은 낡고, 사람들은 우울함과 공허함, 끝없는 갈망으로 가득 차 있네요.
 
 이 근처에 그나마 전기가 돌고 있는 이유는 당신의 할머니 덕분이죠.`
-    },
+},
 
 
 
@@ -452,25 +463,26 @@ S5: {
     // ==============================
     // 🔍 주변을 살피며 온 경우 - 이상한 냄새
     // ==============================
-    {
-      type: "narration",
-      condition: function(state) {
-        return state.MoveStyle === "search";
-      },
-      text: `주변을 살피며 이동하던 당신은, 풀숲 사이에서 이상한 냄새를 맡습니다.
+{
+  type: "narration",
+  background: "images/Scene5_Grass_BG.png",
+  condition: function(state) {
+    return state.MoveStyle === "search";
+  },
+  text: `주변을 살피며 이동하던 당신은, 풀숲 사이에서 이상한 냄새를 맡습니다.
 
 온몸이 섬뜩해지는 향기. 이 향기의 근원이 어디일까요?`
-    },
+},
 
-    {
-      type: "narration",
-      condition: function(state) {
-        return state.MoveStyle === "search";
-      },
-      text: `향기는 분명 가려진 숲풀에서 납니다.
+{
+  type: "narration",
+  condition: function(state) {
+    return state.MoveStyle === "search";
+  },
+  text: `향기는 분명 가려진 숲풀에서 납니다.
 
 조심스럽게 풀을 헤치자—`
-    },
+},
 
 
 
@@ -478,24 +490,31 @@ S5: {
     // 💥 우체부 사망 장면 연출
     // search 루트에서만 배경 변경 + 흔들림 + 깜빡임
     // ==============================
-    {
-      type: "effect",
-      condition: function(state) {
-        return state.MoveStyle === "search";
-      },
-      sound: "thud.mp3",
-      background: "images/Mailman_Die.png",
-      shake: true,
-      flash: true
-    },
+{
+  type: "effect",
+  condition: function(state) {
+    return state.MoveStyle === "search";
+  },
+  sound: "thud.mp3",
+  background: "images/Dead_Mailman_BG.png",
+  shake: true,
 
-    {
-      type: "narration",
-      condition: function(state) {
-        return state.MoveStyle === "search";
-      },
-      text: `그곳에는 피에 젖은 우편 가방과 함께, 사람의 형태를 알아볼 수 없을 정도로 짓뭉개져 있는 우체부가 있었습니다.`
-    },
+  // ⚡ 기존 플래시
+  flash: true,
+
+  // 🔍 천천히 화면 확대
+  zoom: true,
+
+  // ⚫⚪ 흰색 → 검은색으로 한 번 점멸
+  blackWhiteFlash: true
+},
+{
+  type: "narration",
+  condition: function(state) {
+    return state.MoveStyle === "search";
+  },
+  text: `그곳에는 피에 젖은 우편 가방과 함께, 사람의 형태를 알아볼 수 없을 정도로 짓뭉개져 있는 우체부가 있었습니다.`
+},
 
     {
       type: "narration",
@@ -601,7 +620,7 @@ S5: {
 
 
 S5_LETTER: {
-  background: "images/Mailman_Die.png",
+  background: "images/Soonok_Letter_BG.png",
 
   steps: [
     {
@@ -684,6 +703,7 @@ S6: {
 
 S7: {
   background: "images/Scene7_BG.png",
+  wide: true,
 
   steps: [
     {
@@ -723,11 +743,16 @@ S7: {
       background: "images/Scene7_Center_BG.png"
     },
 
-    {
-      type: "dialogue",
-      speaker: "빨간 망토",
-      text: `...누구에게 먼저 말을 걸어야 할까...`
-    }
+{
+  type: "effect",
+  background: "images/Thinking_BG.png"
+},
+
+{
+  type: "dialogue",
+  speaker: "빨간 망토",
+  text: `...누구에게 먼저 말을 걸어야 할까...`
+}
   ],
 
 
@@ -765,8 +790,14 @@ choices: [
 
 S7_OLDMAN_DEPRESSED: {
   background: "images/Scene7_Center_BG.png",
+  character: true,
 
   steps: [
+    {
+      type: "effect",
+      zoomOut: true
+    },
+
     {
       type: "dialogue",
       speaker: "우울한 노인",
@@ -825,9 +856,14 @@ choices: [
 
 
 S7_OLDMAN_DEPRESSED_LETTER: {
-  background: "images/Scene7_Center_BG.png",
+  background: "images/Scene7_Center1_BG.png",
+  character: true,
 
   steps: [
+    {
+      type: "effect",
+      zoomOut: true
+    },
     {
       type: "dialogue",
       speaker: "빨간 망토",
@@ -911,9 +947,15 @@ choices: [
 
 
 S7_OLDMAN_CRAZY: {
-  background: "images/Scene7_Center_BG.png",
+  background: "images/Scene7_Center2_BG.png",
+  character: true,
 
   steps: [
+    {
+      type: "effect",
+      zoomOut: true
+    },
+
     {
       type: "dialogue",
       speaker: "허공을 보는 노인",
@@ -954,9 +996,15 @@ S7_OLDMAN_CRAZY: {
 
 
 S7_OLDMAN_FIGHT: {
-  background: "images/Scene7_Center_BG.png",
+  background: "images/Scene7_Center3_BG.png",
+  character: true,
 
   steps: [
+    {
+      type: "effect",
+      zoomOut: true
+    },
+
     {
       type: "narration",
       text: `두 노인이 낮은 목소리로 다투고 있습니다. 분노라기보다는, 오래 참아온 무언가가 겨우 새어 나오는 소리처럼 들려오네요.`
@@ -1011,7 +1059,7 @@ S7_OLDMAN_FIGHT: {
 
 
 S7_TIME_WASTE: {
-  background: "images/Scene7_Center_BG.png",
+  background: "images/Scene7_Center4_BG.png",
 
   steps: [
     {
@@ -1040,10 +1088,20 @@ S7_TIME_WASTE: {
 
 
 
+
+
+
+
 S8_RIGHT: {
   background: "images/Scene8_BG.png",
+  wide: true,
 
   steps: [
+    {
+      type: "effect",
+      zoomOut: true
+    },
+
     {
       type: "narration",
       text: function(state) {
@@ -1223,27 +1281,29 @@ S8_WHITE_WOLF: {
     // ==============================
     // ⚪ 오솔길로 들어온 경우
     // ==============================
-    {
-      type: "narration",
+{
+  type: "narration",
+  background: "images/WhiteWolf_Standing_BG.png",
 
-      condition: function(state) {
-        return state.Path === "search";
-      },
+  condition: function(state) {
+    return state.Path === "search";
+  },
 
-      text: `새하얀 털을 가진 늑대 한 마리가 붉은 나무 아래 앉아 있습니다. 늑대는 당신을 바라보지만, 쉽게 다가오지 않습니다.`
-    },
+  text: `새하얀 털을 가진 늑대 한 마리가 붉은 나무 아래 서 있습니다. 늑대는 당신을 바라보지만, 쉽게 다가오지 않습니다.`
+},
 
-    {
-      type: "dialogue",
+{
+  type: "dialogue",
+  background: "images/WhiteWolf_Surprised_BG.png",
 
-      condition: function(state) {
-        return state.Path === "search";
-      },
+  condition: function(state) {
+    return state.Path === "search";
+  },
 
-      speaker: "하얀 늑대",
+  speaker: "하얀 늑대",
 
-      text: `...빨간 망토? 잠시만... 기록이 없었는데-`
-    },
+  text: `...빨간 망토? 잠시만... 기록이 없었는데-`
+},
 
     {
       type: "dialogue",
@@ -1602,30 +1662,24 @@ S8_BLACK_WOLF: {
       mentalType: "black_hostile"
     },
 
-    {
-      type: "narration",
-      condition: function(state) {
-        return state.Path === "search";
-      },
-      text: `당신이 뒷걸음질치려는 순간, 회색 늑대가 조용히 시선을 돌립니다. 직접 막아선 것은 아니지만, 그 눈빛만으로도 검은 늑대의 움직임이 잠시 멈춥니다.`
-    },
+{
+  type: "narration",
+  background: "images/BlackWolf2_BG.png",
+  zoomOut: true,
+  condition: function(state) {
+    return state.Path === "search";
+  },
+  text: `당신이 뒷걸음질치려는 순간, 회색 늑대가 조용히 시선을 돌립니다. 직접 막아선 것은 아니지만, 그 눈빛만으로도 검은 늑대의 움직임이 잠시 멈춥니다.`
+},
 
-    {
-      type: "dialogue",
-      condition: function(state) {
-        return state.Path === "search";
-      },
-      speaker: "검은 늑대",
-      text: `...젠장... 기록자 앞이라 이 정도로 끝내는 줄 알아. 쯧, 성가신 것들.`
-    },
-
-    {
-      type: "narration",
-      condition: function(state) {
-        return state.Path === "search";
-      },
-      text: `아마 저 기록자라고 불리는 회색 늑대는 다른 늑대들의 행동도 기록하나 봅니다. 어쩌면 다른 정보들도 가지고 있을까요?`
-    },
+{
+  type: "dialogue",
+  condition: function(state) {
+    return state.Path === "search";
+  },
+  speaker: "검은 늑대",
+  text: `...젠장... 기록자 앞이라 이 정도로 끝내는 줄 알아. 쯧, 성가신 것들.`
+},
 
 
 

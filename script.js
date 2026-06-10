@@ -954,7 +954,21 @@ function renderScene(sceneKey) {
     return;
   }
 
-  const bg = document.getElementById("background");
+const bg = document.getElementById("background");
+const mainScreen = document.getElementById("main-screen");
+
+if (mainScreen) {
+  mainScreen.classList.remove("wide-scene");
+  mainScreen.classList.remove("character-scene");
+
+  if (scene.wide === true) {
+    mainScreen.classList.add("wide-scene");
+  }
+
+  if (scene.character === true) {
+    mainScreen.classList.add("character-scene");
+  }
+}
 
 if (scene.background) {
   bg.style.backgroundImage = `url("${scene.background}")`;
@@ -1062,56 +1076,128 @@ button.onclick = () => {
       }
 
 
-      // ==============================
-      // 💥 효과 연출 처리 (소리 + 배경)
-      // ==============================
-      if (step.type === "effect") {
+// ==============================
+// 💥 효과 연출 처리 (소리 + 배경)
+// ==============================
+if (step.type === "effect") {
 
-        // ❗ 조건 체크
-        if (step.condition && !step.condition(state)) {
-          stepIndex++;
-          showStep();
-          return;
-        }
+  // ❗ 조건 체크
+  if (step.condition && !step.condition(state)) {
+    stepIndex++;
+    showStep();
+    return;
+  }
 
-        // 🔊 효과음
-        if (step.sound) {
-          playSound(step.sound);
-        }
+  // 🔊 효과음
+  if (step.sound) {
+    playSound(step.sound);
+  }
 
-        // 🎬 배경 전환
-        if (step.background) {
-          const bg = document.getElementById("background");
-          bg.style.backgroundImage = `url("${step.background}")`;
-        }
+  // 🎬 배경 전환
+  if (step.background) {
+    const bg = document.getElementById("background");
+    bg.style.backgroundImage = `url("${step.background}")`;
+  }
 
-        // 💥 화면 흔들림
-        if (step.shake) {
-          triggerShake();
-        }
+  // 💥 화면 흔들림
+  if (step.shake) {
+    triggerShake();
+  }
 
-        // ⚡ 화면 깜빡임
-        if (step.flash) {
-          triggerFlash();
-        }
+  // ⚡ 기존 화면 깜빡임
+  if (step.flash) {
+    triggerFlash();
+  }
 
-        stepIndex++;
-        showStep();
-        return;
-      }
+  // 🔍 천천히 화면 확대
+  if (step.zoom) {
+    triggerBackgroundZoom();
+  }
 
-      // ==============================
-      // ⚡ 화면 깜빡임 함수
-      // ==============================
-      function triggerFlash() {
-        const game = document.getElementById("game");
+  // 🔭 천천히 멀어지는 효과
+if (step.zoomOut) {
+  triggerBackgroundZoomOut();
+}
 
-        game.classList.add("flash");
+  // ⚫⚪ 흰색 → 검은색 점멸
+  if (step.blackWhiteFlash) {
+    triggerBlackWhiteFlash();
+  }
 
-        setTimeout(() => {
-          game.classList.remove("flash");
-        }, 200);
-      }
+  stepIndex++;
+  showStep();
+  return;
+}
+
+// ==============================
+// ⚡ 화면 깜빡임 함수
+// ==============================
+function triggerFlash() {
+  const game = document.getElementById("game");
+
+  if (!game) return;
+
+  game.classList.add("flash");
+
+  setTimeout(() => {
+    game.classList.remove("flash");
+  }, 200);
+}
+
+
+// ==============================
+// 🔍 배경 천천히 확대 함수
+// ==============================
+function triggerBackgroundZoom() {
+  const bg = document.getElementById("background");
+
+  if (!bg) return;
+
+  bg.classList.remove("background-slow-zoom");
+
+  // 같은 효과를 연속으로 다시 실행하기 위한 강제 리플로우
+  void bg.offsetWidth;
+
+  bg.classList.add("background-slow-zoom");
+
+  setTimeout(() => {
+    bg.classList.remove("background-slow-zoom");
+  }, 2200);
+}
+
+// ==============================
+// 🔭 배경 천천히 멀어지는 함수
+// ==============================
+function triggerBackgroundZoomOut() {
+  const bg = document.getElementById("background");
+
+  if (!bg) return;
+
+  bg.classList.remove("background-slow-zoom-out");
+
+  // 같은 효과를 연속으로 다시 실행하기 위한 강제 리플로우
+  void bg.offsetWidth;
+
+  bg.classList.add("background-slow-zoom-out");
+}
+
+// ==============================
+// ⚫⚪ 흰색 → 검은색 점멸 함수
+// ==============================
+function triggerBlackWhiteFlash() {
+  const game = document.getElementById("game");
+
+  if (!game) return;
+
+  const flashOverlay = document.createElement("div");
+  flashOverlay.className = "black-white-flash-overlay";
+
+  game.appendChild(flashOverlay);
+
+  setTimeout(() => {
+    flashOverlay.remove();
+  }, 450);
+}
 
 // ==============================
 // ❗ step 조건 검사
