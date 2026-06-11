@@ -1167,7 +1167,7 @@ choices: [
 
 
 S8_WHITE_WOLF: {
-  background: "images/Scene8_WhiteWolf_BG.png",
+  background: "images/Scene8_WhiteWolf2_BG.png",
 
   steps: [
 
@@ -1208,71 +1208,105 @@ S8_WHITE_WOLF: {
       text: `...왔군요, 빨간 망토. 이번에는 기록을 남기고 오셔서 정말 다행입니다. 지금 보안 문제로 경비가 삼엄하거든요.`
     },
 
-    {
-      type: "dialogue",
+{
+  type: "effect",
 
-      condition: function(state) {
-        return state.Path === "road";
-      },
+  condition: function(state) {
+    return state.Path === "road";
+  },
 
-      speaker: "빨간 망토",
+  background: "images/RedHood_Wary_BG.png",
+  zoomOut: true
+},
 
-      text: `...저를 아시나요?`
-    },
+{
+  type: "dialogue",
 
-    {
-      type: "dialogue",
+  condition: function(state) {
+    return state.Path === "road";
+  },
 
-      condition: function(state) {
-        return state.Path === "road";
-      },
+  background: "images/RedHood_Wary_BG.png",
 
-      speaker: "하얀 늑대",
+  speaker: "빨간 망토",
 
-      text: `아... 죄송합니다. 제 이름은 밝힐 수 없지만... 저는 하얀 늑대라고 합니다. 빨간 망토 양의 할머님과 같이 근무한 동료였어요.`
-    },
+  text: `...저를 아시나요?`
+},
 
-    {
-      type: "narration",
+   {
+  type: "effect",
 
-      condition: function(state) {
-        return state.Path === "road";
-      },
+  condition: function(state) {
+    return state.Path === "road";
+  },
 
-      text: `할머니의 직장 동료라니. 할머니는 이 세계에서 가장 많은 전기를 생산하는 유명 대기업 LUPUS Directive(루푸스 디렉티브)에서 비밀 경호원으로 일하셨습니다.`
-    },
+  background: "images/Scene8_WhiteWolf2_BG.png",
+  zoomOut: true
+},
 
-    {
-      type: "narration",
+{
+  type: "dialogue",
 
-      condition: function(state) {
-        return state.Path === "road";
-      },
+  condition: function(state) {
+    return state.Path === "road";
+  },
 
-      text: `루푸스 회사에는 여러 동물의 이름을 딴 팀이 존재하며, 지금 당신이 보고 있는 현장 팀은 VOLK(볼크)팀입니다.`
-    },
+  background: "images/Scene8_WhiteWolf2_BG.png",
 
-    {
-      type: "dialogue",
+  speaker: "하얀 늑대",
 
-      condition: function(state) {
-        return state.Path === "road";
-      },
+  text: `아... 죄송합니다. 제 이름은 밝힐 수 없지만... 저는 하얀 늑대라고 합니다. 빨간 망토 양의 할머님과 같이 근무한 동료였어요.`
+},
 
-      speaker: "하얀 늑대",
+{
+  type: "narration",
 
-      text: `걱정하지 마세요. 할머님께 가는 길이시죠? 제가 안내해 드릴게요. 이 주변 경비는 걱정하지 않으셔도 됩니다.`
-    },
+  condition: function(state) {
+    return state.Path === "road";
+  },
 
-    {
-      type: "narration",
+  background: "images/Scene8_WhiteWolf2_BG.png",
 
-      condition: function(state) {
-        return state.Path === "road";
-      },
+  text: `할머니의 직장 동료라니. 할머니는 이 세계에서 가장 많은 전기를 생산하는 유명 대기업 LUPUS Directive(루푸스 디렉티브)에서 비밀 경호원으로 일하셨습니다.`
+},
 
-      text: `운이 좋군요. 이 길이라면 길 가다 갑자기 객사하거나 강도를 만날 일은 없을 것 같습니다.`
-    },
+{
+  type: "narration",
+
+  condition: function(state) {
+    return state.Path === "road";
+  },
+
+  background: "images/Scene8_WhiteWolf2_BG.png",
+
+  text: `루푸스 회사에는 여러 동물의 이름을 딴 팀이 존재하며, 지금 당신이 보고 있는 현장 팀은 VOLK(볼크)팀입니다.`
+},
+
+{
+  type: "dialogue",
+
+  condition: function(state) {
+    return state.Path === "road";
+  },
+
+  background: "images/Scene8_WhiteWolf2_BG.png",
+
+  speaker: "하얀 늑대",
+
+  text: `걱정하지 마세요. 할머님께 가는 길이시죠? 제가 안내해 드릴게요. 이 주변 경비는 걱정하지 않으셔도 됩니다.`
+},
+
+{
+  type: "narration",
+
+  condition: function(state) {
+    return state.Path === "road";
+  },
+
+  background: "images/Scene8_WhiteWolf2_BG.png",
+
+  text: `운이 좋군요. 이 길이라면 길 가다 갑자기 객사하거나 강도를 만날 일은 없을 것 같습니다.`
+},
 
 
 
@@ -1421,14 +1455,25 @@ S8_GRAY_WOLF: {
 
   steps: [
     {
-      type: "narration",
-      text: `당신은 어딘가 익숙해 보이는 여성에게 다가가 말을 걸기로 했습니다.`
+      type: "effect",
+      background: "images/Scene8_GrayWolf_BG.png",
+      zoomOut: true
     },
 
     {
       type: "narration",
-      text: `그녀는 당신을 중립적인 눈으로 바라봅니다. 당신이 오솔길로 왔든, 톨게이트를 지나서 왔든 그다지 신경 쓰지 않는 모양이네요.`
+      text: `당신은 어딘가 익숙해 보이는 여성에게 다가가 말을 걸기로 했습니다.`
     },
+    {
+      type: "narration",
+      text: `그녀는 당신을 응시하지는 않습니다. 당신이 오솔길로 왔든, 톨게이트를 지나서 왔든 그다지 신경 쓰지 않는 모양이네요.`
+    },
+
+{
+  type: "effect",
+  background: "images/GrayWolf_Standing_BG.png",
+  zoomOut: true
+},
 
 {
   type: "dialogue",
@@ -1454,6 +1499,12 @@ S8_GRAY_WOLF: {
       speaker: "회색 늑대",
       text: `그래? 어떡하지. 여긴 보안 검색이 잘 적용되지 않는 곳이라 자유롭게 다니지 못할 텐데.`
     },
+
+{
+  type: "effect",
+  background: "images/GrayWolf_Pointing_WhiteWolf_BG.png",
+  zoomOut: true
+},
 
 {
   type: "narration",
@@ -1501,6 +1552,12 @@ S8_GRAY_WOLF_NOTE: {
 
   steps: [
     {
+      type: "effect",
+      background: "images/Scene8_GrayWolf1_BG.png",
+      zoomOut: true
+    },
+
+    {
       type: "dialogue",
       speaker: "빨간 망토",
       text: `그 손에 들고 있는 노트는 뭐예요?`
@@ -1518,65 +1575,82 @@ S8_GRAY_WOLF_NOTE: {
       text: `궁금하니? 지금 꽤나 흥미로운 사건을 조사 중이거든.`
     },
 
-    {
-      type: "dialogue",
-      speaker: "회색 늑대",
-      text: `너희가 사용하는 저 반짝이는 불빛의 출처가 궁금하지 않아?`
-    },
+{
+  type: "effect",
+  background: "images/GrayWolf_Interest_BG.png",
+  zoomOut: true
+},
 
-    {
-      type: "narration",
-      text: `회색 늑대의 말은 이상할 정도로 차분했습니다. 검은색 장미같이 날 서 있으면서도, 어딘가 끌어당기는 묘한 매력이 있는 회색 늑대는 당신의 마음을 사로잡았죠.`
-    },
+{
+  type: "dialogue",
+  speaker: "회색 늑대",
+  text: `너희가 사용하는 저 반짝이는 불빛의 출처가 궁금하지 않아?`
+},
 
-    {
-      type: "dialogue",
-      speaker: "회색 늑대",
-      text: `뇌가 생각을 하고, 감정을 느낄 때 전기가 생성된다는 말 들어본 적 있어? 예전부터 소설과 영화에서 자주 나오던 주제야.`
-    },
+{
+  type: "narration",
+  text: `회색 늑대의 말은 이상할 정도로 차분했습니다. 검은색 장미같이 날 서 있으면서도, 어딘가 끌어당기는 묘한 매력이 있는 회색 늑대는 당신의 마음을 사로잡았죠.`
+},
 
-    {
-      type: "dialogue",
-      speaker: "회색 늑대",
-      text: `그리고 더 똑똑하고 예민한 사람의 뇌일수록 고통, 절망, 쾌락을 선명하게 느끼며 더 많은 전기를 생성해 내.`
-    },
+{
+  type: "dialogue",
+  speaker: "회색 늑대",
+  text: `뇌가 생각을 하고, 감정을 느낄 때 전기가 생성된다는 말 들어본 적 있어? 예전부터 소설과 영화에서 자주 나오던 주제야.`
+},
 
-    {
-      type: "warning",
-      text: `당신의 눈이 크게 커지며 숨이 턱 막히는 기분입니다.`
-    },
+{
+  type: "dialogue",
+  speaker: "회색 늑대",
+  text: `그리고 더 똑똑하고 예민한 사람의 뇌일수록 고통, 절망, 쾌락을 선명하게 느끼며 더 많은 전기를 생성해 내.`
+},
 
-    {
-      type: "warning",
-      text: `여태 당신이, 마을 사람들이, 전 세계 사람들이 당연하게 써 오던 전기가 다른 사람의 머리에서 적출한 뇌에서 나오는 전기라는 뜻이니까요.`
-    },
+{
+  type: "effect",
+  background: "images/RedHood_Serious_BG.png",
+  zoomOut: true
+},
 
-    {
-      type: "narration",
-      text: `그렇다면...`
-    },
+{
+  type: "warning",
+  text: `당신의 눈이 크게 커지며 숨이 턱 막히는 기분입니다.`
+},
 
-    {
-      type: "narration",
-      text: `입 다물어야 합니다. 진실을 말할 수 없어요. 이 사람들은 지금 할머니가 훔쳐 간 뇌와 할머니를 추적 중인 겁니다.`
-    },
+{
+  type: "warning",
+  text: `여태 당신이, 마을 사람들이, 전 세계 사람들이 당연하게 써 오던 전기가 다른 사람의 머리에서 적출한 뇌에서 나오는 전기라는 뜻이니까요.`
+},
 
-    {
-      type: "narration",
-      text: `어쩌면... 이미 늑대들은 할머니의 집 위치를 알고 있겠군요.`
-    },
+{
+  type: "narration",
+  text: `그렇다면...`
+},
 
+{
+  type: "narration",
+  text: `입 다물어야 합니다. 진실을 말할 수 없어요. 이 사람들은 지금 할머니가 훔쳐 간 뇌와 할머니를 추적 중인 겁니다.`
+},
+
+{
+  type: "narration",
+  text: `어쩌면... 이미 늑대들은 할머니의 집 위치를 알고 있겠군요.`
+},
     {
       type: "dialogue",
       speaker: "회색 늑대",
       text: `너무 자극적이었으려나? 하지만 진실이란다. 그리고 우린 그중에서 어떤 뇌를 도둑맞았거든. 아마... 우린 곧 다시 만날 거야, 꼬마야.`
     },
 
-    {
-      type: "dialogue",
-      speaker: "회색 늑대",
-      text: `일단 저쪽에 있는 하얀 늑대에게 가 봐. 그 친구는 친절하니까.`
-    }
+{
+  type: "effect",
+  background: "images/GrayWolf_Pointing_WhiteWolf_BG.png",
+  zoomOut: true
+},
+
+{
+  type: "dialogue",
+  speaker: "회색 늑대",
+  text: `일단 저쪽에 있는 하얀 늑대에게 가 봐. 그 친구는 친절하니까.`
+},
   ],
 
 
@@ -1692,65 +1766,95 @@ S8_BLACK_WOLF: {
     // ==============================
     // 🟢 톨게이트로 들어온 경우
     // ==============================
-    {
-      type: "narration",
-      condition: function(state) {
-        return state.Path === "road";
-      },
-      text: `검은 늑대는 당신을 향해 다가오더니, 별다른 말 없이 손목에 달린 기록 패널을 확인합니다. 어쩌면 그의 큰 키 때문에 당신을 똑바로 인식하지도 못한 것 같네요.`
-    },
+{
+  type: "effect",
+  condition: function(state) {
+    return state.Path === "road";
+  },
+  background: "images/BlackWolf_Gentle_BG.png",
+  zoomOut: true
+},
 
-    {
-      type: "dialogue",
-      condition: function(state) {
-        return state.Path === "road";
-      },
-      speaker: "검은 늑대",
-      text: `뭐야, 기록은 잘 되네? 아예 먹통이 된 건 아니구만.`
-    },
+{
+  type: "narration",
+  condition: function(state) {
+    return state.Path === "road";
+  },
+  background: "images/BlackWolf_Gentle_BG.png",
+  text: `검은 늑대는 당신을 향해 다가오더니, 별다른 말 없이 손목에 달린 기록 패널을 확인합니다. 어쩌면 그의 큰 키 때문에 당신을 똑바로 인식하지도 못한 것 같네요.`
+},
 
-    {
-      type: "narration",
-      condition: function(state) {
-        return state.Path === "road";
-      },
-      text: `검은 늑대는 당신에게 아예 관심을 두지 않습니다. 다행이네요! 그는 마치 확인할 것만 확인했다는 듯, 곧장 회색 늑대 쪽으로 걸어갑니다.`
-    },
+{
+  type: "dialogue",
+  condition: function(state) {
+    return state.Path === "road";
+  },
+  speaker: "검은 늑대",
+  text: `뭐야, 기록은 잘 되네? 아예 먹통이 된 건 아니구만.`
+},
 
-    {
-      type: "dialogue",
-      condition: function(state) {
-        return state.Path === "road";
-      },
-      speaker: "검은 늑대",
-      text: `야, 기록자. 이쪽 기록 확인 좀 해봐. 기계가 완전히 맛탱이가 간 건 아닌 것 같은데. 저 꼬맹이 들어왔잖아.`
-    },
+{
+  type: "effect",
+  condition: function(state) {
+    return state.Path === "road";
+  },
+  background: "images/BlackWolf_GreyWolf_BG.png",
+  zoomOut: true
+},
 
-    {
-      type: "dialogue",
-      condition: function(state) {
-        return state.Path === "road";
-      },
-      speaker: "회색 늑대",
-      text: `그래? 잠시만... 그러면 누가 보안 검색대 전기라도 빼서 사용하는 건가?`
-    },
+{
+  type: "narration",
+  condition: function(state) {
+    return state.Path === "road";
+  },
+  background: "images/BlackWolf_GreyWolf_BG.png",
+  text: `검은 늑대는 당신에게 아예 관심을 두지 않습니다. 다행이네요! 그는 마치 확인할 것만 확인했다는 듯, 곧장 회색 늑대 쪽으로 걸어갑니다.`
+},
 
-    {
-      type: "dialogue",
-      condition: function(state) {
-        return state.Path === "road";
-      },
-      speaker: "회색 늑대",
-      text: `기록은 있네. 안녕~ 작은 꼬마~`
-    },
+{
+  type: "dialogue",
+  condition: function(state) {
+    return state.Path === "road";
+  },
+  speaker: "검은 늑대",
+  text: `야, 기록자. 이쪽 기록 확인 좀 해봐. 기계가 완전히 맛탱이가 간 건 아닌 것 같은데. 저 꼬맹이 들어왔잖아.`
+},
 
-    {
-      type: "narration",
-      condition: function(state) {
-        return state.Path === "road";
-      },
-      text: `다행입니다. 적어도 가장 위험한 검은 늑대가 당신을 신경 쓰지 않는군요.`
-    }
+{
+  type: "dialogue",
+  condition: function(state) {
+    return state.Path === "road";
+  },
+  speaker: "회색 늑대",
+  text: `그래? 잠시만... 그러면 누가 보안 검색대 전기라도 빼서 사용하는 건가?`
+},
+
+{
+  type: "effect",
+  condition: function(state) {
+    return state.Path === "road";
+  },
+  background: "images/GrayBlackWolf_Greeting_BG.png",
+  zoomOut: true
+},
+
+{
+  type: "dialogue",
+  condition: function(state) {
+    return state.Path === "road";
+  },
+  background: "images/GrayBlackWolf_Greeting_BG.png",
+  speaker: "회색 늑대",
+  text: `기록은 있네. 안녕~ 작은 꼬마~`
+},
+
+{
+  type: "narration",
+  condition: function(state) {
+    return state.Path === "road";
+  },
+  text: `다행입니다. 적어도 가장 위험한 검은 늑대가 당신을 신경 쓰지 않는군요.`
+},
   ],
 
 
