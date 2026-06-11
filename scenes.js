@@ -1380,17 +1380,18 @@ S8_WHITE_WOLF: {
     // ==============================
     // 🔵 공통 안내
     // ==============================
-    {
-      type: "narration",
+{
+  type: "narration",
+  background: "images/WhiteWolf_Walk_BG.png",
 
-      condition: function(state) {
-        return state.TalkedOtherWolf !== true;
-      },
+  condition: function(state) {
+    return state.TalkedOtherWolf !== true;
+  },
 
-      text: `다른 늑대들에게 말을 못 걸어본건 아쉽지만, 어쩔 수 없습니다. 지금은 할머니를 만나러 가야하니까요.
+  text: `다른 늑대들에게 말을 못 걸어본건 아쉽지만, 어쩔 수 없습니다. 지금은 할머니를 만나러 가야하니까요.
 
 하얀 늑대는 말없이 앞장서며, 빨간 망토를 숲 깊숙한 곳으로 안내하기 시작합니다.`
-    }
+}
 
   ],
 
@@ -1429,17 +1430,18 @@ S8_GRAY_WOLF: {
       text: `그녀는 당신을 중립적인 눈으로 바라봅니다. 당신이 오솔길로 왔든, 톨게이트를 지나서 왔든 그다지 신경 쓰지 않는 모양이네요.`
     },
 
-    {
-      type: "dialogue",
-      speaker: "빨간 망토",
-      text: `저기... 혹시 전에 어디선가 뵌 적 있나요?`
-    },
+{
+  type: "dialogue",
+  background: "images/GrayWolf_Standing_BG.png",
+  speaker: "빨간 망토",
+  text: `저기... 혹시 전에 어디선가 뵌 적 있나요?`
+},
 
-    {
-      type: "dialogue",
-      speaker: "회색 늑대",
-      text: `글쎄. 네가 기억하지 못하는 것뿐일 수도 있지. 그나저나 꼬마 아가씨가 이 험한 숲까지는 무슨 일일까?`
-    },
+{
+  type: "dialogue",
+  speaker: "회색 늑대",
+  text: `글쎄. 네가 기억하지 못하는 것뿐일 수도 있지. 그나저나 꼬마 아가씨가 이 험한 숲까지는 무슨 일일까?`
+},
 
     {
       type: "dialogue",
@@ -1453,21 +1455,22 @@ S8_GRAY_WOLF: {
       text: `그래? 어떡하지. 여긴 보안 검색이 잘 적용되지 않는 곳이라 자유롭게 다니지 못할 텐데.`
     },
 
-    {
-      type: "narration",
-      text: `회색 늑대는 잠시 당신을 바라보고는, 하얀색에 건장한 체격을 가진 남성을 가리킵니다.`
-    },
+{
+  type: "narration",
+  background: "images/GrayWolf_Pointing_WhiteWolf_BG.png",
+  text: `회색 늑대는 잠시 당신을 바라보고는, 하얀색에 건장한 체격을 가진 남성을 가리킵니다.`
+},
 
-    {
-      type: "dialogue",
-      speaker: "회색 늑대",
-      text: `저쪽에 하얀 강아지 같은 남자 있지? 저 사람한테 가면 널 도와줄 거야.`
-    },
+{
+  type: "dialogue",
+  speaker: "회색 늑대",
+  text: `저쪽에 하얀 강아지 같은 남자 있지? 저 사람한테 가면 널 도와줄 거야.`
+},
 
-    {
-      type: "narration",
-      text: `그녀의 손에는 낡은 검은색 노트가 들려 있습니다. 표지는 오래 닳아 있었지만, 이상하게도 페이지 끝은 새것처럼 깨끗했습니다.`
-    }
+{
+  type: "narration",
+  text: `그녀의 손에는 낡은 검은색 노트가 들려 있습니다. 표지는 오래 닳아 있었지만, 이상하게도 페이지 끝은 새것처럼 깨끗했습니다.`
+}
   ],
 
   choices: [
@@ -1494,7 +1497,7 @@ S8_GRAY_WOLF: {
 
 
 S8_GRAY_WOLF_NOTE: {
-  background: "images/Scene8_GrayWolf_BG.png",
+  background: "images/Scene8_GrayWolf1_BG.png",
 
   steps: [
     {
