@@ -1466,7 +1466,7 @@ S8_GRAY_WOLF: {
     },
     {
       type: "narration",
-      text: `그녀는 당신을 응시하지는 않습니다. 당신이 오솔길로 왔든, 톨게이트를 지나서 왔든 그다지 신경 쓰지 않는 모양이네요.`
+      text: `그녀는 당신을 응시하지 않습니다. 당신이 오솔길로 왔든, 톨게이트를 지나왔든 그다지 신경 쓰지 않는 모양이네요.`
     },
 
 {
@@ -2049,20 +2049,21 @@ S9_BASEMENT: {
       text: `아, 걱정 말고 여유롭게 다녀오세요. 대화가 20분 만에 끝날 것 같진 않아서요.`
     },
 
-    {
-      type: "narration",
-      text: `당신은 지하실로 한 걸음씩 발걸음을 내딛습니다. 이 길은 예전에 할머니가 장아찌나 김치를 주로 묵혀두던 장소죠.`
-    },
+{
+  type: "narration",
+  background: "images/IntoTheBasement_BG.png",
+  text: `당신은 지하실로 한 걸음씩 발걸음을 내딛습니다. 이 길은 예전에 할머니가 장아찌나 김치를 주로 묵혀두던 장소죠.`
+},
 
-    {
-      type: "narration",
-      text: `이상하게도, 지금은 그런 장독대나 흔적이 아예 보이지 않습니다.`
-    },
+{
+  type: "narration",
+  text: `이상하게도, 지금은 그런 장독대나 흔적이 아예 보이지 않습니다.`
+},
 
-    {
-      type: "narration",
-      text: `지하실 안쪽에서는 아무 소리도 들리지 않지만, 그 침묵은 이상하게도 당신을 부르고 있는 것처럼 느껴집니다.`
-    }
+{
+  type: "narration",
+  text: `지하실 안쪽에서는 아무 소리도 들리지 않지만, 그 침묵은 이상하게도 당신을 부르고 있는 것처럼 느껴집니다.`
+}
   ],
 
 
@@ -2124,45 +2125,51 @@ S9_BASEMENT_CORE: {
     {
       type: "dialogue",
       speaker: "빨간 망토",
-      text: `...이게 뭐야?`
+      text: `...저게 뭐야?`
     },
 
-    {
-      type: "narration",
-      text: `당신은 본능적으로 깨달았습니다.`
-    },
+{
+  type: "narration",
+  background: "images/BrainInTank_BG.png",
+  text: `당신은 본능적으로 깨달았습니다.`
+},
 
-    {
-      type: "narration",
-      text: `이것은 단순한 기계가 아닙니다.`
-    },
+{
+  type: "narration",
+  text: `이것은 단순한 기계가 아닙니다.`
+},
 
-    {
-      type: "narration",
-      text: `누군가의 삶이 아직도 전기로 소비되고 있는 흔적입니다.`
-    },
+{
+  type: "narration",
+  text: `누군가의 삶이 아직도 전기로 소비되고 있는 흔적입니다.`
+},
 
-    {
-      type: "narration",
-      text: `통 속의 뇌. 그것은 당신의 여린 지식과 마음으로 감당하기 어려운 정보였습니다.`
-    },
+{
+  type: "narration",
+  text: `통 속의 뇌. 그것은 당신의 여린 지식과 마음으로 감당하기 어려운 정보였습니다.`
+},
 
-    {
-      type: "narration",
-      text: `유리관 옆에는 오래된 서류철 하나가 놓여 있군요.`
-    },
+{
+  type: "narration",
+  text: `오랜 시간 실험 용액 속에 있었기 때문인지, 그 뇌는 일반 사람의 뇌보다 두 배는 거대했습니다.`
+},
+{
+  type: "narration",
+  background: "images/SecretRecord_BG.png",
+  text: `유리관 근처에는 오래된 서류철 하나가 놓여 있군요.`
+},
 
-    {
-      type: "narration",
-      text: `먼지에 덮여 있었지만, 표지에 적힌 글자는 아직 읽을 수 있었습니다.`
-    },
+{
+  type: "narration",
+  text: `먼지에 덮여 있었지만, 표지에 적힌 글자는 아직 읽을 수 있었습니다.`
+},
 
-    {
-      type: "warning",
-      text: `LUPUS Directive 기밀 연구 기록
+{
+  type: "warning",
+  text: `LUPUS Directive 기밀 연구 기록
 
 NEURAL CORE GENERATION PROJECT`
-    }
+}
   ],
 
 
@@ -2261,9 +2268,15 @@ S9_BASEMENT_DOCUMENT: {
 // 할아버지의 뇌를 파괴할지, 진실을 안고 돌아갈지 선택하는 씬
 // ==============================
 S9_BASEMENT_CORE_AFTER_DOC: {
-  background: "images/Scene9_Basement_Core_BG.png",
+  background: "images/BrainInTank_BG.png",
 
   steps: [
+    {
+      type: "effect",
+      background: "images/BrainInTank_BG.png",
+      reverseFade: true
+    },
+
     {
       type: "narration",
       text: `서류를 모두 읽은 당신은 한동안 아무 말도 하지 못했습니다.`
@@ -2412,6 +2425,11 @@ S10_SECRET: {
 {
   type: "big3",
   text: `윤리라는 얄팍한 선은 도대체 어느 경계를 가리키고 있는 걸까요?`
+},
+
+{
+  type: "narration",
+  text: `검은 화면에 당신의 얼굴이 비치는 듯합니다. 눈빛이 맑지는 않은 것 같네요.`
 },
 
     {
@@ -2956,32 +2974,33 @@ S_END_DESTROY: {
       text: `당신은 유리관을 바라보았습니다.`
     },
 
-    {
-      type: "big1",
-      text: `그 안에서 부드럽게 일렁이는 것은 할아버지였고, 동시에 이 모든 비극의 증거였습니다.`
-    },
+{
+  type: "big1",
+  text: `그 안에서 부드럽게 일렁이는 것은 할아버지였고, 동시에 이 모든 비극의 증거였습니다.`
+},
 
-    {
-      type: "big1",
-      text: `회색 늑대의 설명도, 하얀 늑대의 안내도, 할머니의 선택도, 그 누구의 기준도, 누구의 선도.`
-    },
+{
+  type: "big1",
+  text: `회색 늑대의 설명도, 하얀 늑대의 안내도, 할머니의 선택도, 그 누구의 기준도, 누구의 선도.`
+},
 
-    {
-      type: "big2",
-      text: `이제는 아무 의미가 없었습니다.`
-    },
+{
+  type: "big2",
+  text: `이제는 아무 의미가 없었습니다.`
+},
 
-    {
-      type: "big3",
-      text: `이해할 수 없다면, 남겨둘 필요도 없습니다.`
-    },
+{
+  type: "big3",
+  text: `이해할 수 없다면, 남겨둘 필요도 없습니다.`
+},
 
-    {
-      type: "effect",
-      sound: "thud.mp3",
-      shake: true,
-      flash: true
-    },
+{
+  type: "effect",
+  background: "images/Destroy_BG.png",
+  sound: "thud.mp3",
+  shake: true,
+  flash: true
+},
 
 {
   type: "effect",
@@ -2997,16 +3016,17 @@ S_END_DESTROY: {
 
 
 
-    {
-      type: "narration",
-      text: `그 순간, 빨간 망토는 무언가가 끊어지는 소리를 들었습니다.
+{
+  type: "narration",
+  background: "images/Destroy_End_BG.png",
+  text: `그 순간, 빨간 망토는 무언가가 끊어지는 소리를 들었습니다.
 
 할아버지의 생명인지.
 
 이 세계의 전기인지.
 
 아니면 자신의 안에 남아 있던 마지막 이해심인지 알 수 없었습니다.`
-    },
+},
     {
       type: "narratio",
       text: `파괴 엔딩
