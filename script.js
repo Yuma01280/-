@@ -1075,6 +1075,22 @@ button.onclick = () => {
         bg.style.backgroundImage = `url("${step.background}")`;
       }
 
+      // ==============================
+      // 🎬 스텝별 배경 위치 보정 클래스 초기화 / 적용
+      // 특정 이미지가 위로 뜰 때만 bgClass로 보정
+      // ==============================
+      if (bg) {
+        bg.classList.remove(
+          "bg-down-1",
+          "bg-down-2",
+          "bg-up-1"
+        );
+
+        if (step.bgClass) {
+          bg.classList.add(step.bgClass);
+        }
+      }
+
 
 // ==============================
 // 💥 효과 연출 처리 (소리 + 배경)
@@ -1123,11 +1139,11 @@ if (step.zoomOut) {
   if (step.blackWhiteFlash) {
     triggerBlackWhiteFlash();
   }
-
   stepIndex++;
   showStep();
   return;
 }
+
 
 // ==============================
 // ⚡ 화면 깜빡임 함수
@@ -1207,6 +1223,7 @@ if (step.condition && !step.condition(state)) {
   showStep();
   return;
 }
+
 
 // ==============================
 // 🧠 스텝 정신력 피해 처리

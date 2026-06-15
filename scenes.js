@@ -459,7 +459,6 @@ S5: {
 
 
 
-
     // ==============================
     // 🔍 주변을 살피며 온 경우 - 이상한 냄새
     // ==============================
@@ -2070,22 +2069,15 @@ S9_BASEMENT: {
 
 
 
-  choices: [
-    {
-      text: "할머니의 집으로 들어간다",
-      bgm: "scene9.mp3",
-      longTransition: true,
-      transitionDuration: 4500,
-      next: "S10"
-    },
-    {
-      text: "열려 있는 지하실로 들어간다",
-      bgm: "scene9.mp3",
-      longTransition: true,
-      transitionDuration: 4500,
-      next: "S9_BASEMENT_CORE"
-    }
-  ]
+choices: [
+  {
+    text: "열려 있는 지하실로 들어간다",
+    bgm: "scene9.mp3",
+    longTransition: true,
+    transitionDuration: 4500,
+    next: "S9_BASEMENT_CORE"
+  }
+]
 },
 
 
@@ -2186,15 +2178,6 @@ NEURAL CORE GENERATION PROJECT`
       },
       record: "빨간 망토는 지하실에서 기밀 연구 기록을 읽었다.",
       next: "S9_BASEMENT_DOCUMENT"
-    },
-    {
-      text: "서류를 읽지 않고 코어에 다가간다",
-      effect: {
-        Info: 2,
-        FoundGrandfatherCore: true
-      },
-      record: "빨간 망토는 서류를 읽지 않고 코어에 다가갔다.",
-      next: "S10_SECRET"
     }
   ]
 },
@@ -2271,11 +2254,11 @@ S9_BASEMENT_CORE_AFTER_DOC: {
   background: "images/BrainInTank_BG.png",
 
   steps: [
-    {
-      type: "effect",
-      background: "images/BrainInTank_BG.png",
-      reverseFade: true
-    },
+{
+  type: "effect",
+  background: "images/BrainInTank_BG.png",
+  zoomOut: true
+},
 
     {
       type: "narration",
@@ -2423,7 +2406,7 @@ S10_SECRET: {
 },
 
 {
-  type: "big3",
+  type: "big2",
   text: `윤리라는 얄팍한 선은 도대체 어느 경계를 가리키고 있는 걸까요?`
 },
 
@@ -2525,82 +2508,121 @@ S10: {
     },
 
     {
+      background: "images/Scene10_Grandma_House_2BG.png",
       type: "dialogue",
       speaker: "빨간 망토",
       text: `...할머니?`
     },
 
-    {
-      type: "dialogue",
-      speaker: "하얀 늑대",
-      text: `이런, 벌써... 돌아왔나요?`
+{
+  type: "effect",
+  background: "images/Scene10_Grandma_House_3BG.png",
+  zoomOut: true
+},
+
+{
+  background: "images/Scene10_Grandma_House_3BG.png",
+  bgClass: "bg-down-1",
+  type: "dialogue",
+  speaker: "하얀 늑대",
+  text: `이런, 벌써... 돌아왔나요?`
+},
+
+       {
+        bgClass: "bg-down-1",
+      type: "narration",
+      text: `할머니의 방 안쪽 화장실에서 당황한 하얀늑대가 당신에게 걸어옵니다`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "narration",
       text: `하얀 늑대의 목소리는 처음으로 흔들렸습니다.`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "narration",
-      text: `언제나 부드럽던 그의 얼굴에는 당황이 스쳐 지나갔습니다. 마치 당신이 더 늦게 올 거라고 생각했나 봅니다.`
+      text: `언제나 부드럽던 그의 얼굴에는 당황이 스쳐 지나갔습니다. 마치 당신이 더 늦게 올 거라고 생각했을게 뻔하죠.`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "dialogue",
       speaker: "하얀 늑대",
-      text: `아... ㄱ, 그게... 아직 들어오시면 안 됐는데...`
+      text: `아... ㄱ, 그게... 아직 들어오시면 안 됐는데... 밖에서 아무도 막지 않았나요?...`
     },
 
     {
+      background: "images/Scene10_Grandma_House_4BG.png",
+      bgClass: "bg-down-1",
       type: "narration",
       text: `방 안쪽에서는 회색 늑대가 작은 유리 용기 앞에 서 있었습니다.`
     },
 
+    
     {
+      bgClass: "bg-down-1",
       type: "narration",
       text: `그녀는 어떤 뇌를 통 속에 넣은 채, 신경 반응을 관찰하고 있었습니다.`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "dialogue",
       speaker: "회색 늑대",
       text: `생각보다 빨리 왔네.`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "dialogue",
       speaker: "회색 늑대",
       text: `이 뇌, 분노 때문에 지금 에너지 생산량이 엄청나. 벌써 배터리 하나 다 채웠어. 진짜 흥미로운데...`
     },
 
     {
+      bgClass: "bg-down-1",
+      background: "images/Scene10_Grandma_House_5BG.png",
       type: "narration",
-      text: `검은 늑대는 방구석에 앉아 있었습니다. 그는 말없이, 잘게 잘린 무언가를 포대기 속에 넣고 있었습니다.`
+      text: `검은 오두막의 뒷문, 주방과 연결되는 장소에 있었습니다. 그는 말없이, 잘게 잘린 무언가를 포대기 속에 넣고 있네요.`
     },
 
+    
     {
+      bgClass: "bg-down-1",
       type: "warning",
       text: `그것이 누구의 것인지 정확히 보이지는 않습니다. 하지만 포대기 사이로 보이는 천 조각은, 할머니가 입던 옷의 색과 닮아 있었습니다. 비릿한 피 냄새가 방 안을 가득 채우고 있습니다.`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "dialogue",
       speaker: "검은 늑대",
       text: `뭐야, 꼬맹이. 아, 유골이라도 챙겨 줄까?`
     },
+{
+  type: "effect",
+  bgClass: "bg-down-1",
+  background: "images/Scene10_Grandma_House_6BG.png", // 영상
+  zoomOut: true
+},
+
+{
+  bgClass: "bg-down-1",
+  background: "images/Scene10_Grandma_House_6BG.png", // 영상
+  type: "big1",
+  text: `당신은 그제야 깨달았습니다.`
+},
 
     {
-      type: "big1",
-      text: `당신은 그제야 깨달았습니다.`
-    },
-
-    {
+      bgClass: "bg-down-1",
       type: "big2",
       text: `이곳은 더 이상 할머니의 집이 아니었습니다.`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "big3",
       text: `누군가의 신체를 정리하고 있던 현장이었습니다.`
     },
@@ -2623,30 +2645,36 @@ S10: {
 // 정보, 신뢰, 지하실 문서, 코어 파괴 여부에 따라 엔딩 선택지가 하나만 뜨는 씬
 // ==============================
 S10_BRANCH: {
-  background: "images/Scene10_Grandma_House_BG.png",
+  bgClass: "bg-down-1",
+  background: "images/Scene10_Grandma_House_7BG.png",//영상
 
   steps: [
     {
+      bgClass: "bg-down-1",
       type: "dialogue",
       speaker: "빨간 망토",
       text: `이게... 다 뭐예요?`
     },
     {
+      bgClass: "bg-down-1",
       type: "dialogue",
       speaker: "회색 늑대",
       text: `그러니까 내가 앞에서 보초 한 명 서자고 했잖아~. 원래 이 장면은 꼬마 아가씨가 보면 안 되는 장면이었는데.`
     },
     {
+      bgClass: "bg-down-1",
       type: "dialogue",
       speaker: "하얀 늑대",
       text: `...빨간 망토님. 진정하세요. 설명할 수 있습니다.`
     },
     {
+      bgClass: "bg-down-1",
       type: "dialogue",
       speaker: "검은 늑대",
       text: `뭐, 설명이 필요할까? 이미 다 봤잖아.`
     },
     {
+      bgClass: "bg-down-1",
       type: "narration",
       text: `빨간 망토는 지금까지 보고, 듣고, 의심하고, 믿어온 모든 것을 떠올렸습니다.
 
@@ -2766,21 +2794,25 @@ S10_BRANCH: {
 // 정보가 부족한 상태로 사건을 제대로 이해하지 못하고 끝나는 엔딩
 // ==============================
 S_END_IGNORANCE: {
-  background: "images/Scene_End_Ignorance_BG.png",
+  bgClass: "bg-down-1",
+  background: "images/Scene_End_Ignorance_BG8.png",//영상
 
   steps: [
     {
+      bgClass: "bg-down-1",
       type: "narration",
-      text: `당신은 끝내 이 방에서 무슨 일이 일어났는지 이해하지 못했습니다.`
+      text: `당신은 끝내 이 방에서 무슨 일이 일어났는지 이해하지 못했습니다. 어른들의 일이라 모든것이 너무 멀게만 느껴졌어요.`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "dialogue",
       speaker: "하얀 늑대",
       text: `괜찮습니다. 몰라도 되는 일도 있어요.`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "narration",
       text: `그 말은 다정했습니다.
 
@@ -2788,6 +2820,16 @@ S_END_IGNORANCE: {
     },
 
     {
+  type: "effect",
+  background: "images/Scene10_Grandma_House_END_BG.png",
+  bgClass: "bg-down-1",
+  zoomOut: true
+},
+
+
+    {
+      background: "images/Scene10_Grandma_House_END_BG.png",
+      bgClass: "bg-down-1",
       type: "narration",
       text: `할머니의 침대에는 피가 남아 있었고, 방 안쪽의 장치들은 여전히 낮게 울리고 있었습니다.`
     },
@@ -2823,7 +2865,7 @@ S_END_IGNORANCE: {
 // 하얀 늑대의 설명을 믿고 사건을 필요한 처리로 받아들이는 엔딩
 // ==============================
 S_END_TRUST: {
-  background: "images/Scene_End_Trust_BG.png",
+  background: "images/Scene_End_Trust_BG.png",//영상
 
   steps: [
     {
@@ -2893,27 +2935,32 @@ S_END_TRUST: {
 // 충분한 정보 또는 지하실 문서 확인으로 진실을 마주하는 엔딩
 // ==============================   
 S_END_TRUTH: {
-  background: "images/Scene_End_Truth_BG.png",
+  bgClass: "bg-down-1",
+  background: "images/Scene_End_Truth_2BG.png",//영상
 
   steps: [
     {
+      bgClass: "bg-down-1",
       type: "dialogue",
       speaker: "회색 늑대",
       text: `네가 본 게 맞아. 이건 단순한 살인도, 단순한 구조도 아니야.`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "dialogue",
       speaker: "회색 늑대",
       text: `누군가는 사랑이라고 불렀고, 누군가는 연구라고 불렀고, 누군가는 필요한 희생이라고 불렀지.`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "narration",
       text: `당신은 침대의 핏자국과, 유리 용기 속의 뇌와, 검은 늑대의 포대기를 번갈아 바라보았습니다.`
     },
 
     {
+      bgClass: "bg-down-1",
       type: "narration",
       text: `이제 누구 하나만 악인이라고 말할 수 없었습니다.
 
@@ -2921,6 +2968,8 @@ S_END_TRUTH: {
     },
 
     {
+      bgClass: "bg-down-1",
+      background: "images//Scene_End_Truth_3BG.png",
       type: "dialogue",
       speaker: "회색 늑대",
       text: `규칙이라는 건 그런 거야. 윤리의 기준이 희미하고, 선의 기준은 사람들의 마음마다 다르기에.`
@@ -2933,6 +2982,7 @@ S_END_TRUTH: {
     },
 
     {
+      background: "images//Scene_End_Truth_4BG.png",//영상
       type: "narration",
       text: `회색 늑대는 통 속에 담긴, 신선하게 움찔거리는 뇌를 당신에게 건넵니다.`
     },

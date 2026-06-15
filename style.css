@@ -317,6 +317,8 @@ body {
   100% { transform: translate(0, 0); }
 }
 
+
+
 /* ============================= */
 /* 🔍 배경 천천히 확대 효과 */
 /* ============================= */
@@ -2483,4 +2485,21 @@ body {
 #before-message-next-button:disabled {
   opacity: 0.35;
   cursor: default;
+}
+
+/* ============================= */
+/* 🎬 특정 배경 위치 보정 */
+/* 일부 CG가 위로 뜰 때만 개별 적용 */
+/* ============================= */
+
+#background.bg-down-1 {
+  background-position: center calc(50% + 70px) !important;
+}
+
+#background.bg-down-2 {
+  background-position: center calc(50% + 130px) !important;
+}
+
+#background.bg-up-1 {
+  background-position: center calc(50% - 70px) !important;
 }
