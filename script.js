@@ -980,6 +980,21 @@ if (scene.background) {
 
   let stepIndex = 0;
   let isTransitioning = false;
+  let isAdvancingStep = false;
+
+  function isStepVisible(step) {
+    return !(step.condition && !step.condition(state));
+  }
+
+  function hasNextVisibleStep(startIndex) {
+    for (let i = startIndex; i < scene.steps.length; i++) {
+      if (isStepVisible(scene.steps[i])) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 
 
   // ==============================
@@ -1066,6 +1081,12 @@ button.onclick = () => {
 }
 
     const step = scene.steps[stepIndex];
+
+  if (!isStepVisible(step)) {
+    stepIndex++;
+    showStep();
+    return;
+  }
 
      // ==============================
      // 🎬 스텝별 배경 변경
@@ -1504,13 +1525,14 @@ typeText(dialogue, currentText, 28);
 // ==============================
 // 다음 버튼 출력
 // ==============================
-if (stepIndex < scene.steps.length - 1) {
+if (hasNextVisibleStep(stepIndex + 1)) {
   const nextButton = document.createElement("button");
   nextButton.textContent = "다음";
 
   nextButton.onclick = () => {
-    if (nextButton.disabled) return;
+    if (nextButton.disabled || isAdvancingStep || isTransitioning) return;
 
+    isAdvancingStep = true;
     nextButton.disabled = true;
     choices.innerHTML = "";
 
@@ -1519,8 +1541,12 @@ if (stepIndex < scene.steps.length - 1) {
     // 🔊 다음 버튼 클릭 사운드
     playSound("click.mp3");
 
-    stepIndex++;
-    showStep();
+    try {
+      stepIndex++;
+      showStep();
+    } finally {
+      isAdvancingStep = false;
+    }
   };
 
   choices.appendChild(nextButton);
