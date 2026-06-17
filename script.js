@@ -288,6 +288,10 @@ function unlockAchievement(routeName) {
   }
 
   showToast(`${achievementData[routeName].title} 업적 해금`);
+
+  if (typeof unlockStoryGuide === "function") {
+    unlockStoryGuide();
+  }
 }
 
 // ==============================
@@ -1736,6 +1740,7 @@ setInterval(updateClock, 1000);
 
 const noticeMessages = [
   "당신의 모든 선택은 기록되며, 누군가를 살릴 수도, 의심받게 될 수도 있습니다.",
+  "게임에 집중해 주세요! 앤딩을 봐야 볼수있는 특별한 공간이있어요!",
   "아이템 내용을 읽어보셨나요? 내가 모르는 비밀을 알 수 있을지 몰라요.",
   "인물 관계도로, 빨간망토의 입장에서 인물들을 바라볼 수 있어요.",
   "음악 소리가 너무 큰가요? 소리 패널에서 소리를 조절해보세요.",
