@@ -1766,12 +1766,148 @@ setInterval(changeNoticeText, 15000);
 // ==============================
 // 게임 시작
 // ==============================
+// ==============================
+// 관리자 패널 씬 이동
+// ==============================
+const adminSceneLabels = {
+  S1: "1신",
+  S1_A: "1신 A",
+  S1_B: "1신 B",
+  S2: "2신",
+  S3_GATE: "3신 정문",
+  S3_SECRET: "3신 오솔길",
+  S4: "4신",
+  S5: "5신",
+  S5_LETTER: "5신 편지",
+  S6: "6신",
+  S7: "7신",
+  S7_OLDMAN_DEPRESSED: "7신 우울",
+  S7_OLDMAN_DEPRESSED_LETTER: "7신 편지 전달",
+  S7_OLDMAN_CRAZY: "7신 광기",
+  S7_OLDMAN_FIGHT: "7신 싸움",
+  S7_TIME_WASTE: "7신 시간 낭비",
+  S8_RIGHT: "8신 우측 길",
+  S8_WHITE_WOLF: "8신 하얀 늑대",
+  S8_GRAY_WOLF: "8신 회색 늑대",
+  S8_GRAY_WOLF_NOTE: "8신 쪽지",
+  S8_GRAY_WOLF_SKIP: "8신 회색 늑대 스킵",
+  S8_BLACK_WOLF: "8신 검은 늑대",
+  S9: "9신",
+  S9_BASEMENT: "9신 지하실",
+  S9_BASEMENT_CORE: "9신 코어",
+  S9_BASEMENT_DOCUMENT: "9신 문서",
+  S9_BASEMENT_CORE_AFTER_DOC: "9신 문서 후 코어",
+  S10_SECRET: "10신 질문",
+  S10_SECRET_ANSWER: "10신 응답",
+  S10: "10신",
+  S10_BRANCH: "10신 분기",
+  S_END_IGNORANCE: "엔딩 무지",
+  S_END_TRUST: "엔딩 신뢰",
+  S_END_TRUTH: "엔딩 진실",
+  S_END_DESTROY: "엔딩 파괴",
+  S_CREDIT_IGNORANCE: "크레딧 무지",
+  S_CREDIT_TRUST: "크레딧 신뢰",
+  S_CREDIT_TRUTH: "크레딧 진실",
+  S_CREDIT_DESTROY: "크레딧 파괴",
+  S_DEAD_MENTAL: "특수 정신 붕괴"
+};
+
+function adminTeleportToScene(sceneKey) {
+  if (!scenes[sceneKey]) {
+    console.error("관리자 이동 실패: 존재하지 않는 씬", sceneKey);
+    return;
+  }
+
+  stopTypingSound();
+  clearToast();
+  renderScene(sceneKey);
+}
+
+function setupAdminPanel() {
+  const adminPanelButton = document.getElementById("admin-panel-button");
+  const adminPanel = document.getElementById("admin-panel");
+  const adminSceneList = document.getElementById("admin-scene-list");
+  const adminWarningModal = document.getElementById("admin-warning-modal");
+  const adminWarningConfirm = document.getElementById("admin-warning-confirm");
+  const adminWarningCancel = document.getElementById("admin-warning-cancel");
+
+  if (
+    !adminPanelButton ||
+    !adminPanel ||
+    !adminSceneList ||
+    !adminWarningModal ||
+    !adminWarningConfirm ||
+    !adminWarningCancel
+  ) return;
+
+  function openAdminWarningModal() {
+    adminPanel.classList.remove("show");
+    adminWarningModal.classList.add("show");
+  }
+
+  function closeAdminWarningModal() {
+    adminWarningModal.classList.remove("show");
+  }
+
+  function openAdminPanelAfterWarning() {
+    closeAdminWarningModal();
+    adminPanel.classList.add("show");
+  }
+
+  adminPanelButton.onclick = () => {
+    playSound("click.mp3");
+    openAdminWarningModal();
+  };
+
+  adminWarningConfirm.onclick = () => {
+    playSound("click.mp3");
+    openAdminPanelAfterWarning();
+  };
+
+  adminWarningCancel.onclick = () => {
+    playSound("click.mp3");
+    closeAdminWarningModal();
+  };
+
+  adminWarningModal.onclick = (event) => {
+    if (event.target === adminWarningModal) {
+      closeAdminWarningModal();
+    }
+  };
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && adminWarningModal.classList.contains("show")) {
+      closeAdminWarningModal();
+    }
+  });
+
+  adminSceneList.innerHTML = "";
+
+  Object.keys(adminSceneLabels).forEach(sceneKey => {
+    if (!scenes[sceneKey]) return;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "admin-scene-button";
+    button.textContent = adminSceneLabels[sceneKey];
+    button.dataset.sceneKey = sceneKey;
+
+    button.onclick = () => {
+      playSound("click.mp3");
+      adminTeleportToScene(sceneKey);
+    };
+
+    adminSceneList.appendChild(button);
+  });
+}
+
 window.onload = () => {
 
   updateStatus();
   updateInventory();
   updateRecords();
   updateAchievements();
+  setupAdminPanel();
 
 
   

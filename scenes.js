@@ -1894,6 +1894,7 @@ S8_BLACK_WOLF: {
 
 
 S9: {
+  // 이미지 없는게 정상//
   background: "images/Scene9_Grandma_Yard_BG.png",
 
   steps: [
@@ -2372,6 +2373,7 @@ S9_BASEMENT_CORE_AFTER_DOC: {
 // 플레이어가 자신의 선의 기준을 직접 입력하는 메타 질문 씬
 // ==============================
 S10_SECRET: {
+  //이미지 없는게 정상//
   background: "images/Scene10_Secret_BG.png",
 
   steps: [
@@ -2452,6 +2454,7 @@ S10_SECRET: {
 // 입력값과 상관없이 신 10으로 진입시키는 연결 씬
 // ==============================
 S10_SECRET_ANSWER: {
+  // 이미지 없는게 정상//
   background: "images/Scene10_Secret_BG.png",
 
   steps: [
@@ -2969,6 +2972,7 @@ S_END_TRUTH: {
 
     {
       bgClass: "bg-down-1",
+      // 이미지 없음!
       background: "images//Scene_End_Truth_3BG.png",
       type: "dialogue",
       speaker: "회색 늑대",
@@ -2982,6 +2986,7 @@ S_END_TRUTH: {
     },
 
     {
+      // 이미지 없음!
       background: "images//Scene_End_Truth_4BG.png",//영상
       type: "narration",
       text: `회색 늑대는 통 속에 담긴, 신선하게 움찔거리는 뇌를 당신에게 건넵니다.`
@@ -3046,6 +3051,7 @@ S_END_DESTROY: {
 
 {
   type: "effect",
+  // 이미지 없음!
   background: "images/Destroy_BG.png",
   sound: "thud.mp3",
   shake: true,
@@ -3099,6 +3105,7 @@ S_END_DESTROY: {
 // 무지 엔딩 이후 검은 화면에 출력되는 마무리 문장
 // ==============================
 S_CREDIT_IGNORANCE: {
+  // 이미지 없음!
   background: "images/Black_BG.png",
 
   steps: [
@@ -3127,6 +3134,7 @@ S_CREDIT_IGNORANCE: {
 // 신뢰 엔딩 이후 검은 화면에 출력되는 마무리 문장
 // ==============================
 S_CREDIT_TRUST: {
+  // 이미지 없음!
   background: "images/Black_BG.png",
 
   steps: [
@@ -3157,6 +3165,7 @@ S_CREDIT_TRUST: {
 // 진실 엔딩 이후 검은 화면에 출력되는 마무리 문장
 // ==============================
 S_CREDIT_TRUTH: {
+  // 이미지 없음!
   background: "images/Black_BG.png",
 
   steps: [
@@ -3189,6 +3198,7 @@ S_CREDIT_TRUTH: {
 // 히든 파괴 엔딩 이후 검은 화면에 출력되는 마무리 문장
 // ==============================
 S_CREDIT_DESTROY: {
+  // 이미지 없음!
   background: "images/Black_BG.png",
 
   steps: [
@@ -3249,6 +3259,7 @@ S_CREDIT_DESTROY: {
 
 
 S_DEAD_MENTAL: {
+  // 이미지 없음!
   background: "images/Scene_Dead_BG.png",
 
   steps: [

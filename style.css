@@ -1934,10 +1934,10 @@ body {
 
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
 
-  padding: 70px 60px 46px;
+  padding: 44px 60px 38px;
   box-sizing: border-box;
 
   background: black;
@@ -1947,22 +1947,25 @@ body {
 
 /* ====================================================== */
 /* 🖤 엔딩 크레딧 텍스트 */
-/* 키보드로 입력되듯 천천히 출력되는 중앙 문장 */
+/* 화면 안에 버튼까지 들어오도록 높이 고정 줄임 */
 /* ====================================================== */
 
 .ending-credit-text {
   width: min(780px, 86%);
-  min-height: 620px;
+  min-height: auto;
+  max-height: calc(100% - 95px);
 
   color: #e8d7b0;
 
   font-family: "Noto Serif KR", serif;
-  font-size: clamp(19px, 1.45vw, 26px);
+  font-size: clamp(17px, 1.25vw, 23px);
   font-weight: 700;
-  line-height: 1.9;
+  line-height: 1.75;
 
   text-align: center;
   white-space: pre-line;
+
+  overflow-y: auto;
 
   text-shadow:
     0 0 10px rgba(215, 178, 122, 0.25),
@@ -1971,12 +1974,14 @@ body {
 
 /* ====================================================== */
 /* 🕰️ 시간을 돌리기 버튼 */
-/* 엔딩 크레딧을 본 뒤 처음 씬으로 돌아가는 버튼 */
+/* 텍스트와 너무 멀어지지 않게 위 여백 축소 */
 /* ====================================================== */
 
 .ending-credit-button {
-  margin-top: 46px;
-  padding: 15px 54px;
+  flex-shrink: 0;
+
+  margin-top: 18px;
+  padding: 13px 50px;
 
   background:
     linear-gradient(
@@ -1991,7 +1996,7 @@ body {
   color: #f0d39b;
 
   font-family: "Noto Serif KR", serif;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 800;
 
   cursor: pointer;
@@ -2001,16 +2006,6 @@ body {
     0 0 18px rgba(255,180,90,0.16);
 
   transition: all 0.25s ease;
-}
-
-.ending-credit-button:hover {
-  transform: translateY(-3px);
-
-  border-color: rgba(255, 210, 130, 0.95);
-
-  box-shadow:
-    inset 0 0 12px rgba(0,0,0,0.85),
-    0 0 24px rgba(255,180,90,0.26);
 }
 
 /* ====================================================== */
@@ -2448,6 +2443,217 @@ body {
 /* ==============================
    🌘 시작 전 안내문 다음 버튼
 ============================== */
+
+/* ==============================
+   관리자 패널
+============================== */
+.admin-panel-button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 12px;
+
+  background: rgba(45, 30, 12, 0.82);
+  border: 1px solid rgba(218, 176, 92, 0.74);
+  border-radius: 8px;
+
+  color: #f4d28e;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+
+  box-shadow:
+    inset 0 0 12px rgba(218, 176, 92, 0.1),
+    0 0 10px rgba(0, 0, 0, 0.36);
+}
+
+.admin-panel-button:hover {
+  color: #fff4c8;
+  border-color: rgba(255, 221, 142, 0.95);
+  background: rgba(74, 49, 18, 0.88);
+  box-shadow:
+    inset 0 0 14px rgba(255, 215, 130, 0.14),
+    0 0 14px rgba(225, 174, 92, 0.24);
+  transform: translateY(-1px);
+}
+
+.admin-panel-button:active {
+  transform: translateY(1px);
+}
+
+#admin-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+
+  width: 280px;
+  max-height: 430px;
+  padding: 14px;
+  overflow-y: auto;
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(circle at top, rgba(92, 63, 25, 0.26), transparent 58%),
+    linear-gradient(180deg, rgba(27, 19, 11, 0.97), rgba(8, 6, 4, 0.98));
+  border: 1px solid rgba(210, 164, 82, 0.56);
+  border-radius: 10px;
+
+  color: #ead8b8;
+  z-index: 500;
+
+  box-shadow:
+    inset 0 0 16px rgba(0, 0, 0, 0.85),
+    0 18px 32px rgba(0, 0, 0, 0.62);
+}
+
+#admin-panel.show {
+  display: block;
+}
+
+#admin-panel h3 {
+  margin: 0 0 6px;
+  color: #f0c987;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+#admin-panel p {
+  margin: 0 0 12px;
+  color: #a98b5c;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+#admin-scene-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.admin-scene-button {
+  min-height: 34px;
+  padding: 8px 6px;
+
+  background: rgba(18, 12, 7, 0.88);
+  border: 1px solid rgba(176, 128, 58, 0.58);
+  border-radius: 7px;
+
+  color: #dec28f;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  word-break: keep-all;
+
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.admin-scene-button:hover {
+  color: #fff1bf;
+  border-color: rgba(247, 205, 116, 0.9);
+  background: rgba(60, 40, 16, 0.9);
+  transform: translateY(-1px);
+}
+
+.admin-scene-button:active {
+  transform: translateY(1px);
+}
+
+#admin-warning-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+
+  background: rgba(5, 3, 2, 0.74);
+  z-index: 9200;
+}
+
+#admin-warning-modal.show {
+  display: flex;
+}
+
+.admin-warning-box {
+  width: min(520px, 92%);
+  padding: 28px 30px 26px;
+
+  background:
+    radial-gradient(circle at top, rgba(112, 76, 28, 0.26), transparent 62%),
+    linear-gradient(180deg, rgba(31, 22, 13, 0.98), rgba(8, 6, 4, 0.99));
+  border: 1px solid rgba(225, 177, 88, 0.68);
+  border-radius: 12px;
+
+  color: #ead8b8;
+  text-align: center;
+
+  box-shadow:
+    inset 0 0 18px rgba(0, 0, 0, 0.88),
+    inset 0 0 0 1px rgba(255, 220, 150, 0.08),
+    0 24px 44px rgba(0, 0, 0, 0.72);
+}
+
+.admin-warning-box h3 {
+  margin: 0 0 16px;
+  color: #f0c987;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.admin-warning-box p {
+  margin: 0 0 14px;
+  color: #e4d0ad;
+  font-size: 15px;
+  line-height: 1.75;
+  word-break: keep-all;
+}
+
+.admin-warning-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.admin-warning-actions button {
+  min-height: 42px;
+  padding: 11px 12px;
+
+  background: rgba(18, 12, 7, 0.88);
+  border: 1px solid rgba(214, 165, 78, 0.68);
+  border-radius: 8px;
+
+  color: #f1d39a;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.admin-warning-actions button:hover {
+  color: #fff4c8;
+  border-color: rgba(255, 221, 142, 0.96);
+  background: rgba(64, 42, 16, 0.92);
+  box-shadow:
+    inset 0 0 12px rgba(255, 215, 130, 0.12),
+    0 0 14px rgba(225, 174, 92, 0.2);
+  transform: translateY(-1px);
+}
+
+.admin-warning-actions button:active {
+  transform: translateY(1px);
+}
 #before-message-next-button {
   display: none;
 
