@@ -2832,3 +2832,12 @@ body {
 #story-guide-list button:active {
   transform: translateY(1px);
 }
+
+.story-guide-character-img {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  margin: 0 auto 32px;
+  object-fit: contain;
+}
