@@ -2798,7 +2798,8 @@ S10_BRANCH: {
 // ==============================
 S_END_IGNORANCE: {
   bgClass: "bg-down-1",
-  background: "images/Scene_End_Ignorance_BG8.png",//영상
+  background: "images/Scene_End_Ignorance_BG8.png",
+  video: "videos/Scene_End_Ignorance_BG8.mp4",
 
   steps: [
     {
@@ -2868,7 +2869,8 @@ S_END_IGNORANCE: {
 // 하얀 늑대의 설명을 믿고 사건을 필요한 처리로 받아들이는 엔딩
 // ==============================
 S_END_TRUST: {
-  background: "images/Scene_End_Trust_BG.png",//영상
+  background: "images/Scene_End_Trust_BG.png",
+  video: "videos/Scene_End_Trust_BG.mp4",
 
   steps: [
     {
@@ -3075,6 +3077,7 @@ S_END_DESTROY: {
 {
   type: "narration",
   background: "images/Destroy_End_BG.png",
+  video: "videos/Destroy_End_BG.mp4",
   text: `그 순간, 빨간 망토는 무언가가 끊어지는 소리를 들었습니다.
 
 할아버지의 생명인지.
@@ -3083,12 +3086,14 @@ S_END_DESTROY: {
 
 아니면 자신의 안에 남아 있던 마지막 이해심인지 알 수 없었습니다.`
 },
-    {
-      type: "narratio",
-      text: `파괴 엔딩
+{
+  type: "narration",
+  background: "images/Destroy_End_BG.png",
+  video: "videos/Destroy_End_BG.mp4",
+  text: `파괴 엔딩
 
 당신은 누구도 이해하지 않기로 했습니다.`
-    }
+}
   ],
 
   choices: [

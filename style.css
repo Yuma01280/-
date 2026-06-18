@@ -34,6 +34,28 @@ body {
   z-index: 0;
 }
 
+/* ============================= */
+/* 🎞️ 영상 배경 화면 */
+/* mp4 배경을 이미지 배경 위, UI 아래에 깔아줌 */
+/* ============================= */
+
+#background-video {
+  display: none;
+
+  width: 100%;
+  height: 100%;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  object-fit: cover;
+  object-position: center;
+
+  z-index: 1;
+  pointer-events: none;
+}
+
 
 /* ============================= */
 /* 대사 UI 전체 영역 */

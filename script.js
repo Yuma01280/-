@@ -590,6 +590,39 @@ function typeText(element, text, speed = 28) {
 }
 
 // ==============================
+// 🎞️ 영상 배경 처리 함수
+// scene.video 또는 step.video가 있을 때 mp4 배경을 재생함
+// ==============================
+function setBackgroundVideo(videoSrc) {
+  const bgVideo = document.getElementById("background-video");
+
+  if (!bgVideo) return;
+
+  // 영상이 없는 씬/스텝이면 영상 숨기기
+  if (!videoSrc) {
+    bgVideo.pause();
+    bgVideo.removeAttribute("src");
+    bgVideo.load();
+    bgVideo.style.display = "none";
+    return;
+  }
+
+  // 이미 같은 영상을 재생 중이면 다시 로드하지 않음
+  const nextSrc = new URL(videoSrc, window.location.href).href;
+
+  if (bgVideo.src !== nextSrc) {
+    bgVideo.src = videoSrc;
+    bgVideo.load();
+  }
+
+  bgVideo.style.display = "block";
+
+  bgVideo.play().catch(error => {
+    console.error("영상 배경 재생 실패:", videoSrc, error);
+  });
+}
+
+// ==============================
 // 🎬 화면 페이드 전환 함수
 // ==============================
 function fadeTransition(nextSceneKey) {
@@ -978,6 +1011,9 @@ if (scene.background) {
   bg.style.backgroundImage = `url("${scene.background}")`;
 }
 
+// 🎞️ 씬 전체 영상 배경 적용
+setBackgroundVideo(scene.video);
+
   const dialogue = document.getElementById("dialogue");
   const choices = document.getElementById("choices");
   const speakerName = document.getElementById("speaker-name");
@@ -1100,6 +1136,10 @@ button.onclick = () => {
         bg.style.backgroundImage = `url("${step.background}")`;
       }
 
+      // 🎞️ 스텝별 영상 배경 적용
+      // step.video가 있으면 스텝 영상 사용, 없으면 scene.video 유지
+      setBackgroundVideo(step.video || scene.video);
+
       // ==============================
       // 🎬 스텝별 배경 위치 보정 클래스 초기화 / 적용
       // 특정 이미지가 위로 뜰 때만 bgClass로 보정
@@ -1139,6 +1179,9 @@ if (step.type === "effect") {
     const bg = document.getElementById("background");
     bg.style.backgroundImage = `url("${step.background}")`;
   }
+
+  // 🎞️ 효과 스텝 영상 배경 적용
+setBackgroundVideo(step.video || scene.video);
 
   // 💥 화면 흔들림
   if (step.shake) {
