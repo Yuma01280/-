@@ -598,33 +598,81 @@ function setBackgroundVideo(videoSrc) {
 
   if (!bgVideo) return;
 
+  bgVideo.onloadeddata = null;
+  bgVideo.onerror = null;
+
   // 영상이 없는 씬/스텝이면 영상 숨기기
   if (!videoSrc) {
     bgVideo.pause();
     bgVideo.removeAttribute("src");
     bgVideo.load();
+    try {
+      bgVideo.currentTime = 0;
+    } catch (error) {
+      // currentTime cannot always be reset after the source is cleared.
+    }
     bgVideo.style.display = "none";
     return;
   }
 
   // 이미 같은 영상을 재생 중이면 다시 로드하지 않음
   const nextSrc = new URL(videoSrc, window.location.href).href;
+  const showLoadedVideo = () => {
+    if (bgVideo.src === nextSrc || bgVideo.currentSrc === nextSrc) {
+      bgVideo.style.display = "block";
+    }
+  };
+  const hideFailedVideo = error => {
+    if (bgVideo.src === nextSrc || bgVideo.currentSrc === nextSrc) {
+      bgVideo.pause();
+      bgVideo.style.display = "none";
+
+      if (error) {
+        console.error("Background video failed:", videoSrc, error);
+      }
+    }
+  };
+
+  bgVideo.onloadeddata = showLoadedVideo;
+  bgVideo.onerror = hideFailedVideo;
 
   if (bgVideo.src !== nextSrc) {
+    bgVideo.style.display = "none";
     bgVideo.src = videoSrc;
     bgVideo.load();
+  } else if (bgVideo.readyState >= 2) {
+    showLoadedVideo();
   }
 
-  bgVideo.style.display = "block";
+  // Show the video only after it can render; otherwise the fallback image remains visible.
 
-  bgVideo.play().catch(error => {
-    console.error("영상 배경 재생 실패:", videoSrc, error);
+  bgVideo.play().then(showLoadedVideo).catch(error => {
+    hideFailedVideo(error);
   });
 }
 
 // ==============================
 // 🎬 화면 페이드 전환 함수
 // ==============================
+function syncBackgroundClass(bgClass) {
+  const bg = document.getElementById("background");
+  const bgVideo = document.getElementById("background-video");
+
+  [bg, bgVideo].forEach(element => {
+    if (!element) return;
+
+    element.classList.remove(
+      "bg-down-1",
+      "bg-down-2",
+      "bg-up-1"
+    );
+
+    if (bgClass) {
+      element.classList.add(bgClass);
+    }
+  });
+}
+
 function fadeTransition(nextSceneKey) {
   const fadeScreen = document.getElementById("fade-screen");
 
@@ -1012,7 +1060,8 @@ if (scene.background) {
 }
 
 // 🎞️ 씬 전체 영상 배경 적용
-setBackgroundVideo(scene.video);
+setBackgroundVideo(scene.video || null);
+syncBackgroundClass(scene.bgClass);
 
   const dialogue = document.getElementById("dialogue");
   const choices = document.getElementById("choices");
@@ -1138,23 +1187,13 @@ button.onclick = () => {
 
       // 🎞️ 스텝별 영상 배경 적용
       // step.video가 있으면 스텝 영상 사용, 없으면 scene.video 유지
-      setBackgroundVideo(step.video || scene.video);
+      setBackgroundVideo(step.video || scene.video || null);
 
       // ==============================
       // 🎬 스텝별 배경 위치 보정 클래스 초기화 / 적용
       // 특정 이미지가 위로 뜰 때만 bgClass로 보정
       // ==============================
-      if (bg) {
-        bg.classList.remove(
-          "bg-down-1",
-          "bg-down-2",
-          "bg-up-1"
-        );
-
-        if (step.bgClass) {
-          bg.classList.add(step.bgClass);
-        }
-      }
+      syncBackgroundClass(step.bgClass || scene.bgClass);
 
 
 // ==============================
@@ -1181,7 +1220,7 @@ if (step.type === "effect") {
   }
 
   // 🎞️ 효과 스텝 영상 배경 적용
-setBackgroundVideo(step.video || scene.video);
+setBackgroundVideo(step.video || scene.video || null);
 
   // 💥 화면 흔들림
   if (step.shake) {

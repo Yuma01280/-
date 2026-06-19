@@ -2732,6 +2732,18 @@ body {
   background-position: center calc(50% - 70px) !important;
 }
 
+#background-video.bg-down-1 {
+  object-position: center calc(50% + 70px);
+}
+
+#background-video.bg-down-2 {
+  object-position: center calc(50% + 130px);
+}
+
+#background-video.bg-up-1 {
+  object-position: center calc(50% - 70px);
+}
+
 /* ==============================
    스토리 설명 패널
 ============================== */

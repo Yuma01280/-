@@ -2941,7 +2941,7 @@ S_END_TRUST: {
 // ==============================   
 S_END_TRUTH: {
   bgClass: "bg-down-1",
-  background: "images/Scene_End_Truth_2BG.png",//영상
+  background: "images/Scene_End_Truth_2BG.png",
 
   steps: [
     {
@@ -2972,41 +2972,55 @@ S_END_TRUTH: {
 그렇다고 누구도 죄가 없다고 말할 수도 없었습니다.`
     },
 
-    {
-      bgClass: "bg-down-1",
-      // 이미지 없음!
-      background: "images//Scene_End_Truth_3BG.png",
-      type: "dialogue",
-      speaker: "회색 늑대",
-      text: `규칙이라는 건 그런 거야. 윤리의 기준이 희미하고, 선의 기준은 사람들의 마음마다 다르기에.`
-    },
+{
+  bgClass: "bg-down-1",
+  background: "images/Scene_End_Truth_3BG.png",
+  type: "dialogue",
+  speaker: "회색 늑대",
+  text: `규칙이라는 건 그런 거야. 윤리의 기준이 희미하고, 선의 기준은 사람들의 마음마다 다르기에.`
+},
 
-    {
-      type: "dialogue",
-      speaker: "회색 늑대",
-      text: `이런 애매한 상황에 결단을 내리기 위한 날카로운 도구지.`
-    },
+{
+  bgClass: "bg-down-1",
+  type: "dialogue",
+  speaker: "회색 늑대",
+  text: `이런 애매한 상황에 결단을 내리기 위한 날카로운 도구지.`
+},
 
-    {
-      // 이미지 없음!
-      background: "images//Scene_End_Truth_4BG.png",//영상
-      type: "narration",
-      text: `회색 늑대는 통 속에 담긴, 신선하게 움찔거리는 뇌를 당신에게 건넵니다.`
-    },
+{
+  bgClass: "bg-down-1",
+  type: "effect",
+  background: "images/Scene_End_Truth_4BG.png",
+  video: "videos/Scene_End_Truth_4BG.mp4",
+  zoomOut: true
+},
 
-    {
-      type: "dialogue",
-      speaker: "회색 늑대",
-      text: `자. 마지막으로 할머니에게 인사할 시간을 줄게.`
-    },
-    {
-      type: "warning",
-      text: `진실 엔딩
+{
+  bgClass: "bg-down-1",
+  background: "images/Scene_End_Truth_4BG.png",
+  video: "videos/Scene_End_Truth_4BG.mp4",
+  type: "narration",
+  text: `회색 늑대는 통 속에 담긴, 신선하게 움찔거리는 뇌를 당신에게 건넵니다.`
+},
+
+{
+  bgClass: "bg-down-1",
+  video: "videos/Scene_End_Truth_4BG.mp4",
+  background: "images/Scene_End_Truth_2BG.png",
+  type: "dialogue",
+  speaker: "회색 늑대",
+  text: `자. 마지막으로 할머니에게 인사할 시간을 줄게.`
+},
+
+{
+  bgClass: "bg-down-1",
+  type: "warning",
+  text: `진실 엔딩
 
 당신은 진실을 알았습니다.
 
 하지만 진실을 안다는 것과, 옳은 선택을 할 수 있다는 것은 다릅니다.`
-    }
+}
   ],
 
   choices: [
