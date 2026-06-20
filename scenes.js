@@ -24,9 +24,10 @@ background: "images/Scene1-2_BG.png",
 text: `그리고, 못 보던 편지도 보입니다. 어머니가 할머니에게 편지를 쓴다는 사실은 빨간 망토도 처음 아는 사실입니다.`
 },
 {
-type: "dialogue",
-speaker: "어머니",
-text: `사랑스러운 내 딸, 할머니께 이걸 전해줄 수 있겠니? 할머니는 혼자 지내니 음식을 잘 챙겨드려야 해. 그리고 숲에 들어갈 때는 조심해야 하고... 같이 못 가주는 게 너무 미안하구나...`
+  type: "dialogue",
+  speaker: "어머니",
+  text: `사랑스러운 내 딸, 할머니께 이걸 전해줄 수 있겠니?`,
+  voice: "voice/voice_mother_01.mp3"
 }
 ],
 
@@ -1202,7 +1203,8 @@ S8_WHITE_WOLF: {
         return state.Path === "road";
       },
 
-      speaker: "하얀 늑대",
+      speaker: "하얀 늑대", //voice_white_greeting.mp3 목소리 삽입
+      voice: "voice/voice_white_greeting.mp3",
 
       text: `...왔군요, 빨간 망토. 이번에는 기록을 남기고 오셔서 정말 다행입니다. 지금 보안 문제로 경비가 삼엄하거든요.`
     },
@@ -1333,7 +1335,8 @@ S8_WHITE_WOLF: {
     return state.Path === "search";
   },
 
-  speaker: "하얀 늑대",
+  speaker: "하얀 늑대",//voice_white_secret_path.mp3 목소리삽입
+  voice: "voice/voice_white_secret_path.mp3",
 
   text: `...빨간 망토? 잠시만... 기록이 없었는데-`
 },
@@ -1483,7 +1486,8 @@ S8_GRAY_WOLF: {
 
 {
   type: "dialogue",
-  speaker: "회색 늑대",
+  speaker: "회색 늑대",//voice_gray_hmm.mp3 목소리 삽입
+  voice: "voice/voice_gray_hmm.mp3",
   text: `글쎄. 네가 기억하지 못하는 것뿐일 수도 있지. 그나저나 꼬마 아가씨가 이 험한 숲까지는 무슨 일일까?`
 },
 
@@ -1718,7 +1722,8 @@ S8_BLACK_WOLF: {
       condition: function(state) {
         return state.Path === "search";
       },
-      speaker: "검은 늑대",
+      speaker: "검은 늑대",//voice_black_hmph.mp3 목소리 삽입
+      voice: "voice/voice_black_hmph.mp3",
       text: `네놈같이 보안 검색대를 병풍 취급하는 놈들 때문에 내가 이 개고생을 하는 건데. 알기나 해?`
     },
 
@@ -1753,7 +1758,8 @@ S8_BLACK_WOLF: {
   condition: function(state) {
     return state.Path === "search";
   },
-  speaker: "검은 늑대",
+  speaker: "검은 늑대",//voice_black_hah. 목소리 삽입
+  voice: "voice/voice_black_hah.mp3",
   text: `...젠장... 기록자 앞이라 이 정도로 끝내는 줄 알아. 쯧, 성가신 것들.`
 },
 
@@ -1788,7 +1794,8 @@ S8_BLACK_WOLF: {
   condition: function(state) {
     return state.Path === "road";
   },
-  speaker: "검은 늑대",
+  speaker: "검은 늑대", //voice_black_hah 목소리 삽입
+  voice: "voice/voice_black_hah.mp3",
   text: `뭐야, 기록은 잘 되네? 아예 먹통이 된 건 아니구만.`
 },
 
@@ -1842,8 +1849,9 @@ S8_BLACK_WOLF: {
   condition: function(state) {
     return state.Path === "road";
   },
-  background: "images/GrayBlackWolf_Greeting_BG.png",
+  background: "images/GrayBlackWolf_Greeting_BG.png", //voice_gray_greeting 목소리 삽입
   speaker: "회색 늑대",
+  voice: "voice/voice_gray_greeting.mp3",
   text: `기록은 있네. 안녕~ 작은 꼬마~`
 },
 

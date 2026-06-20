@@ -124,6 +124,7 @@ function resetGameState() {
   updateInventory();
   updateRecords();
 
+  stopVoice();
   resetBgmToDefault();
 }
 
@@ -137,9 +138,53 @@ let prevState = {
   Mental: 50
 };
 
-let masterVolume = 1;
-let typingVolume = 0.35;
-let clickVolume = 1;
+const VOLUME_STORAGE_KEYS = {
+  master: "sogMasterVolume",
+  typing: "sogTypingVolume",
+  click: "sogClickVolume"
+};
+
+const DEFAULT_MASTER_VOLUME = 0.5;
+const DEFAULT_TYPING_VOLUME = 0.5;
+const DEFAULT_CLICK_VOLUME = 0.5;
+const CLICK_BASE_VOLUME = 0.9;
+const VOICE_BASE_VOLUME = 1;
+
+function clampVolume(value, fallback) {
+  const numberValue = Number(value);
+
+  if (!Number.isFinite(numberValue)) {
+    return fallback;
+  }
+
+  return Math.min(Math.max(numberValue, 0), 1);
+}
+
+function readStoredVolume(key, fallback) {
+  try {
+    const storedValue = localStorage.getItem(key);
+
+    if (storedValue === null) {
+      return fallback;
+    }
+
+    return clampVolume(storedValue, fallback);
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function saveStoredVolume(key, value) {
+  try {
+    localStorage.setItem(key, String(value));
+  } catch (error) {
+    console.error("볼륨 저장 실패:", key, error);
+  }
+}
+
+let masterVolume = readStoredVolume(VOLUME_STORAGE_KEYS.master, DEFAULT_MASTER_VOLUME);
+let typingVolume = readStoredVolume(VOLUME_STORAGE_KEYS.typing, DEFAULT_TYPING_VOLUME);
+let clickVolume = readStoredVolume(VOLUME_STORAGE_KEYS.click, DEFAULT_CLICK_VOLUME);
 
 // ==============================
 // 상태값 표시 함수 (UI 업데이트)
@@ -324,6 +369,18 @@ function flashIfChanged(element, currentValue, previousValue) {
 // ==============================
 // 🔊 사운드 재생 함수
 // ==============================
+function getClickTargetVolume() {
+  return CLICK_BASE_VOLUME * clickVolume * masterVolume;
+}
+
+function getTypingTargetVolume() {
+  return typingVolume * masterVolume;
+}
+
+function getVoiceTargetVolume() {
+  return VOICE_BASE_VOLUME * masterVolume;
+}
+
 function playSound(fileName, volumeType = "click") {
 
   const sound = new Audio(`media/${fileName}`);
@@ -336,7 +393,7 @@ function playSound(fileName, volumeType = "click") {
   }
 
   else {
-    sound.volume = clickVolume * masterVolume;
+    sound.volume = getClickTargetVolume();
   }
 
   sound.currentTime = 0;
@@ -349,7 +406,7 @@ function playSound(fileName, volumeType = "click") {
 // ==============================
 // 🎵 배경 음악
 // ==============================
-const DEFAULT_BGM_VOLUME = 0.25;
+const DEFAULT_BGM_VOLUME = 0.225;
 let currentBgmFile = "bgm.mp3";
 
 const bgm = new Audio(`media/${currentBgmFile}`);
@@ -553,8 +610,10 @@ function startTypingSound() {
 
   typingSound = new Audio("media/type.mp3");
   typingSound.loop = true;
-  typingSound.volume = typingVolume * masterVolume;
-  typingSound.play();
+  typingSound.volume = getTypingTargetVolume();
+  typingSound.play().catch(error => {
+    console.error("타자음 재생 실패:", error);
+  });
 }
 
 function stopTypingSound() {
@@ -563,6 +622,63 @@ function stopTypingSound() {
   typingSound.pause();
   typingSound.currentTime = 0;
   typingSound = null;
+}
+
+let currentVoice = null;
+
+function stopVoice() {
+  if (!currentVoice) return;
+
+  currentVoice.pause();
+
+  try {
+    currentVoice.currentTime = 0;
+  } catch (error) {
+    // Some browsers do not allow currentTime reset before metadata is ready.
+  }
+
+  currentVoice = null;
+}
+
+function playVoice(voiceSrc) {
+  stopVoice();
+
+  if (!voiceSrc) return;
+
+  const voice = new Audio(voiceSrc);
+  currentVoice = voice;
+  voice.volume = getVoiceTargetVolume();
+  voice.currentTime = 0;
+
+  voice.onended = () => {
+    if (currentVoice === voice) {
+      currentVoice = null;
+    }
+  };
+
+  voice.play().catch(error => {
+    if (currentVoice === voice) {
+      currentVoice = null;
+    }
+
+    console.error("보이스 재생 실패:", voiceSrc, error);
+  });
+}
+
+function playStepVoice(step) {
+  playVoice(step && step.voice);
+}
+
+function updateActiveAudioVolumes() {
+  bgm.volume = getBgmTargetVolume();
+
+  if (typingSound) {
+    typingSound.volume = getTypingTargetVolume();
+  }
+
+  if (currentVoice) {
+    currentVoice.volume = getVoiceTargetVolume();
+  }
 }
 
 function typeText(element, text, speed = 28) {
@@ -1039,6 +1155,8 @@ function renderScene(sceneKey) {
     return;
   }
 
+stopVoice();
+
 const bg = document.getElementById("background");
 const mainScreen = document.getElementById("main-screen");
 
@@ -1120,6 +1238,7 @@ button.onclick = () => {
   choices.innerHTML = "";
 
   stopTypingSound();
+  stopVoice();
   playSound("click.mp3");
 
   applyEffect(choice.effect);
@@ -1194,6 +1313,7 @@ button.onclick = () => {
       // 특정 이미지가 위로 뜰 때만 bgClass로 보정
       // ==============================
       syncBackgroundClass(step.bgClass || scene.bgClass);
+      playStepVoice(step);
 
 
 // ==============================
@@ -1391,6 +1511,7 @@ if (step.type === "documentPage") {
 
     closeButton.disabled = true;
 
+    stopVoice();
     playSound("click.mp3");
 
     documentOverlay.remove();
@@ -1453,6 +1574,7 @@ if (step.type === "textInput") {
     inputBox.disabled = true;
 
     stopTypingSound();
+    stopVoice();
     playSound("click.mp3");
 
     const value = inputBox.value.trim();
@@ -1507,6 +1629,7 @@ dialogue.classList.remove(
     creditButton.disabled = true;
 
     stopTypingSound();
+    stopVoice();
     playSound("click.mp3");
 
     creditOverlay.remove();
@@ -1623,6 +1746,7 @@ if (hasNextVisibleStep(stepIndex + 1)) {
     choices.innerHTML = "";
 
     stopTypingSound();
+    stopVoice();
 
     // 🔊 다음 버튼 클릭 사운드
     playSound("click.mp3");
@@ -1664,6 +1788,7 @@ if (scene.choices && scene.choices.length > 0) {
           clearToast();
 
           stopTypingSound();
+          stopVoice();
 
           // 🔊 클릭 사운드
           playSound("click.mp3");
@@ -1906,6 +2031,7 @@ function adminTeleportToScene(sceneKey) {
   }
 
   stopTypingSound();
+  stopVoice();
   clearToast();
   renderScene(sceneKey);
 }
@@ -2021,20 +2147,34 @@ const typingSlider = document.getElementById("typing-volume");
 const clickSlider = document.getElementById("click-volume");
 
 if (masterSlider) {
+  masterSlider.value = masterVolume;
+
   masterSlider.oninput = (e) => {
-    bgm.volume = Number(e.target.value);
+    masterVolume = clampVolume(e.target.value, DEFAULT_MASTER_VOLUME);
+    masterSlider.value = masterVolume;
+    saveStoredVolume(VOLUME_STORAGE_KEYS.master, masterVolume);
+    updateActiveAudioVolumes();
   };
 }
 
 if (typingSlider) {
+  typingSlider.value = typingVolume;
+
   typingSlider.oninput = (e) => {
-    typingVolume = Number(e.target.value);
+    typingVolume = clampVolume(e.target.value, DEFAULT_TYPING_VOLUME);
+    typingSlider.value = typingVolume;
+    saveStoredVolume(VOLUME_STORAGE_KEYS.typing, typingVolume);
+    updateActiveAudioVolumes();
   };
 }
 
 if (clickSlider) {
+  clickSlider.value = clickVolume;
+
   clickSlider.oninput = (e) => {
-    clickVolume = Number(e.target.value);
+    clickVolume = clampVolume(e.target.value, DEFAULT_CLICK_VOLUME);
+    clickSlider.value = clickVolume;
+    saveStoredVolume(VOLUME_STORAGE_KEYS.click, clickVolume);
   };
 }
 
