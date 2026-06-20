@@ -855,24 +855,45 @@ ending: {
 
 
 
+function getSavedEndingAchievements() {
+  try {
+    return JSON.parse(localStorage.getItem("sogAchievements")) || {};
+  } catch (error) {
+    return {};
+  }
+}
+
+function hasUnlockedEndingAchievement() {
+  const savedAchievements = getSavedEndingAchievements();
+
+  return Object.keys(savedAchievements).some(key => savedAchievements[key] === true);
+}
+
 function isStoryGuideUnlocked() {
-  return localStorage.getItem(STORY_GUIDE_STORAGE_KEY) === "true";
+  return hasUnlockedEndingAchievement();
 }
 
 function unlockStoryGuide() {
-  if (isStoryGuideUnlocked()) {
-    updateStoryGuideButtonState();
+  const wasStoryGuideUnlocked = localStorage.getItem(STORY_GUIDE_STORAGE_KEY) === "true";
+
+  if (!hasUnlockedEndingAchievement()) {
+    lockStoryGuide();
     return;
   }
 
   localStorage.setItem(STORY_GUIDE_STORAGE_KEY, "true");
   updateStoryGuideButtonState();
 
-  if (typeof showToast === "function") {
+  if (!wasStoryGuideUnlocked && typeof showToast === "function") {
     setTimeout(() => {
       showToast("스토리 설명 창이 열렸습니다.");
     }, 80);
   }
+}
+
+function lockStoryGuide() {
+  localStorage.removeItem(STORY_GUIDE_STORAGE_KEY);
+  updateStoryGuideButtonState();
 }
 
 function updateStoryGuideButtonState() {
@@ -884,6 +905,7 @@ function updateStoryGuideButtonState() {
   if (isStoryGuideUnlocked()) {
     storyGuideButton.classList.add("show");
   } else {
+    localStorage.removeItem(STORY_GUIDE_STORAGE_KEY);
     storyGuideButton.classList.remove("show");
 
     if (storyGuidePanel) {

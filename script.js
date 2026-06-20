@@ -304,6 +304,10 @@ function updateAchievements() {
 
     achievementList.appendChild(li);
   });
+
+  if (typeof updateStoryGuideButtonState === "function") {
+    updateStoryGuideButtonState();
+  }
 }
 
 // ==============================
@@ -316,6 +320,9 @@ function unlockAchievement(routeName) {
 
   if (unlockedAchievements[routeName] === true) {
     updateAchievements();
+    if (typeof updateStoryGuideButtonState === "function") {
+      updateStoryGuideButtonState();
+    }
     return;
   }
 
@@ -2297,6 +2304,12 @@ if (purgeAchievementButton) {
 
     updateAchievements();
     updatePurgeButtonState();
+
+    if (typeof lockStoryGuide === "function") {
+      lockStoryGuide();
+    } else if (typeof updateStoryGuideButtonState === "function") {
+      updateStoryGuideButtonState();
+    }
 
     showToast("업적 기록이 말소되었습니다.");
   };
